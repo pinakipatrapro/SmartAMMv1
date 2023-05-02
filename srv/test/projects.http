@@ -1,0 +1,77 @@
+@route = http://127.0.0.1:4004
+
+### Create Project
+POST  {{route}}/createProject
+Content-Type: application/json
+
+{
+    "name": "Analysis", 
+    "data": [
+    {
+      "column1": "AB",
+      "column2": 1,
+      "column3": "AA"
+    },   
+    {
+      "column1": "AB",
+      "column2": 2,
+      "column3": "AA"
+    },
+    {
+      "column1": "AB",
+      "column2": 3,
+      "column3": "AA"
+    },
+    {
+      "column1": "AB",
+      "column2": 4,
+      "column3": "AA"
+    }, 
+    {
+      "column1": "AB",
+      "column2": 5,
+      "column3": "AA"
+    },
+    {
+      "column1": "AB",
+      "column2": 6,
+      "column3": "AA"
+    },
+    {
+      "column1": "AB",
+      "column2": 7,
+      "column3": "AA"
+    },
+    {
+      "column1": "AB",
+      "column2": 8,
+      "column3": "AA"
+    },
+    {
+      "column1": "AB",
+      "column2": 9,
+      "column3": "AA"
+    },
+    {
+      "column1": "AB",
+      "column2": 10,
+      "column3": "AA"
+    }
+  ],
+    "description": "Analyse and transform",
+    "sampleValues" : [  
+        {
+            "field":"column1",
+            "dataType":"VARCHAR"
+        },
+        {
+            "field":"column2",
+             "dataType":"INTEGER"
+        },
+        {
+            "field":"column3",
+            "dataType":"VARCHAR"
+        }
+    ],
+    "modifiedBy":"postgres"
+}
