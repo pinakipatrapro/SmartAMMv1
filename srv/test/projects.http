@@ -7,71 +7,607 @@ Content-Type: application/json
 {
     "name": "Analysis", 
     "data": [
-    {
-      "column1": "AB",
-      "column2": 1,
-      "column3": "AA"
-    },   
-    {
-      "column1": "AB",
-      "column2": 2,
-      "column3": "AA"
-    },
-    {
-      "column1": "AB",
-      "column2": 3,
-      "column3": "AA"
-    },
-    {
-      "column1": "AB",
-      "column2": 4,
-      "column3": "AA"
-    }, 
-    {
-      "column1": "AB",
-      "column2": 5,
-      "column3": "AA"
-    },
-    {
-      "column1": "AB",
-      "column2": 6,
-      "column3": "AA"
-    },
-    {
-      "column1": "AB",
-      "column2": 7,
-      "column3": "AA"
-    },
-    {
-      "column1": "AB",
-      "column2": 8,
-      "column3": "AA"
-    },
-    {
-      "column1": "AB",
-      "column2": 9,
-      "column3": "AA"
-    },
-    {
-      "column1": "AB",
-      "column2": 10,
-      "column3": "AA"
-    }
-  ],
+            {
+                "Incident ID": "IM18995662",
+                "Status": "Closed",
+                "Contact Media": "Employee Self Service",
+                "Assigned to Group": "AUTO S&P WW SAP AUTHORIZATION",
+                "Impact": "4",
+                "Urgency": "3",
+                "Priority": "3",
+                "Open Time": "03.01.2019  07:33:27 ",
+                "Opened by": "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+                "Resolved Time": "03.01.2019  21:14:09 ",
+                "Resolved by": "AUTO S&P WW SAP AUTHORIZATION",
+                "Classification 1": "HORIZATION",
+                "Closed Time": "17.01.2019  22:00:13 ",
+                "Closed by": "",
+                "Category": "SAP",
+                "SubCategory": "EP1/111",
+                "ProductType": "Authorization",
+                "Module": "Authorization",
+                "ProblemType": "Failure",
+                "Region": "Europe",
+                "Country": "Germany",
+                "City": "Nuernberg",
+                "Short Description": "SAP - Zugang funktioniert nicht mehr",
+                "Issue Type": "Authorization: Access related",
+                "Language": "German",
+                "Day": "Thursday",
+                "MTTR": "0.57",
+                "Hour": "3"
+            },
+            {
+                "Incident ID": "IM18995845",
+                "Status": "Closed",
+                "Contact Media": "Phone",
+                "Assigned to Group": "AUTO SAP EU AEP 020 SP",
+                "Impact": "4",
+                "Urgency": "3",
+                "Priority": "3",
+                "Open Time": "03.01.2019  07:56:22 ",
+                "Opened by": "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+                "Resolved Time": "03.01.2019  15:50:19 ",
+                "Resolved by": "AUTO SAP EU AEP 020 SP",
+                "Classification 1": "AEP 020 SP",
+                "Closed Time": "17.01.2019  16:47:25 ",
+                "Closed by": "",
+                "Category": "SAP",
+                "SubCategory": "AEP/020",
+                "ProductType": "Authorization",
+                "Module": "Authorization",
+                "ProblemType": "Failure",
+                "Region": "Europe",
+                "Country": "Romania",
+                "City": "Iasi",
+                "Short Description": "SAP AEP 020 accout issue",
+                "Issue Type": "Authorization: Access related",
+                "Language": "English",
+                "Day": "Thursday",
+                "MTTR": "0.33",
+                "Hour": "5"
+            },
+            {
+                "Incident ID": "IM18996682",
+                "Status": "Closed",
+                "Contact Media": "Employee Self Service",
+                "Assigned to Group": "AUTO S&P WW SAP AUTHORIZATION",
+                "Impact": "4",
+                "Urgency": "2",
+                "Priority": "3",
+                "Open Time": "03.01.2019  09:32:01 ",
+                "Opened by": "CORP INFRA-CS EU3 IT SERVICE DESK",
+                "Resolved Time": "03.01.2019  12:32:11 ",
+                "Resolved by": "AUTO S&P WW SAP AUTHORIZATION",
+                "Classification 1": "HORIZATION",
+                "Closed Time": "17.01.2019  12:32:57 ",
+                "Closed by": "",
+                "Category": "SAP",
+                "SubCategory": "MP1/111",
+                "ProductType": "Authorization",
+                "Module": "Authorization",
+                "ProblemType": "Failure",
+                "Region": "Europe",
+                "Country": "France",
+                "City": "Rambouillet",
+                "Short Description": "Authorization for transaction KS02/KS01",
+                "Issue Type": "Authorization",
+                "Language": "English",
+                "Day": "Thursday",
+                "MTTR": "0.13",
+                "Hour": "5"
+            },
+            {
+                "Incident ID": "IM18989957",
+                "Status": "Closed",
+                "Contact Media": "Employee Self Service",
+                "Assigned to Group": "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+                "Impact": "4",
+                "Urgency": "3",
+                "Priority": "3",
+                "Open Time": "02.01.2019  06:44:32 ",
+                "Opened by": "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+                "Resolved Time": "02.01.2019  07:58:18 ",
+                "Resolved by": "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+                "Classification 1": "RVICE DESK",
+                "Closed Time": "16.01.2019  08:48:09 ",
+                "Closed by": "",
+                "Category": "System Administration (AD)",
+                "SubCategory": "Server Administration (AdServer)",
+                "ProductType": "ADS",
+                "ProblemType": "Reset Password",
+                "Region": "Europe",
+                "Country": "Czech Republic",
+                "City": "Brandys nad Labem",
+                "Short Description": "blokace hesla PC",
+                "Language": "Czech",
+                "MTTR": "0.05",
+                "Hour": "6"
+            },
+            {
+                "Incident ID": "IM18990017",
+                "Status": "Closed",
+                "Contact Media": "Employee Self Service",
+                "Assigned to Group": "AUTO LOC EU2 JI LOCAL SERVICES",
+                "Impact": "4",
+                "Urgency": "3",
+                "Priority": "3",
+                "Open Time": "02.01.2019  06:55:02 ",
+                "Opened by": "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+                "Resolved Time": "04.01.2019  08:39:35 ",
+                "Resolved by": "AUTO LOC EU2 JI LOCAL SERVICES",
+                "Classification 1": "L SERVICES",
+                "Closed Time": "18.01.2019  09:22:05 ",
+                "Closed by": "",
+                "Category": "System Administration (AD)",
+                "SubCategory": "Client Administration (AdClient)",
+                "ProductType": "DS7 Client",
+                "ProblemType": "Failure",
+                "Region": "Europe",
+                "Country": "Czech Republic",
+                "City": "Jicin",
+                "Short Description": "Odblokování materiálu 03-7867-0403-4-78",
+                "Language": "Czech",
+                "MTTR": "2.07",
+                "Hour": "6"
+            },
+            {
+                "Incident ID": "IM18997796",
+                "Status": "Closed",
+                "Contact Media": "Employee Self Service",
+                "Assigned to Group": "CORP INFRA-CS AP IT SERVICE DESK",
+                "Impact": "4",
+                "Urgency": "3",
+                "Priority": "3",
+                "Open Time": "03.01.2019  13:06:59 ",
+                "Opened by": "CORP INFRA-CS AP IT SERVICE DESK",
+                "Resolved Time": "14.01.2019  05:02:50 ",
+                "Resolved by": "CORP INFRA-CS AP IT SERVICE DESK",
+                "Classification 1": "RVICE DESK",
+                "Closed Time": "28.01.2019  05:09:43 ",
+                "Closed by": "",
+                "Category": "SAP",
+                "SubCategory": "VDI/060",
+                "ProductType": "Authorization",
+                "Module": "Authorization",
+                "ProblemType": "Failure",
+                "Region": "Asia & Pacific",
+                "Country": "India",
+                "City": "Bangalore",
+                "Short Description": "Information Required on VDI Clients",
+                "Issue Type": "Authorization",
+                "Language": "English",
+                "Day": "Thursday",
+                "MTTR": "10.66",
+                "Hour": "6"
+            },
+            {
+                "Incident ID": "IM18990118",
+                "Status": "Closed",
+                "Contact Media": "Employee Self Service",
+                "Assigned to Group": "AUTO SAP EU NTP 015 SD",
+                "Impact": "4",
+                "Urgency": "3",
+                "Priority": "3",
+                "Open Time": "02.01.2019  07:14:35 ",
+                "Opened by": "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+                "Resolved Time": "03.01.2019  07:14:56 ",
+                "Resolved by": "AUTO SAP EU NTP 015 SD",
+                "Classification 1": "NTP 015 SD",
+                "Closed Time": "17.01.2019  08:02:25 ",
+                "Closed by": "",
+                "Category": "SAP",
+                "SubCategory": "NTP/015",
+                "ProductType": "1st Level",
+                "Module": "L1",
+                "ProblemType": "Failure",
+                "Region": "Europe",
+                "Country": "Czech Republic",
+                "City": "Trutnov",
+                "Short Description": "Sehrani planu dod. - Nissan - URGENT dnesni vyvoz",
+                "Language": "Czech",
+                "Day": "Wednesday",
+                "MTTR": "1.00",
+                "Hour": "7"
+            },
+            {
+                "Incident ID": "IM18998923",
+                "Status": "Closed",
+                "Contact Media": "Employee Self Service",
+                "Assigned to Group": "CORP INFRA-CS NA IT SERVICE DESK",
+                "Impact": "4",
+                "Urgency": "3",
+                "Priority": "3",
+                "Open Time": "03.01.2019  17:14:01 ",
+                "Opened by": "CORP INFRA-CS NA IT SERVICE DESK",
+                "Resolved Time": "03.01.2019  17:33:43 ",
+                "Resolved by": "CORP INFRA-CS NA IT SERVICE DESK",
+                "Classification 1": "RVICE DESK",
+                "Closed Time": "17.01.2019  17:51:30 ",
+                "Closed by": "",
+                "Category": "SAP",
+                "SubCategory": "AMP/300",
+                "ProductType": "Authorization",
+                "Module": "Authorization",
+                "ProblemType": "Failure",
+                "Region": "NAFTA",
+                "Country": "United States",
+                "City": "Auburn Hills",
+                "Short Description": "Need Password Reset For AMP, CBW and DP!1 - For SAP ",
+                "Issue Type": "Authorization: Password related",
+                "Language": "English",
+                "Day": "Thursday",
+                "MTTR": "0.01",
+                "Hour": "7"
+            },
+            {
+                "Incident ID": "IM18990236",
+                "Status": "Closed",
+                "Contact Media": "Employee Self Service",
+                "Assigned to Group": "AUTO SAP EU NTP 015 SD",
+                "Impact": "4",
+                "Urgency": "3",
+                "Priority": "3",
+                "Open Time": "02.01.2019  07:32:03 ",
+                "Opened by": "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+                "Resolved Time": "02.01.2019  07:57:09 ",
+                "Resolved by": "AUTO SAP EU NTP 015 SD",
+                "Classification 1": "NTP 015 SD",
+                "Closed Time": "16.01.2019  08:47:44 ",
+                "Closed by": "",
+                "Category": "SAP",
+                "SubCategory": "NTP/015",
+                "ProductType": "1st Level",
+                "Module": "L1",
+                "ProblemType": "Failure",
+                "Region": "Europe",
+                "Country": "Czech Republic",
+                "City": "Adrspach",
+                "Short Description": "IDoc  0000000107020646",
+                "Language": "Czech",
+                "Day": "Wednesday",
+                "MTTR": "0.02",
+                "Hour": "7"
+            }
+            ],
     "description": "Analyse and transform",
-    "sampleValues" : [  
+    "configData" : [
         {
-            "field":"column1",
-            "dataType":"VARCHAR"
+            "colName": "Incident ID",
+            "previewValues": [
+            "IM18988797",
+            "IM18990182",
+            "IM18990968",
+            "IM18991481",
+            "IM18992919"
+            ],
+            "enabled": true,
+            "dataType": "Text"
         },
         {
-            "field":"column2",
-             "dataType":"INTEGER"
+            "colName": "Status",
+            "previewValues": [
+            "Closed",
+            "Closed",
+            "Closed",
+            "Closed",
+            "Closed"
+            ],
+            "enabled": true,
+            "dataType": "Text"
         },
         {
-            "field":"column3",
-            "dataType":"VARCHAR"
+            "colName": "Contact Media",
+            "previewValues": [
+            "Interface",
+            "Employee Self Service",
+            "Employee Self Service",
+            "Employee Self Service",
+            "Employee Self Service"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Assigned to Group",
+            "previewValues": [
+            "AUTO S&P WW SAP AUTHORIZATION",
+            "CORP INFRA-CS AP IT SERVICE DESK",
+            "AUTO S&P WW SAP AUTHORIZATION",
+            "AUTO S&P WW SAP AUTHORIZATION",
+            "AUTO S&P WW SAP AUTHORIZATION"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Impact",
+            "previewValues": [
+            "4",
+            "4",
+            "4",
+            "4",
+            "4"
+            ],
+            "enabled": true,
+            "dataType": "Number"
+        },
+        {
+            "colName": "Urgency",
+            "previewValues": [
+            "2",
+            "3",
+            "3",
+            "3",
+            "3"
+            ],
+            "enabled": true,
+            "dataType": "Number"
+        },
+        {
+            "colName": "Priority",
+            "previewValues": [
+            "3",
+            "3",
+            "3",
+            "3",
+            "3"
+            ],
+            "enabled": true,
+            "dataType": "Number"
+        },
+        {
+            "colName": "Open Time",
+            "previewValues": [
+            "01.01.2019  13:17:32 ",
+            "02.01.2019  07:23:40 ",
+            "02.01.2019  09:03:06 ",
+            "02.01.2019  09:46:52 ",
+            "02.01.2019  14:08:03 "
+            ],
+            "enabled": true,
+            "dataType": "Date-Time"
+        },
+        {
+            "colName": "Opened by",
+            "previewValues": [
+            "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+            "CORP INFRA-CS AP IT SERVICE DESK",
+            "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+            "CORP INFRA-CS EU1&2 IT SERVICE DESK",
+            "CORP INFRA-CS EU1&2 IT SERVICE DESK"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Resolved Time",
+            "previewValues": [
+            "03.01.2019  10:40:31 ",
+            "03.01.2019  05:28:35 ",
+            "04.01.2019  08:11:40 ",
+            "15.02.2019  13:26:44 ",
+            "02.01.2019  21:02:11 "
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Resolved by",
+            "previewValues": [
+            "AUTO S&P WW SAP AUTHORIZATION",
+            "CORP INFRA-CS AP IT SERVICE DESK",
+            "AUTO S&P WW SAP AUTHORIZATION",
+            "AUTO S&P WW SAP AUTHORIZATION",
+            "AUTO S&P WW SAP AUTHORIZATION"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Classification 1",
+            "previewValues": [
+            "HORIZATION",
+            "RVICE DESK",
+            "HORIZATION",
+            "HORIZATION",
+            "HORIZATION"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Closed Time",
+            "previewValues": [
+            "04.01.2019  07:22:32 ",
+            "17.01.2019  05:56:01 ",
+            "18.01.2019  08:19:37 ",
+            "21.02.2019  12:08:17 ",
+            "16.01.2019  21:46:43 "
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Closed by",
+            "previewValues": [
+            "<blank>",
+            "<blank>",
+            "<blank>",
+            "<blank>",
+            "<blank>"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Category",
+            "previewValues": [
+            "SAP",
+            "SAP",
+            "SAP",
+            "SAP",
+            "SAP"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "SubCategory",
+            "previewValues": [
+            "NZP/010",
+            "CBW/100",
+            "EP1/111",
+            "CSE/600",
+            "CSE/600"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "ProductType",
+            "previewValues": [
+            "Authorization",
+            "Authorization",
+            "Authorization",
+            "Authorization",
+            "Authorization"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Module",
+            "previewValues": [
+            "Authorization",
+            "Authorization",
+            "Authorization",
+            "Authorization",
+            "Authorization"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "ProblemType",
+            "previewValues": [
+            "Failure",
+            "Failure",
+            "Failure",
+            "Failure",
+            "Failure"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Region",
+            "previewValues": [
+            "Europe",
+            "Asia & Pacific",
+            "Europe",
+            "Europe",
+            "Europe"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Country",
+            "previewValues": [
+            "Germany",
+            "China",
+            "Germany",
+            "Czech Republic",
+            "Germany"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "City",
+            "previewValues": [
+            "Bebra",
+            "Shanghai",
+            "Schwalbach",
+            "Ostrava",
+            "Babenhausen"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Short Description",
+            "previewValues": [
+            "* Firma in den User Paramtern",
+            "JD: Global PS password expired",
+            "Bitte Kennwort zurück setzen.",
+            "Blocked access to SAP CSE-PRD-AUTO",
+            "Lexpro Password reset needed"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Issue Type",
+            "previewValues": [
+            "Authorization: user related",
+            "Authorization: Password related",
+            "Authorization: Password related",
+            "Authorization: Access related",
+            "Authorization: Password related"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Language",
+            "previewValues": [
+            "German",
+            "English",
+            "German",
+            "English",
+            "English"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "Day",
+            "previewValues": [
+            "Tuesday",
+            "Wednesday",
+            "Wednesday",
+            "Wednesday",
+            "Wednesday"
+            ],
+            "enabled": true,
+            "dataType": "Text"
+        },
+        {
+            "colName": "MTTR",
+            "previewValues": [
+            "1.89",
+            "0.92",
+            "1.96",
+            "44.15",
+            "0.29"
+            ],
+            "enabled": true,
+            "dataType": "Number"
+        },
+        {
+            "colName": "Hour",
+            "previewValues": [
+            "10",
+            "13",
+            "14",
+            "14",
+            "20"
+            ],
+            "enabled": true,
+            "dataType": "Number"
         }
-    ],
+        ],
     "modifiedBy":"postgres"
 }

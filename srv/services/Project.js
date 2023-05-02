@@ -5,13 +5,42 @@ const format = require('pg-format');
 
 
 class Project {
-    async createReferenceTable(fastify,referenceTable,sampleValues,data){
-        let createSqlString = sampleValues.map(e=> ` "${e.field}" ${e.dataType} `).join(',');
+    orderedDataByCustomizedKey(jData,orderedData) {
+        const newjData = [];
+        jData.forEach((item, i) => {
+            const temObj = {};
+            orderedData.forEach((orderedDataItem, index) => {
+                temObj[orderedDataItem] = item[orderedDataItem];
+            })
+            newjData.push(temObj);
+        })
+        return newjData;
+    }
+
+    async createReferenceTable(fastify,referenceTable,configData,data){
+        var rows;
+        let createSqlString = configData.filter(e=> e.enabled).map(e=> {
+            if( e.dataType == 'Text'){
+                return ` "${e.colName}" VARCHAR `
+            }else if(e.dataType == 'Date-Time'){
+                return ` "${e.colName}" TIMESTAMP `
+            }else if(e.dataType == 'Number'){
+                return ` "${e.colName}" FLOAT `
+            }
+        }).join(',');
         let sql = `create table "${referenceTable}" (
             ${createSqlString}
         )`;
-        let columnNames = sampleValues.map(e=> ` "${e.field}" `).join(',');
-        let rows = data.map(obj => Object.values(obj));
+        let columnNames = configData.map(e=> e.colName);
+        for (const column of columnNames){
+            rows = data.map(obj=>{
+                obj[column] = column in obj ? obj[column]: null
+                return obj
+            }) 
+        }
+        rows = this.orderedDataByCustomizedKey(data,columnNames);
+        rows = rows.map(obj => Object.values(obj));
+        columnNames = columnNames.map(e=> ` "${e}" `).join(',');
         await prisma.$executeRawUnsafe(`${sql}`);
         let sqlFormat = format(`INSERT INTO "${referenceTable}" (${columnNames}) VALUES %L`, rows);
         await  fastify.pg.query(sqlFormat)
@@ -22,7 +51,7 @@ class Project {
         let payload = {
             name:req.body['name'],
             description: req.body['description'],
-            sampleValues:req.body['sampleValues'],
+            sampleValues:req.body['configData'],
             modifiedBy:req.body['modifiedBy'],
             rowsAnalysed:req.body.data.length,
             referenceTable:`Reftable_${uuid()}`
@@ -32,7 +61,6 @@ class Project {
         })
 
         await this.createReferenceTable(fastify,payload.referenceTable,payload.sampleValues,req.body.data)
-
         return {message:"Project Created Successfully"}
     }
 }
