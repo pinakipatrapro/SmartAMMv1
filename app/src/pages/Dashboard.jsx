@@ -34,7 +34,7 @@ const Dashboard = () => {
                 <List.Item
                     style={{margin:"10px"}}
                     actions={[
-                        <Button icon={<LineChartOutlined />} type='link' onClick={() => { navigate("/dashboardStory/"+item.id )}} >View Dashboard</Button>,
+                        <Button icon={<LineChartOutlined />} type='link' onClick={() => { navigate(`/dashboardStory/${item.id}/view` )}} >View Dashboard</Button>,
                         <Button type="text" icon={<EditOutlined />} />,
                         <Button danger type="text" icon={<DeleteOutlined />} />
                     ]}

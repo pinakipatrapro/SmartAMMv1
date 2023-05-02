@@ -30,15 +30,23 @@
 }
 
 .dashboardStoryHeader{
-  border-bottom: 1px solid #14141417;
-  padding: .5rem;
+  border-bottom: 3px solid #14141417;
+  padding: 1rem;
 }
 
 
 .fullFill{
   position: absolute;
-  top: 20px;
+  top: 40px;
   left: 0;
-  height: calc(100% - 20px);
+  height: calc(100% - 40px);
+  width: 100%;
+}
+
+.cardFill{
+  position: absolute;
+  top: 0px;
+  left: 0;
+  height: 100%;
   width: 100%;
 }

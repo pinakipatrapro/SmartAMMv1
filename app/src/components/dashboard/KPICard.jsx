@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect } from "react";
-import { Card, Divider, Button, Statistic, Space } from 'antd';
+import { Card, Divider, Button, Statistic, Space,Switch } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
@@ -45,10 +45,11 @@ const KPICard = (props) => {
     }
 
     return (
-        <Card style={{ height: "100%" }}
-            size="small"
-            title={props.settings.type == "kpi" ? null : props.settings.title}
-
+        <Card  className="cardFill" size="small"
+            title={props.settings.title}
+            extra={
+                    <Button type="text" icon={<EditOutlined/>} />
+            }
         >
             <div className="fullFill">
                 {getCardContent()}

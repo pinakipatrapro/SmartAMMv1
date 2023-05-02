@@ -2,32 +2,106 @@
 
 import React, { useState, useEffect } from "react";
 import { List, Button, Divider, Input, Statistic, Typography, Avatar, Tag, Space } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined, createFromIconfontCN } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined, createFromIconfontCN, SaveOutlined, CloseOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import constant from "../constants/MockData.json"
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import Card from "../components/dashboard/KPICard";
 
-import 'gridstack/dist/gridstack.min.css';
-import { GridStack } from 'gridstack';
+
+import { Responsive, WidthProvider } from "react-grid-layout";
+
+import 'react-grid-layout/css/styles.css'
+import 'react-resizable/css/styles.css'
+
 import KPICard from "../components/dashboard/KPICard";
 
+
+const ResponsiveGridLayout = WidthProvider(Responsive);
 const { Search } = Input;
 
 const Dashboard = () => {
 
-    const [storyEditable, setStoryEditable] = React.useState(false);
+    const route = useParams()
 
-    const editStory = (bool) => {
-        setStoryEditable(bool);
-        GridStack.init({
-            float: true,
-            staticGrid: !storyEditable
-        });
+    const [positions, setPositions] = useState([
+        {
+            id: "1",
+            x: 0,
+            y: 0,
+            h: 1,
+            w: 2
+        },
+        {
+            id: "2",
+            x: 2,
+            y: 0,
+            h: 1,
+            w: 2
+        },
+        {
+            id: "3",
+            x: 4,
+            y: 0,
+            h: 2,
+            w: 6
+        },
+        {
+            id: "4",
+            x: 0,
+            y: 2,
+            h: 2,
+            w: 3
+        }
+    ]);
+
+    const addChart = () => {
+        let availablePositions = [...positions];
+        let availableCards = [...cards];
+        let cardID = new Date() + ""
+        let lowestCard = availablePositions.sort((a, b) => {
+            return b.y - a.y
+        })[0]
+        availablePositions.push(
+            {
+                id: cardID,
+                x: 0,
+                y: lowestCard.y + lowestCard.h,
+                h: 1,
+                w: 2
+            }
+        )
+        availableCards.push(
+            {
+                type: "kpi", //chart text image
+                options: {
+                    metrics: [
+                        {
+                            name: "Total Records",
+                            value: 23123,
+                        },
+                        {
+                            name: "High Priority Issues",
+                            value: 23123,
+                        }
+                    ]
+                },
+                title: "Total Records",
+                id: cardID
+            }
+        )
+
+
+        setPositions(availablePositions)
+        setCards(availableCards)
     }
 
-    const cards = [
+    console.log(route)
+    const editStory = (bool) => {
+        window.location.href = `/dashboardStory/${route.id}/${bool ? 'edit' : 'view'}`;
+    }
+
+    const [cards, setCards] = useState([
         {
             type: "kpi", //chart text image
             options: {
@@ -119,64 +193,39 @@ const Dashboard = () => {
             title: "Hi Chart",
             id: "4"
         }
-    ]
-    const positions = [
-        {
-            id: "1",
-            x: 0,
-            y: 1,
-            h: 1,
-            w: 2
-        },
-        {
-            id: "2",
-            x: 2,
-            y: 1,
-            h: 1,
-            w: 2
-        },
-        {
-            id: "3",
-            x: 4,
-            y: 0,
-            h: 2,
-            w: 6
-        },
-        {
-            id: "4",
-            x: 0,
-            y: 4,
-            h: 2,
-            w: 2
-        }
-    ]
+    ])
+
 
     const navigate = useNavigate();
 
 
     useEffect(() => {
-        const grid = GridStack.init({
-            float: true,
-            staticGrid: !storyEditable
-        });
-    }, [storyEditable])
+
+        // GridStack.init({
+        //     float: true,
+        //     staticGrid: route.mode == 'view'
+        // });
+    })
+
+
 
     return (
         <div>
             <div className="dashboardStoryHeader">
-                <Typography.Title level={4} style={{ display: "inline" }}>Smart Analysis Dashboard</Typography.Title>
+                <Typography.Title level={5} style={{ display: "inline" }}>Smart Analysis Dashboard</Typography.Title>
+                <Tag color="magenta" style={{ marginLeft: "1rem" }}>Project :XXYZ</Tag>
                 <Space style={{ float: 'right' }}>
-                    <Button >Add Chart</Button>
-                    {!storyEditable ? <Button onClick={() => editStory(true)} size="small">Edit</Button> : null}
-                    {storyEditable ? <Button onClick={() => editStory(false)} size="small">Save</Button> : null}
-                    {storyEditable ? <Button onClick={() => editStory(false)} size="small">Cancel</Button> : null}
-                    <Button>Delete</Button>
+                    <Button type="primary" icon={<LineChartOutlined />} onClick={() => { addChart() }} >Add Chart</Button>
+                    {route.mode == 'view' ? <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => editStory(true)}  ></Button> : null}
+                    {route.mode == 'edit' ? <Button type="primary" shape="circle" icon={<SaveOutlined />} onClick={() => editStory(false)} ></Button> : null}
+                    {route.mode == 'edit' ? <Button type="default" shape="circle" icon={<CloseOutlined />} onClick={() => editStory(false)} ></Button> : null}
+                    <Button danger shape="circle" icon={<DeleteOutlined />}></Button>
                 </Space>
             </div>
-            <div class="grid-stack" style={{ padding: "1rem" }}>
+            {/* <div class="grid-stack" style={{ padding: "1rem" }}>
                 {positions.map(e => {
                     return (
-                        <div class="grid-stack-item" gs-w={e.w} gs-x={e.x} gs-y={e.y} gs-h={e.h} id={e.id}>
+                        <div class="grid-stack-item" gs-w={e.w} gs-x={e.x} gs-y={e.y} gs-h={e.h} id={e.id}  >
                             <div class="grid-stack-item-content">
                                 <KPICard settings={cards.find(f => { return f.id == e.id })} />
                             </div>
@@ -184,7 +233,26 @@ const Dashboard = () => {
                     )
                 })}
 
-            </div>
+            </div> */}
+            <ResponsiveGridLayout
+                className="layout"
+                layout={positions}
+                rowHeight={100}
+                breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+                cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+            >
+                {
+                    positions.map(e => {
+                        return (
+                            <div key={e.id} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
+                                <div class="grid-stack-item-content">
+                                    <KPICard settings={cards.find(f => { return f.id == e.id })} />
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </ResponsiveGridLayout>
         </div>
     )
 }

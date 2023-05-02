@@ -87,7 +87,7 @@ const AppLayout = () => {
                 />
 
             </Header>
-            <Content style={{ padding: '0 50px', minHeight: "85vh", background: colorBgContainer }}>
+            <Content style={{ padding: '0 50px', minHeight: "85vh"}}>
                 <Breadcrumb style={{ margin: "10px 0 10px 0" }}
                     items={[
                         {
@@ -108,7 +108,7 @@ const AppLayout = () => {
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="createProject" element={<CreateProject />} />
                         <Route path="createProject" element={<CreateProject />} />
-                        <Route path="dashboardStory/:id" element={<DashboardStory />} />
+                        <Route path="dashboardStory/:id/:mode" element={<DashboardStory />} />
                     </Routes>
                 </div>
             </Content>
