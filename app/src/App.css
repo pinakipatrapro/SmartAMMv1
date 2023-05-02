@@ -1,0 +1,44 @@
+.logo {
+  float: left;
+  width: auto;
+  height: 31px;
+  cursor: pointer;
+}
+
+.right-toolbar {
+  float: right;
+  width: auto;
+  height: 31px;
+  cursor: pointer;
+}
+
+.ant-divider-horizontal.ant-divider-with-text-center::before,
+.ant-divider-horizontal.ant-divider-with-text-center::after
+{
+   border-top: .5px solid rgba(0, 0, 0, 0.096);
+}
+
+
+.ant-list-item:hover {
+  box-shadow: 0px 0px 20px 0px #0000001f;
+  transform: scale(1.01);
+  transition: .1s;
+}
+
+.grid-stack-item{
+  border:none;
+}
+
+.dashboardStoryHeader{
+  border-bottom: 1px solid #14141417;
+  padding: .5rem;
+}
+
+
+.fullFill{
+  position: absolute;
+  top: 20px;
+  left: 0;
+  height: calc(100% - 20px);
+  width: 100%;
+}

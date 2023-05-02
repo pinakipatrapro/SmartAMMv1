@@ -1,0 +1,20 @@
+{
+  "name": "srv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@fastify/autoload": "^5.7.1",
+    "@fastify/postgres": "^5.2.0",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.17.0",
+    "nodemon": "^2.0.22",
+    "pg": "^8.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
