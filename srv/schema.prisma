@@ -1,0 +1,35 @@
+generator client {
+  provider  = "prisma-client-js"
+  interface = "asyncio"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id           String   @id @default(uuid())
+  name         String
+  description  String?
+  configData Json?
+  referenceTable String
+  modifiedBy   String
+  modifiedAt   DateTime @default(now())
+  rowsAnalysed Int      @default(0)
+}
+
+
+model Dashboard {
+  id           String   @id @default(uuid())
+  projectID    String
+  name         String
+  description  String?
+  configData Json?
+  modifiedBy   String
+  modifiedAt   DateTime @default(now())
+}
+
+
+
+
