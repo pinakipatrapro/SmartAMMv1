@@ -34,22 +34,26 @@ const AddChart = (props) => {
             metrics: [],
             chartType: "Column",
             config: {
-                data: [
-                    {
-                        type: '家具家电',
-                        sales: 38,
-                    },
-                    {
-                        type: '粮油副食',
-                        sales: 112,
-                    },
-                    {
-                        type: '生鲜水果',
-                        sales: 61,
-                    }
-                ],
-                xField: 'type',
-                yField: 'sales'
+                data: [{
+                    "Country": "Ukraine",
+                    "Sales": 247,
+                    "Profit": 81
+                }, {
+                    "Country": "Peru",
+                    "Sales": 164,
+                    "Profit": 43
+                }, {
+                    "Country": "Philippines",
+                    "Sales": 652,
+                    "Profit": 33
+                }, {
+                    "Country": "China",
+                    "Sales": 788,
+                    "Profit": 52
+                }],
+                xField: 'Country',
+                height: "100%",
+                yField: 'Sales'
             }
         }
     })
@@ -66,7 +70,10 @@ const AddChart = (props) => {
             width={500}
             extra={
                 <Space>
-                    <Button type="primary">
+                    <Button type="primary" onClick={()=>{
+                        props.addChart()
+                        props.openAddChart(false)
+                    }}>
                         Add
                     </Button>
                 </Space>
@@ -92,18 +99,19 @@ const AddChart = (props) => {
                         <Radio.Button value="chart"><AreaChartOutlined /> Chart</Radio.Button>
                     </Radio.Group>
                 </Form.Item>
-                <Form.Item label="Select Chart Type">
+                {settings.type == 'chart' ? <Form.Item label="Select Chart Type">
                     <Select defaultValue={settings.options.chartType}
                         options={chartTypes}
                         onChange={(evt) => {
                             setValue({
                                 'options.chartType': evt
                             })
-                    }} />
+                        }} />
                 </Form.Item>
-                <Divider>KPI Card Settings</Divider>
+                    : null}
+                
+                <Divider plain>Filter & Sorters</Divider>
 
-                <Divider>Chart Settings</Divider>
             </Form>
         </Drawer>
     )

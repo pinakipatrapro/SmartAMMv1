@@ -144,23 +144,26 @@ const Dashboard = () => {
             options: {
                 chartType: "Column",
                 config: {
-                    data: [
-                        {
-                            type: '家具家电',
-                            sales: 38,
-                        },
-                        {
-                            type: '粮油副食',
-                            sales: 112,
-                        },
-                        {
-                            type: '生鲜水果',
-                            sales: 61,
-                        }
-                    ],
-                    xField: 'type',
+                    data: [{
+                        "Country": "Ukraine",
+                        "Sales": 247,
+                        "Profit": 81
+                    }, {
+                        "Country": "Peru",
+                        "Sales": 164,
+                        "Profit": 43
+                    }, {
+                        "Country": "Philippines",
+                        "Sales": 652,
+                        "Profit": 33
+                    }, {
+                        "Country": "China",
+                        "Sales": 788,
+                        "Profit": 52
+                    }],
+                    xField: 'Country',
                     height: "100%",
-                    yField: 'sales'
+                    yField: 'Sales'
                 }
             },
             title: "Hi Chart",
@@ -171,23 +174,26 @@ const Dashboard = () => {
             options: {
                 chartType: "Area",
                 config: {
-                    data: [
-                        {
-                            type: '家具家电',
-                            sales: 38,
-                        },
-                        {
-                            type: '粮油副食',
-                            sales: 112,
-                        },
-                        {
-                            type: '生鲜水果',
-                            sales: 61,
-                        }
-                    ],
-                    xField: 'type',
+                    data: [{
+                        "Country": "Ukraine",
+                        "Sales": 247,
+                        "Profit": 81
+                    }, {
+                        "Country": "Peru",
+                        "Sales": 164,
+                        "Profit": 43
+                    }, {
+                        "Country": "Philippines",
+                        "Sales": 652,
+                        "Profit": 33
+                    }, {
+                        "Country": "China",
+                        "Sales": 788,
+                        "Profit": 52
+                    }],
+                    xField: 'Country',
                     height: "100%",
-                    yField: 'sales',
+                    yField: 'Profit'
                 }
             },
             title: "Hi Chart",
@@ -195,10 +201,10 @@ const Dashboard = () => {
         }
     ])
 
-    const openAddChart = (bool)=>{
+    const openAddChart = (bool) => {
         setNewChart(bool)
     }
-    
+
 
     return (
         <div>
@@ -206,7 +212,7 @@ const Dashboard = () => {
                 <Typography.Title level={5} style={{ display: "inline" }}>Smart Analysis Dashboard</Typography.Title>
                 <Tag color="magenta" style={{ marginLeft: "1rem" }}>Project :XXYZ</Tag>
                 <Space style={{ float: 'right' }}>
-                    <Button type="primary" icon={<LineChartOutlined />} onClick={() => { openAddChart(true) }} >Add Chart</Button>
+                    {route.mode == 'edit' ? <Button type="primary" icon={<LineChartOutlined />} onClick={() => { openAddChart(true) }} >Add Chart</Button> : null}
                     {route.mode == 'view' ? <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => editStory(true)}  ></Button> : null}
                     {route.mode == 'edit' ? <Button type="primary" shape="circle" icon={<SaveOutlined />} onClick={() => editStory(false)} ></Button> : null}
                     {route.mode == 'edit' ? <Button type="default" shape="circle" icon={<CloseOutlined />} onClick={() => editStory(false)} ></Button> : null}
@@ -228,14 +234,14 @@ const Dashboard = () => {
                         return (
                             <div key={e.id} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
 
-                                <KPICard settings={cards.find(f => { return f.id == e.id })} mode={route.mode} isInGrid={true}/>
+                                <KPICard settings={cards.find(f => { return f.id == e.id })} mode={route.mode} isInGrid={true} />
                             </div>
                         )
                     })
                 }
             </ResponsiveGridLayout>
-            <AddChart newChart={newChart} openAddChart={openAddChart} />
-            
+            <AddChart newChart={newChart} openAddChart={openAddChart} addChart={addChart} />
+
         </div>
     )
 }
