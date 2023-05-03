@@ -18,36 +18,7 @@ Content-Type: application/json
 {
     "name": "Analysis", 
     "data":  [
-  {
-    "Incident ID": "IM19004815",
-    "Status": "Closed",
-    "Contact Media": "Employee Self Service",
-    "Assigned to Group": "AUTO S&P WW SAP AUTHORIZATION",
-    "Impact": "4",
-    "Urgency": "1",
-    "Priority": "2",
-    "Open Time": "07.01.2019  01:30:21 ",
-    "Opened by": "CORP INFRA-CS AP IT SERVICE DESK",
-    "Resolved Time": "09.01.2019  07:54:21 ",
-    "Resolved by": "AUTO S&P WW SAP AUTHORIZATION",
-    "Classification 1": "HORIZATION",
-    "Closed Time": "23.01.2019  08:05:09 ",
-    "Closed by": "",
-    "Category": "SAP",
-    "SubCategory": "A3P/100",
-    "ProductType": "Authorization",
-    "Module": "Authorization",
-    "ProblemType": "Failure",
-    "Region": "Asia & Pacific",
-    "Country": "China",
-    "City": "Wuhu",
-    "Short Description": "SAP subaccounts - change main user",
-    "Issue Type": "Authorization: Access related",
-    "Language": "English",
-    "Day": "Monday",
-    "MTTR": "2.27",
-    "Hour": "8"
-  },
+  
   {
     "Incident ID": "IM19006525",
     "Status": "Closed",
@@ -734,5 +705,5 @@ Content-Type: application/json
             "dataType": "Number"
         }
         ],
-    "modifiedBy":"postgres"
+    "modifiedBy":"Admin"
 }
