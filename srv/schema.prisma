@@ -12,11 +12,22 @@ model Project {
   id           String   @id @default(uuid())
   name         String
   description  String?
-  sampleValues Json?
+  configData Json?
   referenceTable String
   modifiedBy   String
   modifiedAt   DateTime @default(now())
   rowsAnalysed Int      @default(0)
+}
+
+
+model Dashboard {
+  id           String   @id @default(uuid())
+  projectID    String
+  name         String
+  description  String?
+  configData Json?
+  modifiedBy   String
+  modifiedAt   DateTime @default(now())
 }
 
 

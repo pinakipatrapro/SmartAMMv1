@@ -51,7 +51,7 @@ class Project {
         let payload = {
             name:req.body['name'],
             description: req.body['description'],
-            sampleValues:req.body['configData'],
+            configData:req.body['configData'],
             modifiedBy:req.body['modifiedBy'],
             rowsAnalysed:req.body.data.length,
             referenceTable:`Reftable_${uuid()}`
@@ -60,8 +60,44 @@ class Project {
             data: payload
         })
 
-        await this.createReferenceTable(fastify,payload.referenceTable,payload.sampleValues,req.body.data)
+        await this.createReferenceTable(fastify,payload.referenceTable,payload.configData,req.body.data)
         return {message:"Project Created Successfully"}
+    }
+    async getProjects(fastify,req,res){
+        const projects = await prisma.Project.findMany({
+            select: {
+                id:true,
+                name: true,
+                description: true,
+                rowsAnalysed: true,
+                modifiedAt: true,
+                modifiedBy: true,
+            }
+        })
+        return projects
+    }
+
+    async getProjectDetails(fastify,req,res){
+        const projectData = await prisma.Project.findFirst({
+            select: {
+                configData:true
+            },
+            where: {
+                id:{
+                    equals:req.params.id
+                }
+            }
+        })
+        return projectData
+    }
+
+    async deleteProject(fastify,req,res){
+        const project = await prisma.Project.delete({
+            where: {
+                id:req.params.id
+            }
+        })
+        return project
     }
 }
 module.exports = Project;
