@@ -5,7 +5,8 @@ const autoload = require('@fastify/autoload')
 require('dotenv').config()
 
 const fastify = Fastify({
-    logger: true
+    logger: true,
+    bodyLimit: 30 * 1024 * 1024 *1024
 })
 
 
