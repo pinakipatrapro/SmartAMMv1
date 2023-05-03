@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect } from "react";
-import { List, Button, Divider, Input, Statistic, Typography, Avatar, Tag, Space } from 'antd';
+import { List, Button, Divider, Input, Statistic, Typography, Avatar, Tag, Space, Drawer } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined, createFromIconfontCN, SaveOutlined, CloseOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import constant from "../constants/MockData.json"
@@ -15,6 +15,7 @@ import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
 import KPICard from "../components/dashboard/KPICard";
+import AddChart from "../components/dashboard/AddChart"
 
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -23,34 +24,37 @@ const { Search } = Input;
 const Dashboard = () => {
 
     const route = useParams()
+    const navigate = useNavigate();
+
+    const [newChart, setNewChart] = useState(false)
 
     const [positions, setPositions] = useState([
         {
             id: "1",
             x: 0,
             y: 0,
-            h: 1,
+            h: 2,
             w: 2
         },
         {
             id: "2",
             x: 2,
             y: 0,
-            h: 1,
+            h: 2,
             w: 2
         },
         {
             id: "3",
             x: 4,
             y: 0,
-            h: 2,
+            h: 4,
             w: 6
         },
         {
             id: "4",
             x: 0,
             y: 2,
-            h: 2,
+            h: 4,
             w: 3
         }
     ]);
@@ -67,7 +71,7 @@ const Dashboard = () => {
                 id: cardID,
                 x: 0,
                 y: lowestCard.y + lowestCard.h,
-                h: 1,
+                h: 2,
                 w: 2
             }
         )
@@ -96,7 +100,6 @@ const Dashboard = () => {
         setCards(availableCards)
     }
 
-    console.log(route)
     const editStory = (bool) => {
         window.location.href = `/dashboardStory/${route.id}/${bool ? 'edit' : 'view'}`;
     }
@@ -157,9 +160,7 @@ const Dashboard = () => {
                     ],
                     xField: 'type',
                     height: "100%",
-                    seriesField: "sales",
-                    yField: 'sales',
-                    appendPadding: 10
+                    yField: 'sales'
                 }
             },
             title: "Hi Chart",
@@ -187,7 +188,6 @@ const Dashboard = () => {
                     xField: 'type',
                     height: "100%",
                     yField: 'sales',
-                    appendPadding: 10
                 }
             },
             title: "Hi Chart",
@@ -195,19 +195,10 @@ const Dashboard = () => {
         }
     ])
 
-
-    const navigate = useNavigate();
-
-
-    useEffect(() => {
-
-        // GridStack.init({
-        //     float: true,
-        //     staticGrid: route.mode == 'view'
-        // });
-    })
-
-
+    const openAddChart = (bool)=>{
+        setNewChart(bool)
+    }
+    
 
     return (
         <div>
@@ -215,29 +206,20 @@ const Dashboard = () => {
                 <Typography.Title level={5} style={{ display: "inline" }}>Smart Analysis Dashboard</Typography.Title>
                 <Tag color="magenta" style={{ marginLeft: "1rem" }}>Project :XXYZ</Tag>
                 <Space style={{ float: 'right' }}>
-                    <Button type="primary" icon={<LineChartOutlined />} onClick={() => { addChart() }} >Add Chart</Button>
+                    <Button type="primary" icon={<LineChartOutlined />} onClick={() => { openAddChart(true) }} >Add Chart</Button>
                     {route.mode == 'view' ? <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => editStory(true)}  ></Button> : null}
                     {route.mode == 'edit' ? <Button type="primary" shape="circle" icon={<SaveOutlined />} onClick={() => editStory(false)} ></Button> : null}
                     {route.mode == 'edit' ? <Button type="default" shape="circle" icon={<CloseOutlined />} onClick={() => editStory(false)} ></Button> : null}
                     <Button danger shape="circle" icon={<DeleteOutlined />}></Button>
                 </Space>
             </div>
-            {/* <div class="grid-stack" style={{ padding: "1rem" }}>
-                {positions.map(e => {
-                    return (
-                        <div class="grid-stack-item" gs-w={e.w} gs-x={e.x} gs-y={e.y} gs-h={e.h} id={e.id}  >
-                            <div class="grid-stack-item-content">
-                                <KPICard settings={cards.find(f => { return f.id == e.id })} />
-                            </div>
-                        </div>
-                    )
-                })}
 
-            </div> */}
             <ResponsiveGridLayout
                 className="layout"
                 layout={positions}
-                rowHeight={100}
+                rowHeight={50}
+                isDraggable={route.mode == 'edit'}
+                isResizable={route.mode == 'edit'}
                 breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
                 cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
             >
@@ -245,14 +227,15 @@ const Dashboard = () => {
                     positions.map(e => {
                         return (
                             <div key={e.id} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
-                                <div class="grid-stack-item-content">
-                                    <KPICard settings={cards.find(f => { return f.id == e.id })} />
-                                </div>
+
+                                <KPICard settings={cards.find(f => { return f.id == e.id })} mode={route.mode} isInGrid={true}/>
                             </div>
                         )
                     })
                 }
             </ResponsiveGridLayout>
+            <AddChart newChart={newChart} openAddChart={openAddChart} />
+            
         </div>
     )
 }

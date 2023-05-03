@@ -13,9 +13,8 @@
 }
 
 .ant-divider-horizontal.ant-divider-with-text-center::before,
-.ant-divider-horizontal.ant-divider-with-text-center::after
-{
-   border-top: .5px solid rgba(0, 0, 0, 0.096);
+.ant-divider-horizontal.ant-divider-with-text-center::after {
+  border-top: .5px solid rgba(0, 0, 0, 0.096);
 }
 
 
@@ -25,17 +24,17 @@
   transition: .1s;
 }
 
-.grid-stack-item{
-  border:none;
+.grid-stack-item {
+  border: none;
 }
 
-.dashboardStoryHeader{
-  border-bottom: 3px solid #14141417;
+.dashboardStoryHeader {
+  box-shadow: 0 5px 12px 1px #08080836;
   padding: 1rem;
 }
 
 
-.fullFill{
+.fullFill {
   position: absolute;
   top: 40px;
   left: 0;
@@ -43,10 +42,14 @@
   width: 100%;
 }
 
-.cardFill{
+.cardFill {
   position: absolute;
   top: 0px;
   left: 0;
   height: 100%;
   width: 100%;
+}
+
+.chartCardHeight {
+  height: 300px;
 }

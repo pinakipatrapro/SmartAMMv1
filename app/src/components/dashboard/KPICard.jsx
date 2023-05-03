@@ -45,11 +45,10 @@ const KPICard = (props) => {
     }
 
     return (
-        <Card  className="cardFill" size="small"
+        <Card  className={props.isInGrid?"cardFill":"chartCardHeight"} size="small"
             title={props.settings.title}
-            extra={
-                    <Button type="text" icon={<EditOutlined/>} />
-            }
+            extra= {props.mode=='edit'?<Button type="text" icon={<EditOutlined/>} />:null}
+            
         >
             <div className="fullFill">
                 {getCardContent()}
