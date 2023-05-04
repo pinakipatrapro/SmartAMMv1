@@ -25,7 +25,7 @@ async function routes(fastify, options){
         try{
             let objProject = new Project();
             if(!req.params.id){
-                throw Error("Please pass Project ID as paramter")
+                throw Error("Please pass Project ID as parameter")
             }
             let result = await objProject.getProjectDetails(fastify,req,res);
             return result
@@ -39,9 +39,23 @@ async function routes(fastify, options){
         try{
             let objProject = new Project();
             if(!req.params.id){
-                throw Error("Please pass Project ID as paramter")
+                throw Error("Please pass Project ID as parameter")
             }
             let result = await objProject.deleteProject(fastify,req,res);
+            return result
+        }catch(error){
+            console.log(error)
+            res.status(error.status || 500).send(error);
+        }
+    })
+
+    fastify.get('/getTableData/:refTable', async function(req, res) {
+        try{
+            let objProject = new Project();
+            if(!req.params.refTable){
+                throw Error("Please pass reference table as parameter")
+            }
+            let result = await objProject.getTableData(fastify,req,res);
             return result
         }catch(error){
             console.log(error)
