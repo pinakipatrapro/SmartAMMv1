@@ -6,6 +6,7 @@ import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined, createFr
 import { Table } from 'antd';
 import constant from "../constants/MockData.json"
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios"
 
 
 
@@ -27,6 +28,19 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     const [newChart, setNewChart] = useState(false)
+    const [dashboardDetails, setDashboardDetails] = React.useState(null)
+
+    const fetchDashboard = async () => {
+        axios
+            .get("/api/getDashboardDetails/"+route.id)
+            .then((res) => {
+                setDashboardDetails(res.data)
+            })
+    }
+
+    useEffect(() => {
+        fetchDashboard()
+    }, [])
 
     const [positions, setPositions] = useState([
         {
@@ -205,12 +219,15 @@ const Dashboard = () => {
         setNewChart(bool)
     }
 
+    if(!dashboardDetails){
+        return null
+    }
 
     return (
         <div>
             <div className="dashboardStoryHeader">
-                <Typography.Title level={5} style={{ display: "inline" }}>Smart Analysis Dashboard</Typography.Title>
-                <Tag color="magenta" style={{ marginLeft: "1rem" }}>Project :XXYZ</Tag>
+                <Typography.Title level={5} style={{ display: "inline" }}>{dashboardDetails.name}</Typography.Title>
+                <Tag color="magenta" style={{ marginLeft: "2rem" }}>Project : {dashboardDetails.project.name}</Tag>
                 <Space style={{ float: 'right' }}>
                     {route.mode == 'edit' ? <Button type="primary" icon={<LineChartOutlined />} onClick={() => { openAddChart(true) }} >Add Chart</Button> : null}
                     {route.mode == 'view' ? <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => editStory(true)}  ></Button> : null}

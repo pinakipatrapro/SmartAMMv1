@@ -56,6 +56,7 @@ class Dashboard {
                 configData:true,
                 project: {
                   select: {
+                    name:true,
                     configData: true,
                   },
                 },

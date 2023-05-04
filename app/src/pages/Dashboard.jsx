@@ -1,17 +1,34 @@
 
 
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import { List, Button, Divider, Input, Statistic, Typography, Avatar, Tag } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import constant from "../constants/MockData.json"
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios"
 
 
 const { Search } = Input;
 
 const Dashboard = () => {
     const navigate = useNavigate();
+    const [dashboardData, setDashboardData] = React.useState([])
+
+
+    const fetchDashboard = async () => {
+        axios
+            .get("/api/getDashboards")
+            .then((res) => {
+                setDashboardData(res.data)
+            })
+    }
+
+
+    useEffect(() => {
+        fetchDashboard()
+    }, [])
+
     const header = (
         <>
             <span>Available Dashboards ({constant.dashboardData.length})</span>
@@ -29,7 +46,7 @@ const Dashboard = () => {
             header={header}
             // footer={<div>Footer</div>}
             bordered
-            dataSource={constant.dashboardData}
+            dataSource={dashboardData}
             renderItem={(item) => (
                 <List.Item
                     style={{margin:"10px"}}
@@ -40,7 +57,7 @@ const Dashboard = () => {
                     ]}
                 >
                     <List.Item.Meta
-                        title={<>{item.name}   <Tag color="magenta">Project : {item.project}</Tag></>}
+                        title={<>{item.name}   <Tag color="magenta">Project : {item.project.name}</Tag></>}
                         description={item.description}
                     />
                     <div>
