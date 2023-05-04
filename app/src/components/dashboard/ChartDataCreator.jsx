@@ -29,7 +29,10 @@ const chart = {
 }
 
 
+const  fetchData = async (settings)=>{
+    // Axisos Settings push and get data
 
+}
 
 
 
