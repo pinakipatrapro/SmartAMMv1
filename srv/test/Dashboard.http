@@ -1,0 +1,40 @@
+@route = http://127.0.0.1:4004
+
+### Get Dashbaords
+GET  {{route}}/getDashboards
+
+### Get Dashboard Details
+GET  {{route}}/getDashboardDetails/30bc35a5-b318-4c15-be83-4e057a413547
+
+### Delete Dashboard
+GET  {{route}}/deleteDashboard/30bc35a5-b318-4c15-be83-4e057a413547
+
+
+### Create Dashbaord
+POST  {{route}}/createDashboard
+Content-Type: application/json
+
+{
+  "projectID": "9f96b191-5a07-4b7a-b583-08d883cbd481",
+  "name": "Analysis 1",
+  "description": "Transform and Analyze 1",
+  "configData": {
+    "chart": {
+      "type": "pie",
+      "data": [
+        {
+          "x": "Apples",
+          "value": "128.14",
+          "fill": "green"
+        },
+        {
+          "x": "Oranges",
+          "value": "128.14",
+          "fill": "orange"
+        }
+      ],
+      "container": "container"
+    }
+  },
+  "modifiedBy": "Admin"
+}

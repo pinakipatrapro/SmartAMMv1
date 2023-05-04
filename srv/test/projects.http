@@ -5,10 +5,14 @@ GET  {{route}}/getProjects
 
 
 ### Get Project Details
-GET  {{route}}/getProjectDetails/df57c50c-d4e6-4676-9b13-f3a3e6cd48ed
+GET  {{route}}/getProjectDetails/90cefe11-de18-49c3-8223-ea69526a3e5a
 
 ### Delete Project
-GET  {{route}}/deleteProject/df57c50c-d4e6-4676-9b13-f3a3e6cd48ed
+GET  {{route}}/deleteProject/9f96b191-5a07-4b7a-b583-08d883cbd481
+
+
+### Get Table Data
+GET  {{route}}/getTableData/Reftable_d6f647fb-0e7a-46e1-b91d-463850d79f42
 
 
 ### Create Project
@@ -16,7 +20,7 @@ POST  {{route}}/createProject
 Content-Type: application/json
 
 {
-    "name": "Analysis", 
+    "name": "Analysis 1", 
     "data":  [
   {
     "Incident ID": "IM19004815",
@@ -734,5 +738,5 @@ Content-Type: application/json
             "dataType": "Number"
         }
         ],
-    "modifiedBy":"postgres"
+    "modifiedBy":"Admin"
 }

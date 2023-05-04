@@ -9,25 +9,27 @@ datasource db {
 }
 
 model Project {
-  id           String   @id @default(uuid())
-  name         String
-  description  String?
-  configData Json?
+  id             String   @id @default(uuid())
+  name           String
+  description    String?
+  configData     Json?
   referenceTable String
-  modifiedBy   String
-  modifiedAt   DateTime @default(now())
-  rowsAnalysed Int      @default(0)
+  modifiedBy     String
+  modifiedAt     DateTime @default(now())
+  rowsAnalysed   Int      @default(0)
+  dashboard      Dashboard?
 }
 
 
 model Dashboard {
   id           String   @id @default(uuid())
-  projectID    String
+  projectID    String   @unique
   name         String
   description  String?
   configData Json?
   modifiedBy   String
   modifiedAt   DateTime @default(now())
+  project      Project @relation(fields: [projectID], references: [id])
 }
 
 

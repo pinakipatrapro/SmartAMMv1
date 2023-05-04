@@ -61,6 +61,16 @@ class Project {
         })
 
         await this.createReferenceTable(fastify,payload.referenceTable,payload.configData,req.body.data)
+        payload ={
+            name:req.body['name'],
+            description: req.body['description'],
+            projectID:result.id,
+            configData:{},
+            modifiedBy:req.body['modifiedBy'],
+        }
+        await prisma.Dashboard.create({
+            data: payload
+        })
         return {message:"Project Created Successfully"}
     }
     async getProjects(fastify,req,res){
@@ -72,7 +82,12 @@ class Project {
                 rowsAnalysed: true,
                 modifiedAt: true,
                 modifiedBy: true,
-            }
+            },
+            orderBy: [
+                {
+                    modifiedAt: 'desc',
+                }
+            ]
         })
         return projects
     }
@@ -92,12 +107,35 @@ class Project {
     }
 
     async deleteProject(fastify,req,res){
+        try{
+            await prisma.Dashboard.delete({
+                where: {
+                    projectID:req.params.id
+                }
+            })
+        }catch(e){
+
+        }
+        const referenceTable = await  prisma.Project.findFirst({
+            where : {
+                id:req.params.id
+            },
+            select :{
+                referenceTable:true
+            }
+        });
+        await prisma.$executeRawUnsafe(` DROP TABLE "${referenceTable.referenceTable}" `);
         const project = await prisma.Project.delete({
             where: {
                 id:req.params.id
             }
         })
         return project
+    }
+
+    async getTableData(fastify,req,res){
+        const data  = await prisma.$queryRawUnsafe( ` SELECT * FROM "${req.params.refTable}"; `);
+        return data;
     }
 }
 module.exports = Project;
