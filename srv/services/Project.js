@@ -60,7 +60,6 @@ class Project {
             data: payload
         })
 
-<<<<<<< HEAD
         await this.createReferenceTable(fastify,payload.referenceTable,payload.configData,req.body.data)
         payload ={
             name:req.body['name'],
@@ -73,10 +72,6 @@ class Project {
             data: payload
         })
         return {message:"Project Created Successfully"}
-=======
-        await this.createReferenceTable(fastify, payload.referenceTable, payload.configData, req.body.data)
-        return { message: "Project Created Successfully" }
->>>>>>> 088339716dba897f0629a4ba47e35b90fe965c32
     }
     async getProjects(fastify, req, res) {
         const projects = await prisma.Project.findMany({
@@ -111,7 +106,6 @@ class Project {
         return projectData
     }
 
-<<<<<<< HEAD
     async deleteProject(fastify,req,res){
         try{
             await prisma.Dashboard.delete({
@@ -131,9 +125,6 @@ class Project {
             }
         });
         await prisma.$executeRawUnsafe(` DROP TABLE "${referenceTable.referenceTable}" `);
-=======
-    async deleteProject(fastify, req, res) {
->>>>>>> 088339716dba897f0629a4ba47e35b90fe965c32
         const project = await prisma.Project.delete({
             where: {
                 id: req.params.id

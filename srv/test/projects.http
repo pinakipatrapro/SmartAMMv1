@@ -20,7 +20,6 @@ POST  {{route}}/createProject
 Content-Type: application/json
 
 {
-<<<<<<< HEAD
     "name": "Analysis 1", 
     "data":  [
   {
@@ -53,12 +52,6 @@ Content-Type: application/json
     "MTTR": "2.27",
     "Hour": "8"
   },
-=======
-    "name": "Analysis", 
-    "data":  
-    [
-  
->>>>>>> 088339716dba897f0629a4ba47e35b90fe965c32
   {
     "Incident ID": "IM19006525",
     "Status": "Closed",
