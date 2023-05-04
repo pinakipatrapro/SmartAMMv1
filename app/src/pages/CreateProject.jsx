@@ -1,7 +1,7 @@
 
 import {
     Typography, Button, Form, Input, Upload, Select,
-    Divider, Space, Popconfirm
+    Divider, Space, Popconfirm,notification
 } from 'antd';
 import { Col, Row } from 'antd';
 import { UploadOutlined, FileExcelOutlined, SaveOutlined } from '@ant-design/icons';
@@ -9,24 +9,32 @@ import * as xlsx from "xlsx";
 import React, { useState, useEffect } from "react";
 import ColumnCards from '../components/createProject/ColumnCards'
 import { useNavigate } from "react-router-dom";
+import axios from "axios"
 
 const { Option } = Select;
 
 const { Dragger } = Upload;
 
-const onFinish = (values) => {
-    console.log('Success:', values);
-};
-
 
 const CreateProject = () => {
     const navigate = useNavigate();
+    
 
     const [workbook, setWorkbook] = React.useState([]);
     const [data, setData] = React.useState([]);
     const [previewData, setPreviewData] = React.useState([]);
 
 
+    //TODO Putin a seperate function
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotificationWithIcon = (type, text, description) => {
+        api[type]({
+            message: text,
+            description: description,
+        });
+    };
+    
     const onFileSelected = (uploader) => {
         setWorkbook([]);
         setData([]);
@@ -93,14 +101,75 @@ const CreateProject = () => {
     }
     const onSheetSelection = (sheetName) => {
         let sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], {
-            raw: false
+            raw: false,
+            defval: null
         })
         setData(sheetData)
         createDatPreview(sheetData);
     }
 
+    const onFinish = (values) => {
+        console.log('Success:', values);
+
+        let formattedData = [...data]
+
+        let messages = []
+        previewData.forEach(e => {
+            if (e.dataType == 'Number') {
+                formattedData.forEach((f, j) => {
+                    try {
+                        f[e.colName] = parseFloat(f[e.colName])
+                    } catch (e) {
+                        messages.push({
+                            row: j,
+                            errorType: "Number",
+                            column: e.colName,
+                            message: `Error parsing ${f[e.colName]} as a number`
+                        })
+                    }
+                })
+            } else if (e.dataType == 'Date-Time') {
+                formattedData.forEach((f, j) => {
+                    try {
+                        if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
+                            f[e.colName] = new Date(f[e.colName]).toISOString()
+                        }else if(!!f[e.colName]){
+                            let dateParts = f[e.colName].split(/\s*[-./]\s*/)
+                            f[e.colName] = new Date([dateParts[1],dateParts[0],dateParts[2]].join('-'))
+                        }
+                    } catch (err) {
+                        messages.push({
+                            row: j,
+                            errorType: "Date-Time",
+                            column: e.colName,
+                            message: `Error parsing ${f[e.colName]} as a date-time`
+                        })
+                    }
+                })
+            }
+        })
+
+        debugger;
+        let payload = {
+            name: values.name,
+            description: values.description,
+            modifiedBy: "Admin",
+            configData: previewData,
+            data: formattedData
+        }
+        axios
+            .post("/api/createProject", payload)
+            .then((res) => {
+                openNotificationWithIcon('success', "Operation Successful", "Project created successfully");
+                navigate("/projects")
+            }).catch(e=>{
+                openNotificationWithIcon('erro', "Error", "Error creating project"+JSON.stringify(e))
+            })
+    };
+
     return (
         <>
+            {contextHolder}
             <Typography.Title level={3} style={{ padding: "1rem" }}>Create New Project</Typography.Title>
 
             <Form>
