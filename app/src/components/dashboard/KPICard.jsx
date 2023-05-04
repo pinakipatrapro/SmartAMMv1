@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { Card, Divider, Button, Statistic, Space,Switch } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, MoreOutlined  } from '@ant-design/icons';
 import { Table } from 'antd';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import millify from "millify";
-import { Column, Area } from '@ant-design/charts';
+import { Column, Area,Line,Bar,DualAxes } from '@ant-design/charts';
 
-const chartsMap = { Column, Area };
+const chartsMap = { Column, Area,Line,Bar,DualAxes };
 
 
 
@@ -47,7 +47,14 @@ const KPICard = (props) => {
     return (
         <Card  className={props.isInGrid?"cardFill":"chartCardHeight"} size="small"
             title={props.settings.title}
-            extra= {props.mode=='edit'?<Button type="text" icon={<EditOutlined/>} />:null}
+            extra= {props.mode=='edit'?<>
+                <Button type="text" icon={<EditOutlined/>} />
+                <Button type="text" danger icon={<DeleteOutlined/>} />
+            </>
+            :
+            <>
+                <Button type="text"  icon={<MoreOutlined />} />
+            </>}
             
         >
             <div className="fullFill">
