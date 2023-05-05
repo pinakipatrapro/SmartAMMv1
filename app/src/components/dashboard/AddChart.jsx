@@ -133,7 +133,7 @@ const AddChart = (props) => {
                 <KPICard settings={props.settings} isInGrid={false} />
                 <Button form="cardForm" htmlType="submit" style={{ textAlign: "center", width: "100%" }} type="text" icon={<ReloadOutlined />}>Refresh</Button>
             </Space>
-            <Form style={{ padding: "1rem" }} id="cardForm" onFinish={(evt) => ChartDataCreator.validateChartData(evt, props.setSettings)}>
+            <Form style={{ padding: "1rem" }} id="cardForm" onFinish={(evt) => ChartDataCreator.validateChartData(evt, props.setSettings,props.settings)}>
                 <Form.Item label="Chart Title" name="chartTitle">
                     <Input value={props.settings.title} onChange={(evt) => {
                         setValue({ 'title': evt.target.value })

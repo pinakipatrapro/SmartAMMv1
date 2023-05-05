@@ -46,7 +46,6 @@ POST  {{route}}/updateDashboardConfig/42dd1150-c03b-4d0a-9873-9b575ecd4c0d
 Content-Type: application/json
 
 {
-  "ste":{
-    "ters":"asa"
-  }
+  "layout" : [],
+  "cards" : []
 }

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios"
+
 
 let data = [{
     "Country": "India",
@@ -146,7 +148,7 @@ let data = [{
 let commonProps = {}
 const ChartDataCreator = {
 
-    validateChartData: (settings, setSettings) => {
+    validateChartData: async (settings, setSettings,prevSettings) => {
         let commonProps = {
             isGroup: settings.isGroup,
             isStack: settings.isStacked,
@@ -154,16 +156,23 @@ const ChartDataCreator = {
             measure:settings.measure,
             dimension:settings.dimension,
             series:settings.series,
-            agg:settings.agg
+            agg:settings.agg,
+            projectID : prevSettings.options.config.projectID
         }
-        let configData = chart[settings.chartType](settings, commonProps);
+        
+        let configData = await chart[settings.chartType](settings, commonProps);
         setSettings(configData)
     }
 
 }
 
+const getData = async(settings)=>{
+    let res = await axios.post("/api/getChartData",settings);
+    return res.data
+}
+
 const chart = {
-    Bar: (settings, commonProps) => {
+    Bar: async (settings, commonProps) => {
         let configValue = {
             title: settings.chartTitle,
             type: "chart",
@@ -171,16 +180,14 @@ const chart = {
                 metrics: [],
                 chartType: "Bar",
                 config: {
-                    data: data,
                     ...commonProps,
                     xField: settings.measure[0],
                     yField: settings.dimension[0],
                     seriesField: !!settings.series ? settings.series[0] : null
                 }
             }
-
-
         };
+        configValue.options.config.data =await getData(configValue)
         return configValue
     },
     Line: (settings, commonProps) => {
