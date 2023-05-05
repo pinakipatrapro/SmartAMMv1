@@ -72,7 +72,10 @@ class Project {
             name:req.body['name'],
             description: req.body['description'],
             projectID:result.id,
-            configData:{},
+            configData:{
+                "layout" : [],
+                "cards" : []
+            },
             modifiedBy:req.body['modifiedBy'],
         }
         await prisma.Dashboard.create({

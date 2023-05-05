@@ -25,12 +25,12 @@ class Bar{
 
     async getData(payload){
         const viewName = await util.getViewName(payload.projectID)
-        let dimensionString =this.getDimensionString(payload.dimensions)
-        let measureString = this.getMeasureString(payload.measures,payload.agg)
+        let dimensionString =this.getDimensionString([...payload.dimension,...payload.series])
+        let measureString = this.getMeasureString(payload.measure,payload.agg)
         let sqlString = 
             ` SELECT 
                 ${dimensionString}
-                ${payload.measures.length && payload.dimensions.length  ? ' , ':''}
+                ${payload.measure.length && payload.dimension.length  ? ' , ':''}
                 ${measureString}
               FROM
                 (${util.getSqlString(viewName)}) AS V
