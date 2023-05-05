@@ -32,7 +32,7 @@ const Dashboard = () => {
 
     const fetchDashboard = async () => {
         axios
-            .get("/api/getDashboardDetails/"+route.id)
+            .get("/api/getDashboardDetails/" + route.id)
             .then((res) => {
                 setDashboardDetails(res.data)
             })
@@ -219,7 +219,7 @@ const Dashboard = () => {
         setNewChart(bool)
     }
 
-    if(!dashboardDetails){
+    if (!dashboardDetails) {
         return null
     }
 
@@ -257,8 +257,9 @@ const Dashboard = () => {
                     })
                 }
             </ResponsiveGridLayout>
-            <AddChart newChart={newChart} openAddChart={openAddChart} addChart={addChart} />
-
+            {dashboardDetails ?
+                <AddChart newChart={newChart} openAddChart={openAddChart} addChart={addChart} dashboardDetails={dashboardDetails} setDashboardDetails={setDashboardDetails} />
+                : null}
         </div>
     )
 }
