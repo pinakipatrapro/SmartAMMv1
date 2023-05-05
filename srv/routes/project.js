@@ -49,11 +49,11 @@ async function routes(fastify, options){
         }
     })
 
-    fastify.get('/getTableData/:refTable', async function(req, res) {
+    fastify.get('/getTableData/:id', async function(req, res) {
         try{
             let objProject = new Project();
-            if(!req.params.refTable){
-                throw Error("Please pass reference table as parameter")
+            if(!req.params.id){
+                throw Error("Please pass Project ID as parameter")
             }
             let result = await objProject.getTableData(fastify,req,res);
             return result

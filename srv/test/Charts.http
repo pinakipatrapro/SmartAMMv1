@@ -1,0 +1,47 @@
+@route = http://127.0.0.1:4004
+
+### Get Chart Data
+POST  {{route}}/getChartData
+Content-Type: application/json
+
+{
+  "title": "My New Chart",
+  "type": "chart",
+  "options": {
+    "metrics": [],
+    "chartType": "Bar",
+    "config": {
+      "isStack": true,
+      "agg":{
+        "Incident ID":"count",
+        "Priority":"sum"
+      },
+      "projectID":"377af7e3-5356-4a2a-a840-7a36e740f623",
+      "xField": "Priority",
+      "yField": "Category",
+      "seriesField": "Country",
+      "dimensions":["Status","Country"],
+      "measures":["Incident ID","Priority"]
+    }
+  }
+}
+
+
+
+
+# {
+#   "title": "My New Chart",
+#   "type": "chart",
+#   "options": {
+#     "metrics": [],
+#     "chartType": "Pie",
+#     "config": {
+#       "appendPadding": 10,
+#       "projectID":"377af7e3-5356-4a2a-a840-7a36e740f623",
+#       "angleField": "Urgency",
+#       "colorField": "Urgency",
+#       "radius": 0.9,
+#       "aggregationFunction":"COUNT"
+#     }
+#   }
+# }

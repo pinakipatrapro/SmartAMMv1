@@ -17,6 +17,11 @@ class Project {
         return newjData;
     }
 
+    async createReferenceView(referenceView,referenceTable){
+        let sql = ` CREATE VIEW "${referenceView}" AS SELECT * FROM "${referenceTable}" `;
+        await prisma.$executeRawUnsafe(`${sql}`);
+    }
+
     async createReferenceTable(fastify, referenceTable, configData, data) {
         var rows;
         let createSqlString = configData.filter(e => e.enabled).map(e => {
@@ -54,13 +59,15 @@ class Project {
             configData: req.body['configData'],
             modifiedBy: req.body['modifiedBy'],
             rowsAnalysed: req.body.data.length,
-            referenceTable: `Reftable_${uuid()}`
+            referenceTable: `Reftable_${uuid()}`,
+            referenceView: `Refview_${uuid()}`
         }
         let result = await prisma.Project.create({
             data: payload
         })
 
-        await this.createReferenceTable(fastify,payload.referenceTable,payload.configData,req.body.data)
+        await this.createReferenceTable(fastify,payload.referenceTable,payload.configData,req.body.data);
+        await this.createReferenceView(payload.referenceView,payload.referenceTable)
         payload ={
             name:req.body['name'],
             description: req.body['description'],
@@ -134,7 +141,15 @@ class Project {
     }
 
     async getTableData(fastify,req,res){
-        const data  = await prisma.$queryRawUnsafe( ` SELECT * FROM "${req.params.refTable}"; `);
+        const referenceTable = await  prisma.Project.findFirst({
+            where : {
+                id:req.params.id
+            },
+            select :{
+                referenceTable:true
+            }
+        });
+        const data  = await prisma.$queryRawUnsafe( ` SELECT * FROM "${referenceTable.referenceTable}"; `);
         return data;
     }
 }
