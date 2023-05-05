@@ -48,6 +48,21 @@ async function routes(fastify, options){
             res.status(error.status || 500).send(error);
         }
     })
+
+
+    fastify.post('/updateDashboardConfig/:id', async function(req, res) {
+        try{
+            let objDashboard = new Dashboard();
+            if(!req.params.id || !req.body){
+                throw Error("Missing Dashboard ID or Body Parameters")
+            }
+            let result = await objDashboard.updateDashboardConfig(fastify,req,res);
+            return result
+        }catch(error){
+            console.log(error)
+            res.status(error.status || 500).send(error);
+        }
+    })
 }
 
 module.exports = routes

@@ -6,9 +6,9 @@ import { PlusOutlined, EditOutlined, DeleteOutlined, MoreOutlined  } from '@ant-
 import { Table } from 'antd';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import millify from "millify";
-import { Column, Area,Line,Bar,DualAxes } from '@ant-design/charts';
+import { Column, Area,Line,Bar,DualAxes,Pie,WordCloud } from '@ant-design/charts';
 
-const chartsMap = { Column, Area,Line,Bar,DualAxes };
+const chartsMap = { Column, Area,Line,Bar,DualAxes,WordCloud,Pie };
 
 
 
@@ -36,7 +36,11 @@ const KPICard = (props) => {
             )
         }
         if (props.settings.type == "chart") {
+            if(!props.settings.options.chartType){
+                return null
+            }
             const ChartType = chartsMap[props.settings.options.chartType]
+
             return (
                 <ChartType  {...props.settings.options.config} />
             )
@@ -48,8 +52,8 @@ const KPICard = (props) => {
         <Card  className={props.isInGrid?"cardFill":"chartCardHeight"} size="small"
             title={props.settings.title}
             extra= {props.mode=='edit'?<>
-                <Button type="text" icon={<EditOutlined/>} />
-                <Button type="text" danger icon={<DeleteOutlined/>} />
+                <Button type="text" icon={<EditOutlined/>} onClick={props.onEdit}/>
+                <Button type="text" danger icon={<DeleteOutlined/>} onClick={props.onDelete}/>
             </>
             :
             <>

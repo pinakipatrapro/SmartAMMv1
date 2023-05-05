@@ -26,15 +26,38 @@ const Dashboard = () => {
 
     const route = useParams()
     const navigate = useNavigate();
+    const [chartSettings, setChartSettings] = useState(false)
+    const [chartEditMode, setChartEditMode] = useState(false)
+
+    const [dashboardEditLayout, setDashboardEditLayout] = useState(false)
+
 
     const [newChart, setNewChart] = useState(false)
     const [dashboardDetails, setDashboardDetails] = React.useState(null)
 
     const fetchDashboard = async () => {
         axios
-            .get("/api/getDashboardDetails/"+route.id)
+            .get("/api/getDashboardDetails/" + route.id)
             .then((res) => {
                 setDashboardDetails(res.data)
+                // setPositions(res.data.configData.layout)
+                // setPositions(res.data.configData.charts)
+            })
+    }
+
+    const saveDashboardConfig = async () => {
+        cards.forEach(e=>{
+            //Don Not push the data -> Read again on load
+           try{delete e.options.config.data }catch(e){}
+        });
+        let payload= {
+            layout : dashboardEditLayout,
+            cards : cards
+        }
+        axios
+            .post("/api/updateDashboardConfig/" + route.id,payload)
+            .then((res) => {
+                
             })
     }
 
@@ -44,80 +67,34 @@ const Dashboard = () => {
 
     const [positions, setPositions] = useState([
         {
-            id: "1",
+            i: "1",
             x: 0,
             y: 0,
             h: 2,
-            w: 2
+            w: 3
         },
         {
-            id: "2",
-            x: 2,
-            y: 0,
-            h: 2,
-            w: 2
-        },
-        {
-            id: "3",
-            x: 4,
-            y: 0,
-            h: 4,
-            w: 6
-        },
-        {
-            id: "4",
+            i: "2",
             x: 0,
             y: 2,
-            h: 4,
+            h: 2,
             w: 3
+        },
+        {
+            i: "3",
+            x: 3,
+            y: 0,
+            h: 4,
+            w: 9
+        },
+        {
+            i: "4",
+            x: 0,
+            y: 4,
+            h: 6,
+            w: 12
         }
     ]);
-
-    const addChart = () => {
-        let availablePositions = [...positions];
-        let availableCards = [...cards];
-        let cardID = new Date() + ""
-        let lowestCard = availablePositions.sort((a, b) => {
-            return b.y - a.y
-        })[0]
-        availablePositions.push(
-            {
-                id: cardID,
-                x: 0,
-                y: lowestCard.y + lowestCard.h,
-                h: 2,
-                w: 2
-            }
-        )
-        availableCards.push(
-            {
-                type: "kpi", //chart text image
-                options: {
-                    metrics: [
-                        {
-                            name: "Total Records",
-                            value: 23123,
-                        },
-                        {
-                            name: "High Priority Issues",
-                            value: 23123,
-                        }
-                    ]
-                },
-                title: "Total Records",
-                id: cardID
-            }
-        )
-
-
-        setPositions(availablePositions)
-        setCards(availableCards)
-    }
-
-    const editStory = (bool) => {
-        window.location.href = `/dashboardStory/${route.id}/${bool ? 'edit' : 'view'}`;
-    }
-
     const [cards, setCards] = useState([
         {
             type: "kpi", //chart text image
@@ -174,6 +151,10 @@ const Dashboard = () => {
                         "Country": "China",
                         "Sales": 788,
                         "Profit": 52
+                    }, {
+                        "Country": "India",
+                        "Sales": 123,
+                        "Profit": 52
                     }],
                     xField: 'Country',
                     height: "100%",
@@ -189,37 +170,82 @@ const Dashboard = () => {
                 chartType: "Area",
                 config: {
                     data: [{
-                        "Country": "Ukraine",
-                        "Sales": 247,
-                        "Profit": 81
+                        "Category": "Thoughtbeat",
+                        "Sub-Category": "Human Resources",
+                        "Tickets": 434
                     }, {
-                        "Country": "Peru",
-                        "Sales": 164,
-                        "Profit": 43
+                        "Category": "Browsezoom",
+                        "Sub-Category": "Research and Development",
+                        "Tickets": 964
                     }, {
-                        "Country": "Philippines",
-                        "Sales": 652,
-                        "Profit": 33
+                        "Category": "Kazu",
+                        "Sub-Category": "Product Management",
+                        "Tickets": 799
                     }, {
-                        "Country": "China",
-                        "Sales": 788,
-                        "Profit": 52
+                        "Category": "Gabtype",
+                        "Sub-Category": "Legal",
+                        "Tickets": 813
+                    }, {
+                        "Category": "Tazzy",
+                        "Sub-Category": "Human Resources",
+                        "Tickets": 836
+                    }, {
+                        "Category": "Brainlounge",
+                        "Sub-Category": "Sales",
+                        "Tickets": 605
                     }],
-                    xField: 'Country',
+                    xField: 'Category',
                     height: "100%",
-                    yField: 'Profit'
+                    yField: 'Tickets',
+                    seriesField: "Sub-Category"
                 }
             },
-            title: "Hi Chart",
+            title: "Tickets Count by Categories",
             id: "4"
         }
     ])
 
+
+
+    const editStory = (bool) => {
+        window.location.href = `/dashboardStory/${route.id}/${bool ? 'edit' : 'view'}`;
+    }
+
+
+    const onDeleteCard = (cardIndex) => {
+        alert(cardIndex)
+        let availablePositions = [...positions];
+        let availableCards = [...cards];
+        availablePositions.splice(cardIndex,1)
+        availableCards.splice(cardIndex,1)
+        setPositions(availablePositions)
+        setCards(availableCards)
+    }
+
+    const editChart = (cardIndex) => {
+        let selectedCard = {...cards[cardIndex]}
+        setChartSettings(selectedCard)
+        setChartEditMode(true)
+        setNewChart(true)
+    }
+    let createSettings = {
+        title: "My New Chart",
+        type: "chart",
+        options: {
+            metrics: [],
+            chartType: null,
+            config: {
+
+            }
+        }
+    }
     const openAddChart = (bool) => {
+        setChartEditMode(false)
+        setChartSettings(createSettings)
         setNewChart(bool)
     }
 
-    if(!dashboardDetails){
+    if (!dashboardDetails) {
         return null
     }
 
@@ -231,7 +257,7 @@ const Dashboard = () => {
                 <Space style={{ float: 'right' }}>
                     {route.mode == 'edit' ? <Button type="primary" icon={<LineChartOutlined />} onClick={() => { openAddChart(true) }} >Add Chart</Button> : null}
                     {route.mode == 'view' ? <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => editStory(true)}  ></Button> : null}
-                    {route.mode == 'edit' ? <Button type="primary" shape="circle" icon={<SaveOutlined />} onClick={() => editStory(false)} ></Button> : null}
+                    {route.mode == 'edit' ? <Button type="primary" shape="circle" icon={<SaveOutlined />} onClick={saveDashboardConfig} ></Button> : null}
                     {route.mode == 'edit' ? <Button type="default" shape="circle" icon={<CloseOutlined />} onClick={() => editStory(false)} ></Button> : null}
                     <Button danger shape="circle" icon={<DeleteOutlined />}></Button>
                 </Space>
@@ -241,24 +267,48 @@ const Dashboard = () => {
                 className="layout"
                 layout={positions}
                 rowHeight={50}
+                onLayoutChange={(layout)=>{
+                    setDashboardEditLayout(layout)
+                }}
                 isDraggable={route.mode == 'edit'}
                 isResizable={route.mode == 'edit'}
                 breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
                 cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
             >
                 {
-                    positions.map(e => {
+                    positions.map((e, i) => {
                         return (
-                            <div key={e.id} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
+                            <div key={e.i} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
 
-                                <KPICard settings={cards.find(f => { return f.id == e.id })} mode={route.mode} isInGrid={true} />
+                                <KPICard settings={cards.find(f => { return f.id == e.i })}
+                                    mode={route.mode} isInGrid={true}
+                                    onDelete={() => {
+                                        onDeleteCard(i)
+                                    }}
+                                    onEdit={()=>{
+                                        editChart(i)
+                                    }}
+                                />
                             </div>
                         )
                     })
                 }
             </ResponsiveGridLayout>
-            <AddChart newChart={newChart} openAddChart={openAddChart} addChart={addChart} />
-
+            {dashboardDetails ?
+                <AddChart newChart={newChart}
+                    openAddChart={openAddChart}
+                    // addChart={addChart}
+                    dashboardDetails={dashboardDetails}
+                    setDashboardDetails={setDashboardDetails}
+                    positions={positions}
+                    setPositions={setPositions}
+                    cards={cards}
+                    setCards={setCards}
+                    settings={chartSettings}
+                    setSettings={setChartSettings}
+                    isEditMode={chartEditMode}
+                />
+                : null}
         </div>
     )
 }
