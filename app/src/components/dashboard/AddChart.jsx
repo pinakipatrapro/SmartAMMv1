@@ -74,41 +74,34 @@ const AddChart = (props) => {
         }
     })
 
-    const addChartToDashboard = ()=>{
-        let cardID = new Date().toISOString()+'--'+props.dashboardDetails.id;
+    const addChartToDashboard = () => {
+        let cardID = new Date().toISOString() + '--' + props.dashboardDetails.id;
         let positions = [...props.positions]
-        let maxYPosition = positions.sort((a,b)=>{
-            return (b.y+b.h) - (a.y+a.h)
+        let maxYPosition = positions.sort((a, b) => {
+            return (b.y + b.h) - (a.y + a.h)
         })[0]
 
         positions.push({
-                id: cardID,
-                x: 0,
-                y: maxYPosition.y + maxYPosition.h,
-                h: 2,
-                w: 3
+            id: cardID,
+            x: 0,
+            y: maxYPosition.y + maxYPosition.h,
+            h: 2,
+            w: 3
         })
         props.setPositions(positions)
 
         let cards = JSON.parse(JSON.stringify(props.cards));
-        settings.id=cardID;
-        cards.push(settings)
+        props.settings.id = cardID;
+        cards.push(props.settings)
         props.setCards(cards)
         props.openAddChart(false)
 
     }
 
-    const [settings, setSettings] = useState({
-        title: "My New Chart",
-        type: "chart",
-        options: {
-            metrics: [],
-            chartType: null,
-            config: {
 
-            }
-        }
-    })
+    // const [settings, setSettings] = useState(props.settings)
+    
+
 
     const [selectedMeasures, setSelectedMeasures] = useState([])
 
@@ -117,9 +110,9 @@ const AddChart = (props) => {
     }
 
     let setValue = (value, path) => {
-        let settingsData = JSON.parse(JSON.stringify(settings))
+        let settingsData = JSON.parse(JSON.stringify(props.settings))
         settingsData = updateJSON(settingsData, value)
-        setSettings(settingsData)
+        props.setSettings(settingsData)
     }
 
 
@@ -134,31 +127,31 @@ const AddChart = (props) => {
                     </Button>
                 </Space>
             }
-            title="Add New Chart" placement="right" open={props.newChart} onClose={() => { props.openAddChart(false) }}>
+            title={props.isEditMode?'Edit Chart':'Add Chart'} placement="right" open={props.newChart} onClose={() => { props.openAddChart(false) }}>
             <Space direction="vertical" style={{ height: "400px" }}>
                 <Typography.Paragraph>Configure the chart properties here. The chart can be positioned and alined after adding to dashboard</Typography.Paragraph>
-                <KPICard settings={settings} isInGrid={false} />
+                <KPICard settings={props.settings} isInGrid={false} />
                 <Button form="cardForm" htmlType="submit" style={{ textAlign: "center", width: "100%" }} type="text" icon={<ReloadOutlined />}>Refresh</Button>
             </Space>
-            <Form style={{ padding: "1rem" }} id="cardForm" onFinish={(evt) => ChartDataCreator.validateChartData(evt, setSettings)}>
+            <Form style={{ padding: "1rem" }} id="cardForm" onFinish={(evt) => ChartDataCreator.validateChartData(evt, props.setSettings)}>
                 <Form.Item label="Chart Title" name="chartTitle">
-                    <Input defaultValue={settings.title} onChange={(evt) => {
+                    <Input value={props.settings.title} onChange={(evt) => {
                         setValue({ 'title': evt.target.value })
                     }} />
                 </Form.Item>
 
 
-                {settings.type == 'chart' ? <>
-                    <Form.Item label="Select Chart Type" name="chartType">
-                        <Select options={chartTypes} />
+                {props.settings.type == 'chart' ? <>
+                    <Form.Item label="Select Chart Type" name="chartType" > 
+                        <Select options={chartTypes} value={props.settings.options.chartType}/>
                     </Form.Item>
                     <Form.Item label="Select Dimension(s)" name="dimension">
-                        <Select mode="multiple" options={columnData} />
+                        <Select mode="multiple" options={columnData}  value={props.settings.options.config.dimension}/>
                     </Form.Item>
                     <Form.Item label="Select Measure(s)" name="measure">
                         <Select mode="multiple" options={columnData} onChange={onMeasureChange} />
                     </Form.Item>
-                    <Collapse size="small" style={{ marginBottom: "15px"}}>
+                    <Collapse size="small" style={{ marginBottom: "15px" }}>
                         <Panel header={`Define Column Aggregations for Measures (${selectedMeasures.length})`}>
                             <>{
                                 selectedMeasures.map(e => {

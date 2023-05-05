@@ -26,6 +26,8 @@ const Dashboard = () => {
 
     const route = useParams()
     const navigate = useNavigate();
+    const [chartSettings, setChartSettings] = useState(false)
+    const [chartEditMode, setChartEditMode] = useState(false)
 
     const [newChart, setNewChart] = useState(false)
     const [dashboardDetails, setDashboardDetails] = React.useState(null)
@@ -72,52 +74,6 @@ const Dashboard = () => {
             w: 12
         }
     ]);
-
-    const addChart = () => {
-        let availablePositions = [...positions];
-        let availableCards = [...cards];
-        let cardID = new Date() + ""
-        let lowestCard = availablePositions.sort((a, b) => {
-            return b.y - a.y
-        })[0]
-        availablePositions.push(
-            {
-                id: cardID,
-                x: 0,
-                y: lowestCard.y + lowestCard.h,
-                h: 2,
-                w: 2
-            }
-        )
-        availableCards.push(
-            {
-                type: "kpi", //chart text image
-                options: {
-                    metrics: [
-                        {
-                            name: "Total Records",
-                            value: 23123,
-                        },
-                        {
-                            name: "High Priority Issues",
-                            value: 23123,
-                        }
-                    ]
-                },
-                title: "Total Records",
-                id: cardID
-            }
-        )
-
-
-        setPositions(availablePositions)
-        setCards(availableCards)
-    }
-
-    const editStory = (bool) => {
-        window.location.href = `/dashboardStory/${route.id}/${bool ? 'edit' : 'view'}`;
-    }
-
     const [cards, setCards] = useState([
         {
             type: "kpi", //chart text image
@@ -197,102 +153,6 @@ const Dashboard = () => {
                         "Sub-Category": "Human Resources",
                         "Tickets": 434
                     }, {
-                        "Category": "Thoughtmix",
-                        "Sub-Category": "Accounting",
-                        "Tickets": 750
-                    }, {
-                        "Category": "Kaymbo",
-                        "Sub-Category": "Services",
-                        "Tickets": 900
-                    }, {
-                        "Category": "Mymm",
-                        "Sub-Category": "Support",
-                        "Tickets": 846
-                    }, {
-                        "Category": "Myworks",
-                        "Sub-Category": "Human Resources",
-                        "Tickets": 837
-                    }, {
-                        "Category": "Dablist",
-                        "Sub-Category": "Legal",
-                        "Tickets": 294
-                    }, {
-                        "Category": "Yamia",
-                        "Sub-Category": "Support",
-                        "Tickets": 359
-                    }, {
-                        "Category": "Trunyx",
-                        "Sub-Category": "Services",
-                        "Tickets": 570
-                    }, {
-                        "Category": "Photospace",
-                        "Sub-Category": "Product Management",
-                        "Tickets": 488
-                    }, {
-                        "Category": "Jabbersphere",
-                        "Sub-Category": "Sales",
-                        "Tickets": 321
-                    }, {
-                        "Category": "Skivee",
-                        "Sub-Category": "Training",
-                        "Tickets": 462
-                    }, {
-                        "Category": "Wordify",
-                        "Sub-Category": "Business Development",
-                        "Tickets": 469
-                    }, {
-                        "Category": "Trilith",
-                        "Sub-Category": "Business Development",
-                        "Tickets": 485
-                    }, {
-                        "Category": "Gigashots",
-                        "Sub-Category": "Human Resources",
-                        "Tickets": 212
-                    }, {
-                        "Category": "Blogspan",
-                        "Sub-Category": "Marketing",
-                        "Tickets": 883
-                    }, {
-                        "Category": "Zoovu",
-                        "Sub-Category": "Human Resources",
-                        "Tickets": 989
-                    }, {
-                        "Category": "Oyondu",
-                        "Sub-Category": "Human Resources",
-                        "Tickets": 256
-                    }, {
-                        "Category": "Abata",
-                        "Sub-Category": "Business Development",
-                        "Tickets": 442
-                    }, {
-                        "Category": "Devify",
-                        "Sub-Category": "Accounting",
-                        "Tickets": 999
-                    }, {
-                        "Category": "Mita",
-                        "Sub-Category": "Sales",
-                        "Tickets": 759
-                    }, {
-                        "Category": "Janyx",
-                        "Sub-Category": "Sales",
-                        "Tickets": 539
-                    }, {
-                        "Category": "Twitterwire",
-                        "Sub-Category": "Business Development",
-                        "Tickets": 144
-                    }, {
-                        "Category": "Yambee",
-                        "Sub-Category": "Product Management",
-                        "Tickets": 642
-                    }, {
-                        "Category": "Yakitri",
-                        "Sub-Category": "Product Management",
-                        "Tickets": 733
-                    }, {
-                        "Category": "Dabjam",
-                        "Sub-Category": "Human Resources",
-                        "Tickets": 268
-                    }, {
                         "Category": "Browsezoom",
                         "Sub-Category": "Research and Development",
                         "Tickets": 964
@@ -324,7 +184,43 @@ const Dashboard = () => {
         }
     ])
 
+
+
+    const editStory = (bool) => {
+        window.location.href = `/dashboardStory/${route.id}/${bool ? 'edit' : 'view'}`;
+    }
+
+
+    const onDeleteCard = (cardIndex) => {
+        alert(cardIndex)
+        let availablePositions = [...positions];
+        let availableCards = [...cards];
+        availablePositions.splice(cardIndex,1)
+        availableCards.splice(cardIndex,1)
+        setPositions(availablePositions)
+        setCards(availableCards)
+    }
+
+    const editChart = (cardIndex) => {
+        let selectedCard = {...cards[cardIndex]}
+        setChartSettings(selectedCard)
+        setChartEditMode(true)
+        setNewChart(true)
+    }
+    let createSettings = {
+        title: "My New Chart",
+        type: "chart",
+        options: {
+            metrics: [],
+            chartType: null,
+            config: {
+
+            }
+        }
+    }
     const openAddChart = (bool) => {
+        setChartEditMode(false)
+        setChartSettings(createSettings)
         setNewChart(bool)
     }
 
@@ -356,11 +252,19 @@ const Dashboard = () => {
                 cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
             >
                 {
-                    positions.map(e => {
+                    positions.map((e, i) => {
                         return (
                             <div key={e.id} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
 
-                                <KPICard settings={cards.find(f => { return f.id == e.id })} mode={route.mode} isInGrid={true} />
+                                <KPICard settings={cards.find(f => { return f.id == e.id })}
+                                    mode={route.mode} isInGrid={true}
+                                    onDelete={() => {
+                                        onDeleteCard(i)
+                                    }}
+                                    onEdit={()=>{
+                                        editChart(i)
+                                    }}
+                                />
                             </div>
                         )
                     })
@@ -369,13 +273,16 @@ const Dashboard = () => {
             {dashboardDetails ?
                 <AddChart newChart={newChart}
                     openAddChart={openAddChart}
-                    addChart={addChart}
+                    // addChart={addChart}
                     dashboardDetails={dashboardDetails}
-                    setDashboardDetails={setDashboardDetails} 
+                    setDashboardDetails={setDashboardDetails}
                     positions={positions}
                     setPositions={setPositions}
-                    cards={cards}    
+                    cards={cards}
                     setCards={setCards}
+                    settings={chartSettings}
+                    setSettings={setChartSettings}
+                    isEditMode={chartEditMode}
                 />
                 : null}
         </div>
