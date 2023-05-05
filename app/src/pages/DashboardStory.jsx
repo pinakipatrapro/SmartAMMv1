@@ -29,6 +29,9 @@ const Dashboard = () => {
     const [chartSettings, setChartSettings] = useState(false)
     const [chartEditMode, setChartEditMode] = useState(false)
 
+    const [dashboardEditLayout, setDashboardEditLayout] = useState(false)
+
+
     const [newChart, setNewChart] = useState(false)
     const [dashboardDetails, setDashboardDetails] = React.useState(null)
 
@@ -46,28 +49,28 @@ const Dashboard = () => {
 
     const [positions, setPositions] = useState([
         {
-            id: "1",
+            i: "1",
             x: 0,
             y: 0,
             h: 2,
             w: 3
         },
         {
-            id: "2",
+            i: "2",
             x: 0,
             y: 2,
             h: 2,
             w: 3
         },
         {
-            id: "3",
+            i: "3",
             x: 3,
             y: 0,
             h: 4,
             w: 9
         },
         {
-            id: "4",
+            i: "4",
             x: 0,
             y: 4,
             h: 6,
@@ -246,6 +249,9 @@ const Dashboard = () => {
                 className="layout"
                 layout={positions}
                 rowHeight={50}
+                onLayoutChange={(layout)=>{
+                    setDashboardEditLayout(layout)
+                }}
                 isDraggable={route.mode == 'edit'}
                 isResizable={route.mode == 'edit'}
                 breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
@@ -254,9 +260,9 @@ const Dashboard = () => {
                 {
                     positions.map((e, i) => {
                         return (
-                            <div key={e.id} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
+                            <div key={e.i} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
 
-                                <KPICard settings={cards.find(f => { return f.id == e.id })}
+                                <KPICard settings={cards.find(f => { return f.id == e.i })}
                                     mode={route.mode} isInGrid={true}
                                     onDelete={() => {
                                         onDeleteCard(i)

@@ -150,7 +150,11 @@ const ChartDataCreator = {
         let commonProps = {
             isGroup: settings.isGroup,
             isStack: settings.isStacked,
-            isPercent: settings.isPercent
+            isPercent: settings.isPercent,
+            measure:settings.measure,
+            dimension:settings.dimension,
+            series:settings.series,
+            agg:settings.agg
         }
         let configData = chart[settings.chartType](settings, commonProps);
         setSettings(configData)
@@ -161,7 +165,7 @@ const ChartDataCreator = {
 const chart = {
     Bar: (settings, commonProps) => {
         let configValue = {
-            title: "My New Chart",
+            title: settings.chartTitle,
             type: "chart",
             options: {
                 metrics: [],
@@ -181,7 +185,7 @@ const chart = {
     },
     Line: (settings, commonProps) => {
         let configValue = {
-            title: "My New Chart",
+            title: settings.chartTitle,
             type: "chart",
             options: {
                 metrics: [],
@@ -200,7 +204,7 @@ const chart = {
     },
     Column: (settings, commonProps) => {
         let configValue = {
-            title: "My New Chart",
+            title: settings.chartTitle,
             type: "chart",
             options: {
                 metrics: [],
@@ -220,7 +224,7 @@ const chart = {
     },
     Area: (settings, commonProps) => {
         let configValue = {
-            title: "My New Chart",
+            title: settings.chartTitle,
             type: "chart",
             options: {
                 metrics: [],
@@ -241,7 +245,7 @@ const chart = {
     ,
     Pie: (settings, commonProps) => {
         let configValue = {
-            title: "My New Chart",
+            title: settings.chartTitle,
             type: "chart",
             options: {
                 metrics: [],
@@ -264,7 +268,7 @@ const chart = {
     },
     WordCloud: (settings, commonProps) => {
         let configValue = {
-            title: "My New Chart",
+            title: settings.chartTitle,
             type: "chart",
             options: {
                 metrics: [],
