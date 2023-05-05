@@ -174,7 +174,7 @@ const Dashboard = () => {
                         "Country": "China",
                         "Sales": 788,
                         "Profit": 52
-                    },{
+                    }, {
                         "Country": "India",
                         "Sales": 123,
                         "Profit": 52
@@ -196,127 +196,127 @@ const Dashboard = () => {
                         "Category": "Thoughtbeat",
                         "Sub-Category": "Human Resources",
                         "Tickets": 434
-                      }, {
+                    }, {
                         "Category": "Thoughtmix",
                         "Sub-Category": "Accounting",
                         "Tickets": 750
-                      }, {
+                    }, {
                         "Category": "Kaymbo",
                         "Sub-Category": "Services",
                         "Tickets": 900
-                      }, {
+                    }, {
                         "Category": "Mymm",
                         "Sub-Category": "Support",
                         "Tickets": 846
-                      }, {
+                    }, {
                         "Category": "Myworks",
                         "Sub-Category": "Human Resources",
                         "Tickets": 837
-                      }, {
+                    }, {
                         "Category": "Dablist",
                         "Sub-Category": "Legal",
                         "Tickets": 294
-                      }, {
+                    }, {
                         "Category": "Yamia",
                         "Sub-Category": "Support",
                         "Tickets": 359
-                      }, {
+                    }, {
                         "Category": "Trunyx",
                         "Sub-Category": "Services",
                         "Tickets": 570
-                      }, {
+                    }, {
                         "Category": "Photospace",
                         "Sub-Category": "Product Management",
                         "Tickets": 488
-                      }, {
+                    }, {
                         "Category": "Jabbersphere",
                         "Sub-Category": "Sales",
                         "Tickets": 321
-                      }, {
+                    }, {
                         "Category": "Skivee",
                         "Sub-Category": "Training",
                         "Tickets": 462
-                      }, {
+                    }, {
                         "Category": "Wordify",
                         "Sub-Category": "Business Development",
                         "Tickets": 469
-                      }, {
+                    }, {
                         "Category": "Trilith",
                         "Sub-Category": "Business Development",
                         "Tickets": 485
-                      }, {
+                    }, {
                         "Category": "Gigashots",
                         "Sub-Category": "Human Resources",
                         "Tickets": 212
-                      }, {
+                    }, {
                         "Category": "Blogspan",
                         "Sub-Category": "Marketing",
                         "Tickets": 883
-                      }, {
+                    }, {
                         "Category": "Zoovu",
                         "Sub-Category": "Human Resources",
                         "Tickets": 989
-                      }, {
+                    }, {
                         "Category": "Oyondu",
                         "Sub-Category": "Human Resources",
                         "Tickets": 256
-                      }, {
+                    }, {
                         "Category": "Abata",
                         "Sub-Category": "Business Development",
                         "Tickets": 442
-                      }, {
+                    }, {
                         "Category": "Devify",
                         "Sub-Category": "Accounting",
                         "Tickets": 999
-                      }, {
+                    }, {
                         "Category": "Mita",
                         "Sub-Category": "Sales",
                         "Tickets": 759
-                      }, {
+                    }, {
                         "Category": "Janyx",
                         "Sub-Category": "Sales",
                         "Tickets": 539
-                      }, {
+                    }, {
                         "Category": "Twitterwire",
                         "Sub-Category": "Business Development",
                         "Tickets": 144
-                      }, {
+                    }, {
                         "Category": "Yambee",
                         "Sub-Category": "Product Management",
                         "Tickets": 642
-                      }, {
+                    }, {
                         "Category": "Yakitri",
                         "Sub-Category": "Product Management",
                         "Tickets": 733
-                      }, {
+                    }, {
                         "Category": "Dabjam",
                         "Sub-Category": "Human Resources",
                         "Tickets": 268
-                      }, {
+                    }, {
                         "Category": "Browsezoom",
                         "Sub-Category": "Research and Development",
                         "Tickets": 964
-                      }, {
+                    }, {
                         "Category": "Kazu",
                         "Sub-Category": "Product Management",
                         "Tickets": 799
-                      }, {
+                    }, {
                         "Category": "Gabtype",
                         "Sub-Category": "Legal",
                         "Tickets": 813
-                      }, {
+                    }, {
                         "Category": "Tazzy",
                         "Sub-Category": "Human Resources",
                         "Tickets": 836
-                      }, {
+                    }, {
                         "Category": "Brainlounge",
                         "Sub-Category": "Sales",
                         "Tickets": 605
-                      }],
+                    }],
                     xField: 'Category',
                     height: "100%",
                     yField: 'Tickets',
-                    seriesField:"Sub-Category"
+                    seriesField: "Sub-Category"
                 }
             },
             title: "Tickets Count by Categories",
@@ -367,7 +367,16 @@ const Dashboard = () => {
                 }
             </ResponsiveGridLayout>
             {dashboardDetails ?
-                <AddChart newChart={newChart} openAddChart={openAddChart} addChart={addChart} dashboardDetails={dashboardDetails} setDashboardDetails={setDashboardDetails} />
+                <AddChart newChart={newChart}
+                    openAddChart={openAddChart}
+                    addChart={addChart}
+                    dashboardDetails={dashboardDetails}
+                    setDashboardDetails={setDashboardDetails} 
+                    positions={positions}
+                    setPositions={setPositions}
+                    cards={cards}    
+                    setCards={setCards}
+                />
                 : null}
         </div>
     )

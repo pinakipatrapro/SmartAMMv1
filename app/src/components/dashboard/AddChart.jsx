@@ -74,6 +74,30 @@ const AddChart = (props) => {
         }
     })
 
+    const addChartToDashboard = ()=>{
+        let cardID = new Date().toISOString()+'--'+props.dashboardDetails.id;
+        let positions = [...props.positions]
+        let maxYPosition = positions.sort((a,b)=>{
+            return (b.y+b.h) - (a.y+a.h)
+        })[0]
+
+        positions.push({
+                id: cardID,
+                x: 0,
+                y: maxYPosition.y + maxYPosition.h,
+                h: 2,
+                w: 3
+        })
+        props.setPositions(positions)
+
+        let cards = JSON.parse(JSON.stringify(props.cards));
+        settings.id=cardID;
+        cards.push(settings)
+        props.setCards(cards)
+        props.openAddChart(false)
+
+    }
+
     const [settings, setSettings] = useState({
         title: "My New Chart",
         type: "chart",
@@ -105,10 +129,7 @@ const AddChart = (props) => {
             width={600}
             extra={
                 <Space>
-                    <Button type="primary" onClick={() => {
-                        // props.addChart()
-                        // props.openAddChart(false)
-                    }}>
+                    <Button type="primary" onClick={addChartToDashboard}>
                         Add
                     </Button>
                 </Space>
