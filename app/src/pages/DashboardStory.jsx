@@ -40,6 +40,24 @@ const Dashboard = () => {
             .get("/api/getDashboardDetails/" + route.id)
             .then((res) => {
                 setDashboardDetails(res.data)
+                // setPositions(res.data.configData.layout)
+                // setPositions(res.data.configData.charts)
+            })
+    }
+
+    const saveDashboardConfig = async () => {
+        cards.forEach(e=>{
+            //Don Not push the data -> Read again on load
+           try{delete e.options.config.data }catch(e){}
+        });
+        let payload= {
+            layout : dashboardEditLayout,
+            cards : cards
+        }
+        axios
+            .post("/api/updateDashboardConfig/" + route.id,payload)
+            .then((res) => {
+                
             })
     }
 
@@ -239,7 +257,7 @@ const Dashboard = () => {
                 <Space style={{ float: 'right' }}>
                     {route.mode == 'edit' ? <Button type="primary" icon={<LineChartOutlined />} onClick={() => { openAddChart(true) }} >Add Chart</Button> : null}
                     {route.mode == 'view' ? <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => editStory(true)}  ></Button> : null}
-                    {route.mode == 'edit' ? <Button type="primary" shape="circle" icon={<SaveOutlined />} onClick={() => editStory(false)} ></Button> : null}
+                    {route.mode == 'edit' ? <Button type="primary" shape="circle" icon={<SaveOutlined />} onClick={saveDashboardConfig} ></Button> : null}
                     {route.mode == 'edit' ? <Button type="default" shape="circle" icon={<CloseOutlined />} onClick={() => editStory(false)} ></Button> : null}
                     <Button danger shape="circle" icon={<DeleteOutlined />}></Button>
                 </Space>
