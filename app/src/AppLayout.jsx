@@ -53,8 +53,8 @@ const AppLayout = () => {
         <Layout>
             <Header>
                 <div className="logo" onClick={() => { navigate("/") }} >
-                    <img style={{ height: "1.5rem" }} src="./assets/t-logo.png" />
-                    <img style={{ height: "2.5rem", marginTop: "5px", marginRight: "2rem" }} src="assets/smartamm.png" />
+                    <img style={{ height: "1.5rem" }} src="/assets/t-logo.png" />
+                    <img style={{ height: "2.5rem", marginTop: "5px", marginRight: "2rem" }} src="/assets/smartamm.png" />
                 </div>
                 <div className="right-toolbar" >
                     <Avatar size={32} style={{ backgroundColor: "#ffffff55", verticalAlign: 'middle' }} src="https://randomuser.me/api/portraits/men/41.jpg" icon={<UserOutlined />} />
