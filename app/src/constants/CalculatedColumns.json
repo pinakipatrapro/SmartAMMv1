@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Time difference in days",
+        "tags": [
+            "MTTR",
+            "Time",
+            "Days"
+        ],
+        "prompts": [
+            {
+                "name": "Start Date-Time",
+                "dataType": "Date-Time",
+                "value": null
+            },
+            {
+                "name": "End Date-Time",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ]
+    },
+    {
+        "name": "Get day (Mondat,Tuesday etc.) from date",
+        "tags": [
+            "Day",
+            "Dayname"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ]
+    },
+    {
+        "name": "Get Month name (January,February etc.) from date",
+        "tags": [
+            "Month",
+            "Month Name"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ]
+    }
+]

@@ -244,9 +244,7 @@ const CreateProject = () => {
 
                 : null}
 
-            {!!data.lemgth?
-                <
-            }
+            
         </>
     )
 }
