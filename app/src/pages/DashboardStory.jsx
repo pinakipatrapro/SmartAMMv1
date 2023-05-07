@@ -42,7 +42,7 @@ const Dashboard = () => {
             .then((res) => {
 
                 setPositions(res.data.configData.layout)
-                setCards(res.data.configData.charts)
+                setCards(res.data.configData.cards)
                 setDashboardDetails(res.data)
             })
     }
@@ -52,6 +52,11 @@ const Dashboard = () => {
             e.options.config.projectID = dashboardDetails.project.id
             try { delete e.options.config.data } catch (e) { }
         });
+
+        dashboardEditLayout.forEach(e=>{
+            e.id=e.i;
+            delete e.i;
+        })
         let payload = {
             layout: dashboardEditLayout,
             cards: cards
@@ -142,9 +147,9 @@ const Dashboard = () => {
                 {
                     positions.map((e, i) => {
                         return (
-                            <div key={e.i} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
+                            <div key={e.id} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
 
-                                <KPICard settings={cards.find(f => { return f.id == e.i })}
+                                <KPICard settings={cards.find(f => { return f.id == e.id  })}
                                     mode={route.mode} isInGrid={true}
                                     onDelete={() => {
                                         onDeleteCard(i)

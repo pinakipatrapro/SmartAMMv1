@@ -20,10 +20,13 @@ class Bar{
         if(!measures.length){
             return ''
         }
-        return measures.map(e=> ` ${!(agg && agg[e]) ? 'COUNT' : agg[e]}("${e}")`).join(",")
+        return measures.map(e=> ` ${!(agg && agg[e]) ? 'COUNT' : agg[e]}("${e}") as "${e}"`).join(",")
     }
 
     async getData(payload){
+        if(!payload.series){
+            payload.series = []
+        }
         const viewName = await util.getViewName(payload.projectID)
         let dimensionString =this.getDimensionString([...payload.dimension,...payload.series])
         let measureString = this.getMeasureString(payload.measure,payload.agg)
