@@ -10,6 +10,7 @@ import React, { useState, useEffect } from "react";
 import ColumnCards from '../components/createProject/ColumnCards'
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
+import customColTypes from "../constants/CalculatedColumns.json"
 
 const { Option } = Select;
 
@@ -23,6 +24,7 @@ const CreateProject = () => {
     const [workbook, setWorkbook] = React.useState([]);
     const [data, setData] = React.useState([]);
     const [previewData, setPreviewData] = React.useState([]);
+    const [calculatedColumns, setCalculatedColumns] = React.useState([]);
 
 
     //TODO Putin a seperate function
@@ -149,7 +151,6 @@ const CreateProject = () => {
             }
         })
 
-        debugger;
         let payload = {
             name: values.name,
             description: values.description,
@@ -243,7 +244,9 @@ const CreateProject = () => {
 
                 : null}
 
-
+            {!!data.lemgth?
+                <
+            }
         </>
     )
 }
