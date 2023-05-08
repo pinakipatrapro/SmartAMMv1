@@ -20,8 +20,9 @@ Content-Type: application/json
       "xField": "Priority",
       "yField": "Category",
       "seriesField": "Country",
-      "dimensions":["Status","Country"],
-      "measures":["Incident ID","Priority"]
+      "dimension":["Status"],
+      "measure":["Incident ID","Priority"],
+      "series":["Country"]
     }
   }
 }
