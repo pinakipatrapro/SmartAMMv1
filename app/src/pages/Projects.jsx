@@ -88,10 +88,10 @@ const Projects = () => {
             dataIndex: 'id',
             render: (id) => (
                 <>
-                    <Button type="text" icon={<EditOutlined />} />
-                    <Divider type="vertical" />
-                    <Button type="text" icon={<LineChartOutlined />} />
-                    <Divider type="vertical" />
+                    {/* <Button type="text" icon={<EditOutlined />} /> */}
+                    {/* <Divider type="vertical" /> */}
+                    {/* <Button type="text" icon={<LineChartOutlined />} /> */}
+                    {/* <Divider type="vertical" /> */}
                     <Popconfirm
                         title="Are you Sure?"
                         description="Are you sure to delete the project. All data and analytics will be lost"

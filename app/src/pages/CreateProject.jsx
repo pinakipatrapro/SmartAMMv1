@@ -65,7 +65,10 @@ const CreateProject = () => {
         }
         let previewData = [];
         let counter = sheetData.length > 5 ? 5 : sheetData.length;
-        let dataSubset = sheetData.splice(0, counter)
+        let dataSubset = [];
+        for(let i=0;i<counter;i++){
+            dataSubset.push(sheetData[i])
+        }
 
 
         Object.keys(dataSubset[0]).forEach((e, i) => {
@@ -100,6 +103,7 @@ const CreateProject = () => {
             console.log(dataType)
         });
         setPreviewData(previewData)
+        setData(sheetData)
 
     }
     const onSheetSelection = (sheetName) => {
@@ -107,8 +111,7 @@ const CreateProject = () => {
             raw: false,
             defval: null
         })
-        setData(sheetData)
-        createDatPreview(sheetData);
+        createDatPreview(sheetData)
     }
 
     const onFinish = (values) => {
@@ -140,9 +143,10 @@ const CreateProject = () => {
                         } else if (!!f[e.colName]) {
                             let dateParts = f[e.colName].split(/\s*[-./]\s*/);
                             if(new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
-                                throw 'Invalid Date'
+                                f[e.colName] =null
+                            }else{
+                                f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2]].join('-'))
                             }
-                            f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2]].join('-'))
                         }
                     } catch (err) {
                         messages.push({
@@ -172,14 +176,14 @@ const CreateProject = () => {
             data: formattedData,
             calculatedCols : calculatedCols
         }
-        // axios
-        //     .post("/api/createProject", payload)
-        //     .then((res) => {
-        //         openNotificationWithIcon('success', "Operation Successful", "Project created successfully");
-        //         navigate("/projects")
-        //     }).catch(e => {
-        //         openNotificationWithIcon('erro', "Error", "Error creating project" + JSON.stringify(e))
-        //     })
+        axios
+            .post("/api/createProject", payload)
+            .then((res) => {
+                openNotificationWithIcon('success', "Operation Successful", "Project created successfully. Navigating to project list in 3 seconds");
+                setTimeout(e=>navigate("/projects"),3000)
+            }).catch(e => {
+                openNotificationWithIcon('error', "Error", "Error creating project" + e.message+"  Details: "+e.response.data.message)
+            })
     };
 
     return (
