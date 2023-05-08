@@ -1,6 +1,7 @@
 [
     {
         "name": "Time difference in days",
+        "key":"TimeDiffDays",
         "tags": [
             "MTTR",
             "Time",
@@ -24,6 +25,7 @@
     },
     {
         "name": "Get day (Mondat,Tuesday etc.) from date",
+        "key":"DayFromDate",
         "tags": [
             "Day",
             "Dayname"
@@ -40,6 +42,7 @@
     },
     {
         "name": "Get Month name (January,February etc.) from date",
+        "key":"MonthFromDate",
         "tags": [
             "Month",
             "Month Name"

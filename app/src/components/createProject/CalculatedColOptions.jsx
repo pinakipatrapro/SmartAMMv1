@@ -16,12 +16,19 @@ import { v4 as uuidv4 } from 'uuid';
 const CalculatedColOptions = (props) => {
 
 
+
     const columns = [
         {
             title: 'Column Name',
-            dataIndex: 'name',
+            dataIndex: 'colName',
             width: '15%',
-            render: (id) => (<Input />)
+            render: (text, item, index) => (
+                <Form.Item name={[item.id, 'columnName']} 
+                rules={[{ required: true, message: 'Please input column name' }]}>
+                    <Input placeholder='Calculated Column Name'
+                        defaultValue={text} />
+                </Form.Item>
+            )
         },
         {
             title: 'Type',
@@ -35,14 +42,16 @@ const CalculatedColOptions = (props) => {
                 <Space>
                     {item.prompts.map(e => {
                         return (
-                            <Select style={{ width: "10rem" }} placeholder={e.name}
-                                options={props.previewData.filter(col => { return col.dataType == e.dataType }).map(options => {
-                                    return {
-                                        label: options.colName,
-                                        value: options.colName
-                                    }
-                                })}
-                            />
+                            <Form.Item name={[item.id, e.id, 'value']} rules={[{ required: true, message: 'Please select column' }]}>
+                                <Select style={{ width: "10rem" }} placeholder={e.name}
+                                    options={props.previewData.filter(col => { return col.dataType == e.dataType }).map(options => {
+                                        return {
+                                            label: options.colName,
+                                            value: options.colName
+                                        }
+                                    })}
+                                />
+                            </Form.Item>
                         )
                     })}
                 </Space>
@@ -52,12 +61,12 @@ const CalculatedColOptions = (props) => {
             title: '',
             dataIndex: 'name',
             width: '5%',
-            render: (_,item,index) => (<Button danger icon={<DeleteOutlined />} onClick={()=>{deleteCalcCol(index)}} />)
+            render: (_, item, index) => (<Button danger icon={<DeleteOutlined />} onClick={() => { deleteCalcCol(index) }} />)
         }
     ];
 
     const addCustCol = (item, i) => {
-        item.id=uuidv4()
+        item.id = uuidv4()
         let availableCalcCols = JSON.parse(JSON.stringify(props.calculatedColumns))
         availableCalcCols.push(JSON.parse(JSON.stringify(item)))
         props.setCalculatedColumns(availableCalcCols)
@@ -65,7 +74,7 @@ const CalculatedColOptions = (props) => {
 
     const deleteCalcCol = (index) => {
         let availableCalcCols = JSON.parse(JSON.stringify(props.calculatedColumns))
-        availableCalcCols.splice(index,1)
+        availableCalcCols.splice(index, 1)
         props.setCalculatedColumns(availableCalcCols)
     }
 
@@ -92,15 +101,11 @@ const CalculatedColOptions = (props) => {
         </div>
     )
     return (
-        <Form>
-            <Table columns={columns} dataSource={props.calculatedColumns} style={{margin:"1rem"}}
-                bordered
-                title={() => header}
-                pagination={false}
-            // scroll={{ y: "60vh" }}
-            />
-
-        </Form>
+        <Table columns={columns} dataSource={props.calculatedColumns} style={{ margin: "1rem" }}
+            bordered
+            title={() => header}
+            pagination={false}
+        />
     )
 }
 

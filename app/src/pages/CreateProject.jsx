@@ -4,7 +4,7 @@ import {
     Divider, Space, Popconfirm, notification
 } from 'antd';
 import { Col, Row } from 'antd';
-import { UploadOutlined, FileExcelOutlined, SaveOutlined,PlusOutlined } from '@ant-design/icons';
+import { UploadOutlined, FileExcelOutlined, SaveOutlined, PlusOutlined } from '@ant-design/icons';
 import * as xlsx from "xlsx";
 import React, { useState, useEffect } from "react";
 import ColumnCards from '../components/createProject/ColumnCards'
@@ -115,7 +115,7 @@ const CreateProject = () => {
         console.log('Success:', values);
 
         let formattedData = [...data]
-
+        //Format Data
         let messages = []
         previewData.forEach(e => {
             if (e.dataType == 'Number') {
@@ -125,6 +125,7 @@ const CreateProject = () => {
                     } catch (e) {
                         messages.push({
                             row: j,
+                            value: formattedData[j],
                             errorType: "Number",
                             column: e.colName,
                             message: `Error parsing ${f[e.colName]} as a number`
@@ -141,8 +142,10 @@ const CreateProject = () => {
                             f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2]].join('-'))
                         }
                     } catch (err) {
+                        debugger
                         messages.push({
                             row: j,
+                            value: formattedData[j],
                             errorType: "Date-Time",
                             column: e.colName,
                             message: `Error parsing ${f[e.colName]} as a date-time`
@@ -151,13 +154,24 @@ const CreateProject = () => {
                 })
             }
         })
+        //Chack Calculated Columns
+        let calculatedCols = JSON.parse(JSON.stringify(calculatedColumns));
+        calculatedCols.forEach(col=>{
+            col.colName = values[col.id].columnName;
+            col.prompts.forEach(prompt=>{
+                prompt.value = values[col.id][prompt.id].value
+            })
+        })
+        debugger;
 
+        debugger;
         let payload = {
             name: values.name,
             description: values.description,
             modifiedBy: "Admin",
             configData: previewData,
-            data: formattedData
+            data: formattedData,
+            calculatedCols : calculatedCols
         }
         axios
             .post("/api/createProject", payload)
@@ -174,7 +188,7 @@ const CreateProject = () => {
             {contextHolder}
             <Typography.Title level={3} style={{ padding: "1rem" }}>Create New Project</Typography.Title>
 
-            <Form>
+            <Form onFinish={onFinish}>
                 <Dragger customRequest={() => { }} showUploadList={false} maxCount={1} accept=".xlsx" onChange={onFileSelected} >
                     <p className="ant-upload-drag-icon">
                         <FileExcelOutlined />
@@ -194,65 +208,56 @@ const CreateProject = () => {
                         )
                     })}
                     </Select> : null}
+
+                {!!data.length ? <Row gutter={[8, 8]} style={{ margin: "1rem" }}>
+                    <Divider >Select Columns  ( {data.length} Rows, {Object.keys(data[0]).length} Columns )</Divider>
+                    {previewData.map((e, i) => {
+                        return (
+                            <Col sm={24} md={3} lg={4} xl={6} >
+                                <ColumnCards info={e} changeColumnEnabled={changeColumnEnabled} index={i} />
+                            </Col>
+                        )
+                    })}
+                </Row> : null}
+                {!!data.length ?
+                    < >
+                        <Divider style={{ padding: "0rem 1rem 0 1rem" }}> Define Calculated Columns</Divider>
+                        <CalulatedColOptions setCalculatedColumns={setCalculatedColumns} calculatedColumns={calculatedColumns}
+                            previewData={previewData}
+                        />
+
+                        <Divider >Upload data and create project</Divider>
+                        <div style={{margin:"1rem"}}>
+                            <Form.Item
+                                label="Project Name"
+                                name="name"
+                                rules={[{ required: true, message: 'Please input Project Name' }]}
+
+                            >
+                                <Input placeholder="My Anaysis Project" />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="Project Description"
+                                name="description"
+                            >
+                                <Input placeholder="Anaysis Description" />
+                            </Form.Item>
+                            <Button size="large" shape="round" htmlType="submit" type="primary" icon={<SaveOutlined />} >Create Project</Button>
+                            <Popconfirm
+                                title="Cancel Project Creation"
+                                description="Are you sure to cancel the creation of project. All data will be lost?"
+                                onConfirm={() => { navigate("/projects") }}
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                <Button size="large" shape="round" danger style={{ margin: "1rem" }}>Cancel</Button>
+                            </Popconfirm>
+                        </div>
+                    </> : null}
+
             </Form>
-            {!!data.length ? <Row gutter={[8, 8]} style={{ margin: "1rem" }}>
-                <Divider >Select Columns  ( {data.length} Rows, {Object.keys(data[0]).length} Columns )</Divider>
-                {previewData.map((e, i) => {
-                    return (
-                        <Col sm={24} md={3} lg={4} xl={6} >
-                            <ColumnCards info={e} changeColumnEnabled={changeColumnEnabled} index={i} />
-                        </Col>
-                    )
-                })}
-            </Row> : null}
-            {!!data.length ? 
-                < >
-                    <Divider style={{ padding: "0rem 1rem 0 1rem" }}> Define Calculated Columns</Divider>
-                    <CalulatedColOptions setCalculatedColumns={setCalculatedColumns} calculatedColumns={calculatedColumns} 
-                        previewData={previewData}
-                    />
-                </>
-            : null}
-            {!!data.length ?
-                <Form style={{ padding: "1rem" }} onFinish={onFinish}
-                    labelCol={{
-                        span: 4,
-                    }}
-                    wrapperCol={{
-                        span: 14,
-                    }}
-                    layout="horizontal">
-                    <Divider >Upload data and create project</Divider>
-                    <Form.Item
-                        label="Project Name"
-                        name="name"
-                        rules={[{ required: true, message: 'Please input Project Name' }]}
 
-                    >
-                        <Input placeholder="My Anaysis Project" />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="Project Description"
-                        name="description"
-                    >
-                        <Input placeholder="Anaysis Description" />
-                    </Form.Item>
-                    <Button size="large" shape="round" htmlType="submit" type="primary" icon={<SaveOutlined />} >Create Project</Button>
-                    <Popconfirm
-                        title="Cancel Project Creation"
-                        description="Are you sure to cancel the creation of project. All data will be lost?"
-                        onConfirm={() => { navigate("/projects") }}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button size="large" shape="round" danger style={{ margin: "1rem" }}>Cancel</Button>
-                    </Popconfirm>
-                </Form>
-
-                : null}
-
-            
 
 
         </>
