@@ -36,28 +36,35 @@ const Dashboard = () => {
     const [dashboardDetails, setDashboardDetails] = React.useState(null)
 
     const fetchDashboard = async () => {
+        debugger;
         axios
             .get("/api/getDashboardDetails/" + route.id)
             .then((res) => {
+
+                setPositions(res.data.configData.layout)
+                setCards(res.data.configData.cards)
                 setDashboardDetails(res.data)
-                // setPositions(res.data.configData.layout)
-                // setPositions(res.data.configData.charts)
             })
     }
 
     const saveDashboardConfig = async () => {
-        cards.forEach(e=>{
-            //Don Not push the data -> Read again on load
-           try{delete e.options.config.data }catch(e){}
+        cards.forEach(e => {
+            e.options.config.projectID = dashboardDetails.project.id
+            try { delete e.options.config.data } catch (e) { }
         });
-        let payload= {
-            layout : dashboardEditLayout,
-            cards : cards
+
+        dashboardEditLayout.forEach(e=>{
+            e.id=e.i;
+            delete e.i;
+        })
+        let payload = {
+            layout: dashboardEditLayout,
+            cards: cards
         }
         axios
-            .post("/api/updateDashboardConfig/" + route.id,payload)
+            .post("/api/updateDashboardConfig/" + route.id, payload)
             .then((res) => {
-                
+
             })
     }
 
@@ -65,146 +72,8 @@ const Dashboard = () => {
         fetchDashboard()
     }, [])
 
-    const [positions, setPositions] = useState([
-        {
-            i: "1",
-            x: 0,
-            y: 0,
-            h: 2,
-            w: 3
-        },
-        {
-            i: "2",
-            x: 0,
-            y: 2,
-            h: 2,
-            w: 3
-        },
-        {
-            i: "3",
-            x: 3,
-            y: 0,
-            h: 4,
-            w: 9
-        },
-        {
-            i: "4",
-            x: 0,
-            y: 4,
-            h: 6,
-            w: 12
-        }
-    ]);
-    const [cards, setCards] = useState([
-        {
-            type: "kpi", //chart text image
-            options: {
-                metrics: [
-                    {
-                        name: "Total Records",
-                        value: 23123,
-                    },
-                    {
-                        name: "High Priority Issues",
-                        value: 23123,
-                    }
-                ]
-            },
-            title: "Total Records",
-            id: "1"
-        },
-        {
-            type: "kpi", //chart text image
-            options: {
-                metrics: [
-                    {
-                        name: "Statis De Faundr",
-                        value: 3211,
-                    },
-                    {
-                        name: "High Priority Issues",
-                        value: 745,
-                    }
-                ]
-            },
-            title: "Max Priority",
-            id: "2"
-        },
-        {
-            type: "chart", //chart text image
-            options: {
-                chartType: "Column",
-                config: {
-                    data: [{
-                        "Country": "Ukraine",
-                        "Sales": 247,
-                        "Profit": 81
-                    }, {
-                        "Country": "Peru",
-                        "Sales": 164,
-                        "Profit": 43
-                    }, {
-                        "Country": "Philippines",
-                        "Sales": 652,
-                        "Profit": 33
-                    }, {
-                        "Country": "China",
-                        "Sales": 788,
-                        "Profit": 52
-                    }, {
-                        "Country": "India",
-                        "Sales": 123,
-                        "Profit": 52
-                    }],
-                    xField: 'Country',
-                    height: "100%",
-                    yField: 'Sales'
-                }
-            },
-            title: "Hi Chart",
-            id: "3"
-        },
-        {
-            type: "chart", //chart text image
-            options: {
-                chartType: "Area",
-                config: {
-                    data: [{
-                        "Category": "Thoughtbeat",
-                        "Sub-Category": "Human Resources",
-                        "Tickets": 434
-                    }, {
-                        "Category": "Browsezoom",
-                        "Sub-Category": "Research and Development",
-                        "Tickets": 964
-                    }, {
-                        "Category": "Kazu",
-                        "Sub-Category": "Product Management",
-                        "Tickets": 799
-                    }, {
-                        "Category": "Gabtype",
-                        "Sub-Category": "Legal",
-                        "Tickets": 813
-                    }, {
-                        "Category": "Tazzy",
-                        "Sub-Category": "Human Resources",
-                        "Tickets": 836
-                    }, {
-                        "Category": "Brainlounge",
-                        "Sub-Category": "Sales",
-                        "Tickets": 605
-                    }],
-                    xField: 'Category',
-                    height: "100%",
-                    yField: 'Tickets',
-                    seriesField: "Sub-Category"
-                }
-            },
-            title: "Tickets Count by Categories",
-            id: "4"
-        }
-    ])
-
+    const [positions, setPositions] = useState([]);
+    const [cards, setCards] = useState([])
 
 
     const editStory = (bool) => {
@@ -216,32 +85,32 @@ const Dashboard = () => {
         alert(cardIndex)
         let availablePositions = [...positions];
         let availableCards = [...cards];
-        availablePositions.splice(cardIndex,1)
-        availableCards.splice(cardIndex,1)
+        availablePositions.splice(cardIndex, 1)
+        availableCards.splice(cardIndex, 1)
         setPositions(availablePositions)
         setCards(availableCards)
     }
 
     const editChart = (cardIndex) => {
-        let selectedCard = {...cards[cardIndex]}
+        let selectedCard = { ...cards[cardIndex] }
         setChartSettings(selectedCard)
         setChartEditMode(true)
         setNewChart(true)
     }
-    let createSettings = {
-        title: "My New Chart",
-        type: "chart",
-        options: {
-            metrics: [],
-            chartType: null,
-            config: {
-
-            }
-        }
-    }
+ 
     const openAddChart = (bool) => {
         setChartEditMode(false)
-        setChartSettings(createSettings)
+        setChartSettings({
+            title: "My New Chart",
+            type: "chart",
+            options: {
+                metrics: [],
+                chartType: null,
+                config: {
+                    projectID: dashboardDetails.project.id
+                }
+            }
+        })
         setNewChart(bool)
     }
 
@@ -267,7 +136,7 @@ const Dashboard = () => {
                 className="layout"
                 layout={positions}
                 rowHeight={50}
-                onLayoutChange={(layout)=>{
+                onLayoutChange={(layout) => {
                     setDashboardEditLayout(layout)
                 }}
                 isDraggable={route.mode == 'edit'}
@@ -278,14 +147,14 @@ const Dashboard = () => {
                 {
                     positions.map((e, i) => {
                         return (
-                            <div key={e.i} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
+                            <div key={e.id} data-grid={{ x: e.x, y: e.y, w: e.w, h: e.h }}  >
 
-                                <KPICard settings={cards.find(f => { return f.id == e.i })}
+                                <KPICard settings={cards.find(f => { return f.id == e.id  })}
                                     mode={route.mode} isInGrid={true}
                                     onDelete={() => {
                                         onDeleteCard(i)
                                     }}
-                                    onEdit={()=>{
+                                    onEdit={() => {
                                         editChart(i)
                                     }}
                                 />
