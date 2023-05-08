@@ -20,7 +20,7 @@
 
 .ant-list-item:hover {
   box-shadow: 0px 0px 20px 0px #0000001f;
-  transform: scale(1.01);
+  /* transform: scale(1.01); */
   transition: .1s;
 }
 

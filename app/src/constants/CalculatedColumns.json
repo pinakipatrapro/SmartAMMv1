@@ -10,14 +10,17 @@
             {
                 "name": "Start Date-Time",
                 "dataType": "Date-Time",
+                "id":"startDate",
                 "value": null
             },
             {
                 "name": "End Date-Time",
+                "id":"endDate",
                 "dataType": "Date-Time",
                 "value": null
             }
-        ]
+        ],
+        "colName":""
     },
     {
         "name": "Get day (Mondat,Tuesday etc.) from date",
@@ -28,10 +31,12 @@
         "prompts": [
             {
                 "name": "Date Field",
+                "id":"date",
                 "dataType": "Date-Time",
                 "value": null
             }
-        ]
+        ],
+        "colName":""
     },
     {
         "name": "Get Month name (January,February etc.) from date",
@@ -42,9 +47,11 @@
         "prompts": [
             {
                 "name": "Date Field",
+                "id":"date",
                 "dataType": "Date-Time",
                 "value": null
             }
-        ]
+        ],
+        "colName":""
     }
 ]

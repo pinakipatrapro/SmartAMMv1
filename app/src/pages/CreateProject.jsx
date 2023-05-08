@@ -1,16 +1,17 @@
 
 import {
     Typography, Button, Form, Input, Upload, Select,
-    Divider, Space, Popconfirm,notification
+    Divider, Space, Popconfirm, notification
 } from 'antd';
 import { Col, Row } from 'antd';
-import { UploadOutlined, FileExcelOutlined, SaveOutlined } from '@ant-design/icons';
+import { UploadOutlined, FileExcelOutlined, SaveOutlined,PlusOutlined } from '@ant-design/icons';
 import * as xlsx from "xlsx";
 import React, { useState, useEffect } from "react";
 import ColumnCards from '../components/createProject/ColumnCards'
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import customColTypes from "../constants/CalculatedColumns.json"
+import CalulatedColOptions from "../components/createProject/CalculatedColOptions";
 
 const { Option } = Select;
 
@@ -19,7 +20,7 @@ const { Dragger } = Upload;
 
 const CreateProject = () => {
     const navigate = useNavigate();
-    
+
 
     const [workbook, setWorkbook] = React.useState([]);
     const [data, setData] = React.useState([]);
@@ -36,7 +37,7 @@ const CreateProject = () => {
             description: description,
         });
     };
-    
+
     const onFileSelected = (uploader) => {
         setWorkbook([]);
         setData([]);
@@ -135,9 +136,9 @@ const CreateProject = () => {
                     try {
                         if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
                             f[e.colName] = new Date(f[e.colName]).toISOString()
-                        }else if(!!f[e.colName]){
+                        } else if (!!f[e.colName]) {
                             let dateParts = f[e.colName].split(/\s*[-./]\s*/)
-                            f[e.colName] = new Date([dateParts[1],dateParts[0],dateParts[2]].join('-'))
+                            f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2]].join('-'))
                         }
                     } catch (err) {
                         messages.push({
@@ -163,8 +164,8 @@ const CreateProject = () => {
             .then((res) => {
                 openNotificationWithIcon('success', "Operation Successful", "Project created successfully");
                 navigate("/projects")
-            }).catch(e=>{
-                openNotificationWithIcon('erro', "Error", "Error creating project"+JSON.stringify(e))
+            }).catch(e => {
+                openNotificationWithIcon('erro', "Error", "Error creating project" + JSON.stringify(e))
             })
     };
 
@@ -204,7 +205,14 @@ const CreateProject = () => {
                     )
                 })}
             </Row> : null}
-
+            {!!data.length ? 
+                < >
+                    <Divider style={{ padding: "0rem 1rem 0 1rem" }}> Define Calculated Columns</Divider>
+                    <CalulatedColOptions setCalculatedColumns={setCalculatedColumns} calculatedColumns={calculatedColumns} 
+                        previewData={previewData}
+                    />
+                </>
+            : null}
             {!!data.length ?
                 <Form style={{ padding: "1rem" }} onFinish={onFinish}
                     labelCol={{
@@ -245,6 +253,8 @@ const CreateProject = () => {
                 : null}
 
             
+
+
         </>
     )
 }
