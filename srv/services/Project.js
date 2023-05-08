@@ -51,38 +51,45 @@ class Project {
         await fastify.pg.query(sqlFormat)
     }
 
-    async createProject(fastify, req, res) {
-
-        let payload = {
-            name: req.body['name'],
-            description: req.body['description'],
-            configData: req.body['configData'],
-            modifiedBy: req.body['modifiedBy'],
-            rowsAnalysed: req.body.data.length,
-            referenceTable: `Reftable_${uuid()}`,
-            referenceView: `Refview_${uuid()}`
-        }
-        let result = await prisma.Project.create({
-            data: payload
-        })
-
-        await this.createReferenceTable(fastify,payload.referenceTable,payload.configData,req.body.data);
-        await this.createReferenceView(payload.referenceView,payload.referenceTable)
-        payload ={
-            name:req.body['name'],
-            description: req.body['description'],
-            projectID:result.id,
-            configData:{
-                "layout" : [],
-                "cards" : []
-            },
-            modifiedBy:req.body['modifiedBy'],
+    async createDashboardEntry(payload,projectID){
+        let data ={
+            name:payload.name,
+            description: payload.description,
+            projectID:projectID,
+            configData:{},
+            modifiedBy:payload.modifiedBy
         }
         await prisma.Dashboard.create({
-            data: payload
+            data: data
         })
+    }
+
+    async createProjectEntry(payload,referenceTable,referenceView){
+        let data = {
+            name: payload.name,
+            description: payload.description,
+            configData: payload.configData,
+            modifiedBy: payload.modifiedBy,
+            rowsAnalysed: payload.data.length,
+            referenceTable:referenceTable ,
+            referenceView: referenceView
+        }
+        let result = await prisma.Project.create({
+            data: data
+        })
+        return result.id;
+    }
+
+    async createProject(fastify, req, res) {
+        const referenceTable = `Reftable_${uuid()}`;
+        const referenceView = `Refview_${uuid()}`;
+        await this.createReferenceTable(fastify,referenceTable,req.body.configData,req.body.data);
+        await this.createReferenceView(referenceView,referenceTable)
+        const projectID = await this.createProjectEntry(req.body,referenceTable,referenceView);
+        await this.createDashboardEntry(req.body,projectID)
         return {message:"Project Created Successfully"}
     }
+
     async getProjects(fastify, req, res) {
         const projects = await prisma.Project.findMany({
             select: {
@@ -117,23 +124,21 @@ class Project {
     }
 
     async deleteProject(fastify,req,res){
-        try{
-            await prisma.Dashboard.delete({
-                where: {
-                    projectID:req.params.id
-                }
-            })
-        }catch(e){
-
-        }
+        await prisma.Dashboard.delete({
+            where: {
+                projectID:req.params.id
+            }
+        })
         const referenceTable = await  prisma.Project.findFirst({
             where : {
                 id:req.params.id
             },
             select :{
-                referenceTable:true
+                referenceTable:true,
+                referenceView:true
             }
         });
+        await prisma.$executeRawUnsafe(` DROP VIEW "${referenceTable.referenceView}" `);
         await prisma.$executeRawUnsafe(` DROP TABLE "${referenceTable.referenceTable}" `);
         const project = await prisma.Project.delete({
             where: {

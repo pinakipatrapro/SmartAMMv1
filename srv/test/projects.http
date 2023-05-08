@@ -19,7 +19,7 @@ POST  {{route}}/createProject
 Content-Type: application/json
 
 {
-    "name": "Analysis 1", 
+    "name": "Analysis 2", 
     "data":  [
   {
     "Incident ID": "IM19004815",
@@ -136,7 +136,7 @@ Content-Type: application/json
     "MTTR": "32.76",
     "Hour": "8"
   }],
-    "description": "Analyse and transform",
+    "description": "Analyse and transform 2",
     "configData" : [
         {
             "colName": "Incident ID",
