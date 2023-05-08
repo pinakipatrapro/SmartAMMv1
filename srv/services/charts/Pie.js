@@ -1,25 +1,22 @@
 const { PrismaClient, Prisma } = require('@prisma/client');
 const prisma = new PrismaClient();
-const util = require('../utils/Util')
-class Pie{
-    toObject(data) {
-        return JSON.parse(JSON.stringify(data, (key, value) =>
-            typeof value === 'bigint'
-                ? value.toString()
-                : value // return everything else unchanged
-        ));
-    }
+const Common = require('./Common')
+class Pie extends Common{
+
     async getData(payload){
-        const viewName = await util.getViewName(payload.projectID)
+        const viewName = await this.getViewName(payload.projectID)
+        let dimensionString =this.getDimensionString([...payload.dimension,...payload.series])
+        let measureString = this.getMeasureString(payload.measure,payload.agg)
         let sqlString = 
             ` SELECT 
-                "${payload.colorField}",
-                ${payload.aggregationFunction}("${payload.colorField}")
+                ${dimensionString}
+                ${payload.measure.length && payload.dimension.length  ? ' , ':''}
+                ${measureString}
               FROM
-                (${util.getSqlString(viewName)}) AS V
-                ${util.getFilterString()}
-                ${util.getOrderByClauseString()}
-              GROUP BY "${payload.colorField}"
+                (${this.getSqlString(viewName)}) AS V
+                ${this.getFilterString()}
+                ${this.getOrderByClauseString()}
+              GROUP BY ${dimensionString}
             `;
         let  data = await prisma.$queryRawUnsafe( `${sqlString}`);
         data = this.toObject(data)
