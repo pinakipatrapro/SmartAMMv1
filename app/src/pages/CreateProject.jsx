@@ -103,6 +103,7 @@ const CreateProject = () => {
             console.log(dataType)
         });
         setPreviewData(previewData)
+        
         setData(sheetData)
 
     }
@@ -139,7 +140,11 @@ const CreateProject = () => {
                 formattedData.forEach((f, j) => {
                     try {
                         if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
-                            f[e.colName] = new Date(f[e.colName]).toISOString()
+                            if(new Date(f[e.colName])>new Date(9999-12-31)){
+                                f[e.colName] =null
+                            }else{
+                                f[e.colName] = new Date(f[e.colName]).toISOString()
+                            }
                         } else if (!!f[e.colName]) {
                             let dateParts = f[e.colName].split(/\s*[-./]\s*/);
                             if(new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
@@ -168,6 +173,7 @@ const CreateProject = () => {
                 prompt.value = values[col.id][prompt.id].value
             })
         })
+
         let payload = {
             name: values.name,
             description: values.description,
