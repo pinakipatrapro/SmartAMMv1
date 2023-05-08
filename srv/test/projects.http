@@ -19,7 +19,7 @@ POST  {{route}}/createProject
 Content-Type: application/json
 
 {
-    "name": "Analysis 2", 
+    "name": "Analysis 4", 
     "data":  [
   {
     "Incident ID": "IM19004815",
@@ -171,7 +171,7 @@ Content-Type: application/json
             "Employee Self Service",
             "Employee Self Service"
             ],
-            "enabled": true,
+            "enabled": false,
             "dataType": "Text"
         },
         {
