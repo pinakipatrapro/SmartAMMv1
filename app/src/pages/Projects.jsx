@@ -114,7 +114,7 @@ const Projects = () => {
                 bordered
                 title={() => header}
                 pagination={false}
-                scroll={{ y: "60vh" }}
+                // scroll={{ y: "60vh" }}
             />
 
         </>
