@@ -97,7 +97,10 @@ class Project {
             name:payload.name,
             description: payload.description,
             projectID:projectID,
-            configData:{},
+            configData:{
+                "layout" : [],
+                "cards" : []
+            },
             modifiedBy:payload.modifiedBy
         }
         await prisma.Dashboard.create({

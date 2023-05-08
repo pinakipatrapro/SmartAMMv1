@@ -51,7 +51,12 @@ const AppLayout = () => {
 
     return (
         <Layout>
-            <Header>
+            <Header style={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 1,
+                width: '100%',
+            }}>
                 <div className="logo" onClick={() => { navigate("/") }} >
                     <img style={{ height: "1.5rem" }} src="/assets/t-logo.png" />
                     <img style={{ height: "2.5rem", marginTop: "5px", marginRight: "2rem" }} src="/assets/smartamm.png" />
@@ -87,7 +92,7 @@ const AppLayout = () => {
                 />
 
             </Header>
-            <Content style={{ padding: '0 50px', minHeight: "85vh"}}>
+            <Content style={{ padding: '0 50px', minHeight: "85vh" }}>
                 <Breadcrumb style={{ margin: "10px 0 10px 0" }}
                     items={[
                         {
