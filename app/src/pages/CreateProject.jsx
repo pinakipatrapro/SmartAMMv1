@@ -114,7 +114,7 @@ const CreateProject = () => {
     const onFinish = (values) => {
         console.log('Success:', values);
 
-        let formattedData = [...data]
+        let formattedData = JSON.parse(JSON.stringify(data))
         //Format Data
         let messages = []
         previewData.forEach(e => {
@@ -138,11 +138,13 @@ const CreateProject = () => {
                         if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
                             f[e.colName] = new Date(f[e.colName]).toISOString()
                         } else if (!!f[e.colName]) {
-                            let dateParts = f[e.colName].split(/\s*[-./]\s*/)
+                            let dateParts = f[e.colName].split(/\s*[-./]\s*/);
+                            if(new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
+                                throw 'Invalid Date'
+                            }
                             f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2]].join('-'))
                         }
                     } catch (err) {
-                        debugger
                         messages.push({
                             row: j,
                             value: formattedData[j],
@@ -162,9 +164,6 @@ const CreateProject = () => {
                 prompt.value = values[col.id][prompt.id].value
             })
         })
-        debugger;
-
-        debugger;
         let payload = {
             name: values.name,
             description: values.description,
@@ -173,14 +172,14 @@ const CreateProject = () => {
             data: formattedData,
             calculatedCols : calculatedCols
         }
-        axios
-            .post("/api/createProject", payload)
-            .then((res) => {
-                openNotificationWithIcon('success', "Operation Successful", "Project created successfully");
-                navigate("/projects")
-            }).catch(e => {
-                openNotificationWithIcon('erro', "Error", "Error creating project" + JSON.stringify(e))
-            })
+        // axios
+        //     .post("/api/createProject", payload)
+        //     .then((res) => {
+        //         openNotificationWithIcon('success', "Operation Successful", "Project created successfully");
+        //         navigate("/projects")
+        //     }).catch(e => {
+        //         openNotificationWithIcon('erro', "Error", "Error creating project" + JSON.stringify(e))
+        //     })
     };
 
     return (
