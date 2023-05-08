@@ -45,20 +45,21 @@ class Project {
                     sqlString.push(this.getDateSqlString('month',e.prompts,e.colName))
                     break;
             }
-        })
-        return sqlString.join(',')
+        }.bind(this))
+        return sqlString.join(',')+' , '
     }
     
 
     async createReferenceView(referenceView,referenceTable,calculatedCols){
         let calculatedColString = ''
         if(calculatedCols && calculatedCols.length){
-            calculatedColString =  this.formulateCalculatedColString(calculatedCols) + ' , ';
+            calculatedColString =  this.formulateCalculatedColString(calculatedCols)
         }
         let sql = ` CREATE VIEW "${process.env.DATA_SCHEMA}"."${referenceView}" 
                         AS SELECT ${calculatedColString} 
                            * FROM "${process.env.DATA_SCHEMA}"."${referenceTable}"
                   `;
+        console.log(sql);
         await prisma.$executeRawUnsafe(`${sql}`);
     }
 
@@ -116,7 +117,8 @@ class Project {
             modifiedBy: payload.modifiedBy,
             rowsAnalysed: payload.data.length,
             referenceTable:referenceTable ,
-            referenceView: referenceView
+            referenceView: referenceView,
+            calculatedColumns:payload.calculatedColumns
         }
         let result = await prisma.Project.create({
             data: data
@@ -128,7 +130,7 @@ class Project {
         const referenceTable = `Reftable_${uuid()}`;
         const referenceView = `Refview_${uuid()}`;
         await this.createReferenceTable(fastify,referenceTable,req.body.configData,req.body.data);
-        await this.createReferenceView(referenceView,referenceTable,req.body.calculatedCols)
+        await this.createReferenceView(referenceView,referenceTable,req.body.calculatedColumns)
         const projectID = await this.createProjectEntry(req.body,referenceTable,referenceView);
         await this.createDashboardEntry(req.body,projectID)
         return {message:"Project Created Successfully"}
@@ -201,6 +203,9 @@ class Project {
                 referenceTable:true
             }
         });
+        if(!referenceTable){
+            throw new Error("Project Does not Exist")
+        }
         const data  = await prisma.$queryRawUnsafe( ` SELECT * FROM "${process.env.DATA_SCHEMA}"."${referenceTable.referenceTable}"; `);
         return data;
     }

@@ -1,8 +1,10 @@
 const { PrismaClient, Prisma } = require('@prisma/client');
 const prisma = new PrismaClient();
+require('dotenv').config()
+
 class Common{
     getSqlString(viewName){
-        return ` SELECT * FROM "${viewName}" `
+        return ` SELECT * FROM "${process.env.DATA_SCHEMA}"."${viewName}" `
     }
     
     async getViewName(projectID){
