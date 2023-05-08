@@ -118,7 +118,7 @@ class Project {
             rowsAnalysed: payload.data.length,
             referenceTable:referenceTable ,
             referenceView: referenceView,
-            calculatedColumns:payload.calculatedColumns
+            calculatedColumns:payload.calculatedCols
         }
         let result = await prisma.Project.create({
             data: data
@@ -130,7 +130,7 @@ class Project {
         const referenceTable = `Reftable_${uuid()}`;
         const referenceView = `Refview_${uuid()}`;
         await this.createReferenceTable(fastify,referenceTable,req.body.configData,req.body.data);
-        await this.createReferenceView(referenceView,referenceTable,req.body.calculatedColumns)
+        await this.createReferenceView(referenceView,referenceTable,req.body.calculatedCols)
         const projectID = await this.createProjectEntry(req.body,referenceTable,referenceView);
         await this.createDashboardEntry(req.body,projectID)
         return {message:"Project Created Successfully"}
