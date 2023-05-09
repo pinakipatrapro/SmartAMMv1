@@ -9,20 +9,18 @@ Content-Type: application/json
   "type": "chart",
   "options": {
     "metrics": [],
-    "chartType": "Bar",
+    "chartType": "WordCloud",
     "config": {
       "isStack": true,
       "agg":{
-        "Incident ID":"count",
-        "Priority":"sum"
       },
-      "projectID":"377af7e3-5356-4a2a-a840-7a36e740f623",
+      "projectID":"0622c0ab-9996-4e23-a3e3-31f1524cf79a",
       "xField": "Priority",
       "yField": "Category",
       "seriesField": "Country",
-      "dimension":["Status"],
-      "measure":["Incident ID","Priority"],
-      "series":["Country"]
+      "dimension":["Assigned to Group","Contact Media"],
+      "measure":[],
+      "series":[]
     }
   }
 }

@@ -1,6 +1,7 @@
 const { PrismaClient, Prisma } = require('@prisma/client');
 const prisma = new PrismaClient();
 const Common = require('./Common')
+
 class Bar extends Common {
 
   async getData(payload) {

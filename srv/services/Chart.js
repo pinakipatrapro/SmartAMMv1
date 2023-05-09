@@ -28,6 +28,11 @@ class Chart {
                     const objScatter = new Scatter();
                     return objScatter.getData(req.body.options.config)
                 break;
+                case "WordCloud":
+                    const WordCloud = require('./charts/WordCloud');
+                    const objWordCloud = new WordCloud();
+                    return objWordCloud.getData(req.body.options.config)
+                break;
                 default: throw new Error("Chart Type does not Exist!!!")
             }
         }

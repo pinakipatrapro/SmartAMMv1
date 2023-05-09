@@ -15,7 +15,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "prisma-init": "prisma migrate dev --name init && prisma generate"
+    "prisma-init": "prisma migrate dev --name init && prisma generate",
+    "schema":"psql -d postgresql://postgres:1234@localhost:5432/smartamm -c \"CREATE SCHEMA IF NOT EXISTS AMMDATA\""
   },
   "author": "",
   "license": "ISC",

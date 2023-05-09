@@ -9,16 +9,17 @@ datasource db {
 }
 
 model Project {
-  id             String   @id @default(uuid())
-  name           String
-  description    String?
-  configData     Json?
-  referenceTable String
-  referenceView  String
-  modifiedBy     String
-  modifiedAt     DateTime @default(now())
-  rowsAnalysed   Int      @default(0)
-  dashboard      Dashboard?
+  id                String   @id @default(uuid())
+  name              String
+  description       String?
+  configData        Json?
+  referenceTable    String
+  referenceView     String
+  modifiedBy        String
+  modifiedAt        DateTime @default(now())
+  rowsAnalysed      Int      @default(0)
+  calculatedColumns Json?
+  dashboard         Dashboard?
 }
 
 
@@ -31,6 +32,10 @@ model Dashboard {
   modifiedBy   String
   modifiedAt   DateTime @default(now())
   project      Project @relation(fields: [projectID], references: [id])
+}
+
+model testTBD{
+  id           String   @id @default(uuid())
 }
 
 

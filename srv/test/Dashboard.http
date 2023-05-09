@@ -4,8 +4,7 @@
 GET  {{route}}/getDashboards
 
 ### Get Dashboard Details
-GET  {{route}}/getDashboardDetails/30bc35a5-b318-4c15-be83-4e057a413547
-
+GET  {{route}}/getDashboardDetails/2ccbffcd-a1d4-4751-8e69-7fb5034f3451
 ### Delete Dashboard  
 GET  {{route}}/deleteDashboard/30bc35a5-b318-4c15-be83-4e057a413547
 

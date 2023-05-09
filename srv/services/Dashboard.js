@@ -59,6 +59,7 @@ class Dashboard {
                         name: true,
                         id: true,
                         configData: true,
+                        calculatedColumns:true
                     },
                 },
             }

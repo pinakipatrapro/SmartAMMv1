@@ -19,10 +19,14 @@ fastify.register(require('@fastify/postgres'), {
     connectionString: process.env.DATABASE_URL
 })
 
+async function createSchema(){
+    await fastify.pg.query(`CREATE SCHEMA IF NOT EXISTS "${process.env.DATA_SCHEMA}"`)
+}
 
 fastify.listen({ port: process.env.PORT }, function (err, address) {
     if (err) {
         fastify.log.error(err)
         process.exit(1)
     }
+    createSchema()
 })
