@@ -113,19 +113,19 @@ const AddChart = (props) => {
                 ChartDataCreator.validateChartData(evt, props.setSelectedCard, props.selectedCard)
             }}>
                 <Form.Item label="Chart Title" name="chartTitle">
-                    <Input defaultValue={props.selectedCard.title} />
+                    <Input value={props.selectedCard.title} />
                 </Form.Item>
 
 
                 {props.selectedCard.type == 'chart' ? <>
                     <Form.Item label="Select Chart Type" name="chartType" >
-                        <Select options={chartTypes} defaultValue={props.selectedCard.options.chartType} />
+                        <Select options={chartTypes} value={props.selectedCard.options.chartType} />
                     </Form.Item>
                     <Form.Item label="Select Dimension(s)" name="dimension">
-                        <Select mode="multiple" options={columnData} value={props.selectedCard.options.config.dimension} />
+                        <Select mode="multiple" options={columnData} defaultValue={props.selectedCard.options.config.dimension} />
                     </Form.Item>
                     <Form.Item label="Select Measure(s)" name="measure">
-                        <Select mode="multiple" options={columnData} onChange={onMeasureChange} value={props.selectedCard.options.config.measure} />
+                        <Select mode="multiple" options={columnData} onChange={onMeasureChange} defaultValue={props.selectedCard.options.config.measure} />
                     </Form.Item>
                     <Collapse size="small" style={{ marginBottom: "15px" }}>
                         <Panel header={`Define Column Aggregations for Measures (${selectedMeasures.length})`}>
