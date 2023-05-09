@@ -65,6 +65,8 @@ const AddChart = (props) => {
         });
         formattedDashboardDetails.configData.cards.splice(cardIndex, 1, props.selectedCard)
         props.setDashboardDetails(formattedDashboardDetails)
+        closeEditChartDialog()
+
     }
 
 
@@ -163,18 +165,18 @@ const AddChart = (props) => {
                     <Form.Item label="Select Series(s)" name="series" initialValue={props.selectedCard.options.config.series}>
                         <Select mode="multiple" options={columnData} />
                     </Form.Item>
-                    
+
                     <Space direction="horizontal" >
                         <Form.Item label="Stacked" name="isStack" >
-                            <Switch defaultChecked={props.selectedCard.options.config.isStack}/>
+                            <Switch defaultChecked={props.selectedCard.options.config.isStack} />
                         </Form.Item>
                         <Form.Item label="Grouped" name="isGroup" >
-                            <Switch defaultChecked={props.selectedCard.options.config.isGroup}/>
+                            <Switch defaultChecked={props.selectedCard.options.config.isGroup} />
                         </Form.Item>
                         <Form.Item label="Percent" name="isPercent" >
-                            <Switch defaultChecked={props.selectedCard.options.config.isPercent}/>
+                            <Switch defaultChecked={props.selectedCard.options.config.isPercent} />
                         </Form.Item>
-                    </Space> 
+                    </Space>
 
                 </>
                     : null}
