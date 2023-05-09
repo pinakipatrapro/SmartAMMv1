@@ -23,6 +23,7 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     const [dashboardDetails, setDashboardDetails] = useState(null)
+    const [tempLayout, setTempLayout] = useState(null)
 
     const fetchDashboard = async () => {
         axios
@@ -38,7 +39,11 @@ const Dashboard = () => {
             e.options.config.projectID = dashboardDetails.project.id
             try { delete e.options.config.data } catch (e) { }
         });
-
+        formattedDashboardDetails.configData.layout=tempLayout.map(e=>{
+            e.id = e.i
+            delete e.i;
+            return e
+        })
         let payload = {
             layout: formattedDashboardDetails.configData.layout,
             cards: formattedDashboardDetails.configData.cards
@@ -115,13 +120,7 @@ const Dashboard = () => {
                 className="layout"
                 rowHeight={50}
                 onLayoutChange={(layout) => {
-                    let tempDashboardDetails = JSON.parse(JSON.stringify(dashboardDetails))
-                    layout.forEach(e => {
-                        e.id = e.i;
-                        delete e.i;
-                    })
-                    tempDashboardDetails.configData.layout = layout
-                    setDashboardDetails(tempDashboardDetails)
+                    setTempLayout(layout)
                 }}
                 isDraggable={route.mode == 'edit'}
                 isResizable={route.mode == 'edit'}
