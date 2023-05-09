@@ -6,6 +6,31 @@ class Common{
     getSqlString(viewName){
         return ` SELECT * FROM "${process.env.DATA_SCHEMA}"."${viewName}" `
     }
+
+    getStopWords(){
+        return ["the", "a", "to", "if", "is", "it", "of", "and", "or", "an", "as", "i", "me", "my", 
+        "we", "our", "ours", "you", "your", "yours", "he", "she", "him", "his", "her", "hers", "its", "they", "them", 
+        "their", "what", "which", "who", "whom", "this", "that", "am", "are", "was", "were", "be", "been", "being",
+        "have", "has", "had", "do", "does", "did", "but", "at", "by", "with", "from", "here", "when", "where", "how",
+        "all", "any", "both", "each", "few", "more", "some", "such", "no", "nor", "too", "very", "can", "will", "just"]
+    }
+
+    getWordCloudSelectString(dimensions){
+        let dimensionString = dimensions.map(e=> ` coalesce("${e}",'') `).join(`|| ' ' ||`)
+        return dimensionString
+    }
+
+    getWordCloudSql(dimensions,viewName){
+        let dimensionString = this.getWordCloudSelectString(dimensions);
+        return `
+            WITH words AS (
+                SELECT unnest(string_to_array(lower(${dimensionString}), ' ')) AS word
+                FROM "${process.env.DATA_SCHEMA}"."${viewName}"
+            )
+            SELECT word, count(*) FROM words
+            GROUP BY word
+        `
+    }
     
     async getViewName(projectID){
         const referenceView = await  prisma.Project.findFirst({
