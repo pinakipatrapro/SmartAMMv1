@@ -4,31 +4,39 @@ import axios from "axios"
 
 
 
-
 let commonProps = {}
 const ChartDataCreator = {
 
-    validateChartData: async (settings, setSettings,prevSettings) => {
+    validateChartData: async (settings, setSettings, prevSettings) => {
         let commonProps = {
             isGroup: settings.isGroup,
             isStack: settings.isStacked,
             isPercent: settings.isPercent,
-            measure:settings.measure,
-            dimension:settings.dimension,
-            series:settings.series,
-            agg:settings.agg,
-            projectID : prevSettings.options.config.projectID
+            measure: settings.measure,
+            dimension: settings.dimension,
+            series: settings.series,
+            agg: settings.agg,
+            projectID: prevSettings.options.config.projectID
         }
+
         
         let configData = await chart[settings.chartType](settings, commonProps);
+
+
+        configData.id = prevSettings.id
+
         setSettings(configData)
     }
 
 }
 
-const getData = async(settings)=>{
-    let res = await axios.post("/api/getChartData",settings);
-    return res.data
+const getData = async (settings) => {
+    try {
+        let res = await axios.post("/api/getChartData", settings);
+        return res.data
+    } catch (e) {
+        return []
+    }
 }
 
 const chart = {
@@ -47,7 +55,7 @@ const chart = {
                 }
             }
         };
-        configValue.options.config.data =await getData(configValue)
+        configValue.options.config.data = await getData(configValue)
         return configValue
     },
     // Line: (settings, commonProps) => {
@@ -159,10 +167,7 @@ const chart = {
 }
 
 
-const fetchData = async (settings) => {
-    // Axisos Settings push and get data
 
-}
 
 
 
