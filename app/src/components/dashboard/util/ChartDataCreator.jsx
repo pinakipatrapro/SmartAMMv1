@@ -10,7 +10,7 @@ const ChartDataCreator = {
     validateChartData: async (settings, setSettings, prevSettings) => {
         let commonProps = {
             isGroup: settings.isGroup,
-            isStack: settings.isStacked,
+            isStack: settings.isStack,
             isPercent: settings.isPercent,
             measure: settings.measure,
             dimension: settings.dimension,

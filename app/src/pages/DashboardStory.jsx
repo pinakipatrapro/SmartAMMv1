@@ -114,7 +114,10 @@ const Dashboard = () => {
                 metrics: [],
                 chartType: null,
                 config: {
-                    projectID: dashboardDetails.project.id
+                    projectID: dashboardDetails.project.id,
+                    measure : [],
+                    dimension:[],
+                    series:[]
                 }
             }
         })

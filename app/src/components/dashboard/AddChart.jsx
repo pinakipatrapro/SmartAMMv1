@@ -91,13 +91,13 @@ const AddChart = (props) => {
         return null
     }
 
-    
+
     return (
         <Drawer
             width={600}
             extra={
                 <Space>
-                    <Button type="primary" onClick={addChartToDashboard}>
+                    <Button type="primary" onClick={addChartToDashboard} htmlType="submit" form="cardForm">
                         Save
                     </Button>
                 </Space>
@@ -108,55 +108,73 @@ const AddChart = (props) => {
                 <KPICard settings={props.selectedCard} isInGrid={false} />
                 <Button form="cardForm" htmlType="submit" style={{ textAlign: "center", width: "100%" }} type="text" icon={<ReloadOutlined />}>Refresh</Button>
             </Space>
-            <Form style={{ padding: "1rem" }} id="cardForm" onFinish={(evt) => {
+            <Form inial style={{ padding: "1rem" }} id="cardForm" onFinish={(evt) => {
                 debugger
                 ChartDataCreator.validateChartData(evt, props.setSelectedCard, props.selectedCard)
             }}>
-                <Form.Item label="Chart Title" name="chartTitle">
-                    <Input value={props.selectedCard.title} />
+                <Form.Item label="Chart Title" name="chartTitle" initialValue={props.selectedCard.title} >
+                    <Input />
                 </Form.Item>
 
 
                 {props.selectedCard.type == 'chart' ? <>
-                    <Form.Item label="Select Chart Type" name="chartType" >
-                        <Select options={chartTypes} value={props.selectedCard.options.chartType} />
+                    <Form.Item label="Select Chart Type" name="chartType" initialValue={props.selectedCard.options.chartType} >
+                        <Select options={chartTypes} />
                     </Form.Item>
-                    <Form.Item label="Select Dimension(s)" name="dimension">
-                        <Select mode="multiple" options={columnData} defaultValue={props.selectedCard.options.config.dimension} />
-                    </Form.Item>
-                    <Form.Item label="Select Measure(s)" name="measure">
-                        <Select mode="multiple" options={columnData} onChange={onMeasureChange} defaultValue={props.selectedCard.options.config.measure} />
-                    </Form.Item>
-                    <Collapse size="small" style={{ marginBottom: "15px" }}>
-                        <Panel header={`Define Column Aggregations for Measures (${selectedMeasures.length})`}>
-                            <>{
-                                selectedMeasures.map(e => {
-                                    return (
-                                        <Form.Item name={['agg', e]} label={e}>
-                                            <Select size="small" defaultActiveFirstOption options={aggregationOptions} style={{ width: "12rem" }} />
-                                        </Form.Item>
-                                    )
-                                })
-                            }
-                            </>
-                        </Panel>
-                    </Collapse>
-
-                    {/* <Form.Item label="Select Series(s)" name="series">
+                    <Form.Item label="Select Dimension(s)" name="dimension" initialValue={props.selectedCard.options.config.dimension}>
                         <Select mode="multiple" options={columnData} />
                     </Form.Item>
+                    <Form.Item label="Select Measure(s)" name="measure" initialValue={props.selectedCard.options.config.measure}>
+                        <Select mode="multiple" options={columnData} onChange={onMeasureChange} />
+                    </Form.Item>
+                    {!!selectedMeasures.length ?
+                        <Collapse size="small" style={{ marginBottom: "15px" }}>
+                            <Panel header={`Define Column Aggregations for Measures (${selectedMeasures.length})`}>
+                                <>{
+                                    selectedMeasures.map(e => {
+                                        return (
+                                            <Form.Item name={['agg', e]} label={e} initialValue>
+                                                <Select size="small" defaultActiveFirstOption options={aggregationOptions} style={{ width: "12rem" }} />
+                                            </Form.Item>
+                                        )
+                                    })
+                                }
+                                </>
+                            </Panel>
+                        </Collapse>
+                        :
+                        <Collapse size="small" style={{ marginBottom: "15px" }}>
+                            <Panel header={`Define Column Aggregations for Measures (${props.selectedCard.options.config.measure.length})`}>
+                                <>{
+                                    props.selectedCard.options.config.measure.map(e => {
+                                        return (
+                                            <Form.Item name={['agg', e]} label={e} initialValue={props.selectedCard.options.config.agg ? props.selectedCard.options.config.agg[e] : null}>
+                                                <Select size="small" defaultActiveFirstOption options={aggregationOptions} style={{ width: "12rem" }} />
+                                            </Form.Item>
+                                        )
+                                    })
+                                }
+                                </>
+                            </Panel>
+                        </Collapse>
+                    }
 
-                    <Space direction="horizontal">
-                        <Form.Item label="Stacked" name="isStacked">
-                            <Switch />
+
+                    <Form.Item label="Select Series(s)" name="series" initialValue={props.selectedCard.options.config.series}>
+                        <Select mode="multiple" options={columnData} />
+                    </Form.Item>
+                    
+                    <Space direction="horizontal" >
+                        <Form.Item label="Stacked" name="isStack" >
+                            <Switch defaultChecked={props.selectedCard.options.config.isStack}/>
                         </Form.Item>
-                        <Form.Item label="Grouped" name="isGroup">
-                            <Switch />
+                        <Form.Item label="Grouped" name="isGroup" >
+                            <Switch defaultChecked={props.selectedCard.options.config.isGroup}/>
                         </Form.Item>
-                        <Form.Item label="Percent" name="isPercent">
-                            <Switch />
+                        <Form.Item label="Percent" name="isPercent" >
+                            <Switch defaultChecked={props.selectedCard.options.config.isPercent}/>
                         </Form.Item>
-                    </Space> */}
+                    </Space> 
 
                 </>
                     : null}
