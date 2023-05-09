@@ -35,7 +35,7 @@ const AppLayout = () => {
                 name = "Create Project"
                 break;
             case 'dashboardStory':
-                name = `Dashboard ${params}`
+                name = `Dashboard`
                 break;
             default:
                 name = ""
