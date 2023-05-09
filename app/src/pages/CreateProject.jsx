@@ -140,7 +140,7 @@ const CreateProject = () => {
                 formattedData.forEach((f, j) => {
                     try {
                         if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
-                            if(new Date(f[e.colName])>new Date(9999-12-31)){
+                            if(new Date(f[e.colName])>new Date('9999-12-31')){
                                 f[e.colName] =null
                             }else{
                                 f[e.colName] = new Date(f[e.colName]).toISOString()
