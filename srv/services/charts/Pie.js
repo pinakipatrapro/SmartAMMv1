@@ -23,7 +23,6 @@ class Pie extends Common{
               GROUP BY ${dimensionString}
             `;
         let  data = await prisma.$queryRawUnsafe( `${sqlString}`);
-        data = this.toObject(data)
         return data;
     }
 }

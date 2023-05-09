@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-ro
 import millify from "millify";
 import { Column, Area, Line, Bar, DualAxes, Pie, WordCloud } from '@ant-design/charts';
 import axios from "axios"
+
 const chartsMap = { Column, Area, Line, Bar, DualAxes, WordCloud, Pie };
 
 
@@ -44,6 +45,23 @@ const KPICard = (props) => {
             }
             const ChartType = chartsMap[props.settings.options.chartType]
             props.settings.options.config.data = data;
+
+            props.settings.options.config.theme = {
+                // styleSheet: {
+                //     paletteQualitative10: [
+                //         '#f02688',
+                //         '#626681',
+                //         '#FFC100',
+                //         '#9FB40F',
+                //         '#76523B',
+                //         '#DAD5B5',
+                //         '#0E8E89',
+                //         '#E19348',
+                //         '#F383A2',
+                //         '#247FEA',
+                //     ]
+                // }
+            }
             return (
                 <ChartType  {...props.settings.options.config} />
             )
@@ -53,7 +71,7 @@ const KPICard = (props) => {
 
     const fetchData = async (config) => {
         axios
-            .post("/api/getChartData",props.settings)
+            .post("/api/getChartData", props.settings)
             .then((res) => {
                 setData(res.data)
             })
@@ -61,9 +79,9 @@ const KPICard = (props) => {
 
     useEffect(() => {
         fetchData(props.settings)
-    }, [])
+    }, [props.settings])
 
-    if(!data){
+    if (!data) {
         return (<>Loading Data ...</>)
     }
     return (

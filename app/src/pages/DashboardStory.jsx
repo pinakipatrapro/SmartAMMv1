@@ -11,7 +11,7 @@ import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
 import KPICard from "../components/dashboard/KPICard";
-import AddChart from "../components/dashboard/AddChart"
+import AddChart from "../components/dashboard/EditChartDrawer"
 
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -49,7 +49,6 @@ const Dashboard = () => {
             layout: formattedDashboardDetails.configData.layout,
             cards: formattedDashboardDetails.configData.cards
         }
-        debugger
         axios
             .post("/api/updateDashboardConfig/" + route.id, payload)
             .then((res) => {
@@ -67,16 +66,23 @@ const Dashboard = () => {
     }
 
 
-    const onDeleteCard = (cardIndex) => {
+    const onDeleteCard = (cardID) => {
         let formattedDashboardDetails = JSON.parse(JSON.stringify(dashboardDetails))
-        formattedDashboardDetails.configData.layout.splice(cardIndex, 1)
-        formattedDashboardDetails.configData.cards.splice(cardIndex, 1)
+
+        formattedDashboardDetails.configData.layout.splice(
+            formattedDashboardDetails.configData.layout.findIndex(e => { return e.id == cardID })
+            , 1)
+
+        formattedDashboardDetails.configData.cards.splice(
+            formattedDashboardDetails.configData.cards.findIndex(e => { return e.id == cardID })
+            , 1)
+
         setDashboardDetails(formattedDashboardDetails)
     }
 
-    const editChart = (cardIndex) => {
+    const editChart = (cardID) => {
         let formattedDashboardDetails = JSON.parse(JSON.stringify(dashboardDetails))
-        setSelectedCard(formattedDashboardDetails.configData.cards[cardIndex])
+        setSelectedCard(formattedDashboardDetails.configData.cards.find(e => { return e.id == cardID }))
         // let selectedCard = { ...cards[cardIndex] }
         // setChartSettings(selectedCard)
         // setChartEditMode(true)
@@ -107,17 +113,17 @@ const Dashboard = () => {
             })
         }
         formattedDashboardDetails.configData.cards.push({
-            title: "My New Chart "+(formattedDashboardDetails.configData.cards.length+1),
+            title: "My New Chart " + (formattedDashboardDetails.configData.cards.length + 1),
             type: "chart",
-            id:cardID,
+            id: cardID,
             options: {
                 metrics: [],
                 chartType: null,
                 config: {
                     projectID: dashboardDetails.project.id,
-                    measure : [],
-                    dimension:[],
-                    series:[]
+                    measure: [],
+                    dimension: [],
+                    series: []
                 }
             }
         })
@@ -135,7 +141,7 @@ const Dashboard = () => {
                 <Tag color="magenta" style={{ marginLeft: "2rem" }}>Project : {dashboardDetails.project.name}</Tag>
                 <Space style={{ float: 'right' }}>
                     {route.mode == 'view' ? <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => editStory(true)}  ></Button> : null}
-                    {route.mode == 'edit' ? <Button type="primary" shape="round"  icon={<PlusOutlined />} onClick={() => { addCard(true) }} >Add Chart</Button> : null}
+                    {route.mode == 'edit' ? <Button type="primary" shape="round" icon={<PlusOutlined />} onClick={() => { addCard(true) }} >Add Chart</Button> : null}
                     {route.mode == 'edit' ? <Button type="default" shape="round" icon={<SaveOutlined />} onClick={saveDashboardConfig} >Save </Button> : null}
                     {route.mode == 'edit' ? <Button type="default" shape="circle" icon={<CloseOutlined />} onClick={() => editStory(false)} ></Button> : null}
                 </Space>
@@ -160,10 +166,10 @@ const Dashboard = () => {
                                 <KPICard settings={dashboardDetails.configData.cards.find(f => { return f.id == e.id })}
                                     mode={route.mode} isInGrid={true}
                                     onDelete={() => {
-                                        onDeleteCard(i)
+                                        onDeleteCard(e.id)
                                     }}
                                     onEdit={() => {
-                                        editChart(i)
+                                        editChart(e.id)
                                     }}
                                 />
                             </div>
@@ -172,23 +178,23 @@ const Dashboard = () => {
                 }
             </ResponsiveGridLayout>
             {dashboardDetails ?
-                <AddChart 
+                <AddChart
                     selectedCard={selectedCard}
                     setSelectedCard={setSelectedCard}
                     dashboardDetails={dashboardDetails}
                     setDashboardDetails={setDashboardDetails}
-                    // newChart={newChart}
-                    // openAddChart={openAddChart}
-                    // // addChart={addChart}
-                    // dashboardDetails={dashboardDetails}
-                    // setDashboardDetails={setDashboardDetails}
-                    // positions={positions}
-                    // setPositions={setPositions}
-                    // cards={cards}
-                    // setCards={setCards}
-                    // settings={chartSettings}
-                    // setSettings={setChartSettings}
-                    // isEditMode={chartEditMode}
+                // newChart={newChart}
+                // openAddChart={openAddChart}
+                // // addChart={addChart}
+                // dashboardDetails={dashboardDetails}
+                // setDashboardDetails={setDashboardDetails}
+                // positions={positions}
+                // setPositions={setPositions}
+                // cards={cards}
+                // setCards={setCards}
+                // settings={chartSettings}
+                // setSettings={setChartSettings}
+                // isEditMode={chartEditMode}
                 />
                 : null}
         </div>

@@ -19,7 +19,7 @@ const ChartDataCreator = {
             projectID: prevSettings.options.config.projectID
         }
 
-        
+
         let configData = await chart[settings.chartType](settings, commonProps);
 
 
@@ -30,14 +30,6 @@ const ChartDataCreator = {
 
 }
 
-const getData = async (settings) => {
-    try {
-        let res = await axios.post("/api/getChartData", settings);
-        return res.data
-    } catch (e) {
-        return []
-    }
-}
 
 const chart = {
     Bar: async (settings, commonProps) => {
@@ -55,115 +47,110 @@ const chart = {
                 }
             }
         };
-        configValue.options.config.data = await getData(configValue)
         return configValue
     },
-    // Line: (settings, commonProps) => {
-    //     let configValue = {
-    //         title: settings.chartTitle,
-    //         type: "chart",
-    //         options: {
-    //             metrics: [],
-    //             chartType: "Line",
-    //             config: {
-    //                 data: data,
-    //                 xField: settings.dimension[0],
-    //                 yField: settings.measure[0],
-    //                 seriesField: !!settings.series ? settings.series[0] : null
-    //             }
-    //         }
+    Line: (settings, commonProps) => {
+        let configValue = {
+            title: settings.chartTitle,
+            type: "chart",
+            options: {
+                metrics: [],
+                chartType: "Line",
+                config: {
+                    ...commonProps,
+                    xField: settings.dimension[0],
+                    yField: settings.measure[0],
+                    seriesField: !!settings.series ? settings.series[0] : null
+                }
+            }
 
 
-    //     };
-    //     return configValue
-    // },
-    // Column: (settings, commonProps) => {
-    //     let configValue = {
-    //         title: settings.chartTitle,
-    //         type: "chart",
-    //         options: {
-    //             metrics: [],
-    //             chartType: "Column",
-    //             config: {
-    //                 data: data,
-    //                 ...commonProps,
-    //                 xField: settings.dimension[0],
-    //                 yField: settings.measure[0],
-    //                 seriesField: !!settings.series ? settings.series[0] : null
-    //             }
-    //         }
+        };
+        return configValue
+    },
+    Column: (settings, commonProps) => {
+        let configValue = {
+            title: settings.chartTitle,
+            type: "chart",
+            options: {
+                metrics: [],
+                chartType: "Column",
+                config: {
+                    ...commonProps,
+                    xField: settings.dimension[0],
+                    yField: settings.measure[0],
+                    seriesField: !!settings.series ? settings.series[0] : null
+                }
+            }
 
 
-    //     };
-    //     return configValue
-    // },
-    // Area: (settings, commonProps) => {
-    //     let configValue = {
-    //         title: settings.chartTitle,
-    //         type: "chart",
-    //         options: {
-    //             metrics: [],
-    //             chartType: "Area",
-    //             config: {
-    //                 data: data,
-    //                 ...commonProps,
-    //                 xField: settings.dimension[0],
-    //                 yField: settings.measure[0],
-    //                 seriesField: !!settings.series ? settings.series[0] : null
-    //             }
-    //         }
+        };
+        return configValue
+    },
+    Area: (settings, commonProps) => {
+        let configValue = {
+            title: settings.chartTitle,
+            type: "chart",
+            options: {
+                metrics: [],
+                chartType: "Area",
+                config: {
+                    ...commonProps,
+                    xField: settings.dimension[0],
+                    yField: settings.measure[0],
+                    seriesField: !!settings.series ? settings.series[0] : null
+                }
+            }
 
 
-    //     };
-    //     return configValue
-    // }
-    // ,
-    // Pie: (settings, commonProps) => {
-    //     let configValue = {
-    //         title: settings.chartTitle,
-    //         type: "chart",
-    //         options: {
-    //             metrics: [],
-    //             chartType: "Pie",
-    //             config: {
-    //                 appendPadding: 10,
-    //                 ...commonProps,
-    //                 data: data,
-    //                 colorField: settings.dimension[0],
-    //                 angleField: settings.measure[0],
-    //                 seriesField: !!settings.series ? settings.series[0] : null,
-    //                 radius: 1,
-    //                 innerRadius: 0.6
-    //             }
-    //         }
+        };
+        return configValue
+    }
+    ,
+    Pie: (settings, commonProps) => {
+        let configValue = {
+            title: settings.chartTitle,
+            type: "chart",
+            options: {
+                metrics: [],
+                chartType: "Pie",
+                config: {
+                    appendPadding: 10,
+                    ...commonProps,
+                    colorField: settings.dimension[0],
+                    angleField: settings.measure[0],
+                    seriesField: !!settings.series ? settings.series[0] : null,
+                    radius: 1,
+                    innerRadius: 0.6
+                }
+            }
 
 
-    //     };
-    //     return configValue
-    // },
-    // WordCloud: (settings, commonProps) => {
-    //     let configValue = {
-    //         title: settings.chartTitle,
-    //         type: "chart",
-    //         options: {
-    //             metrics: [],
-    //             chartType: "WordCloud",
-    //             config: {
-    //                 ...commonProps,
-    //                 data: data,
-    //                 wordField: settings.dimension[0],
-    //                 colorField: settings.dimension[0],
-    //                 weightField: settings.measure[0],
-    //                 seriesField: !!settings.series ? settings.series[0] : null,
-    //                 radius: 1,
-    //                 innerRadius: 0.6
-    //             }
-    //         }
+        };
+        return configValue
+    },
+    WordCloud: (settings, commonProps) => {
+        let configValue = {
+            title: settings.chartTitle,
+            type: "chart",
+            options: {
+                metrics: [],
+                chartType: "WordCloud",
+                config: {
+                    ...commonProps,
+                    wordField: settings.dimension[0],
+                    colorField: settings.dimension[0],
+                    weightField: settings.measure[0],
+                    seriesField: !!settings.series ? settings.series[0] : null,
+                    radius: 1,
+                    innerRadius: 0.6
+                }
+            }
 
 
-    //     };
-    //     return configValue
-    // }
+        };
+        return configValue
+    }
 }
 
 

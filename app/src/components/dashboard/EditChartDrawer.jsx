@@ -12,6 +12,8 @@ import {
 } from '@ant-design/icons';
 
 import ChartDataCreator from "./util/ChartDataCreator";
+import EditChartLegend from "./util/EditChartLegend";
+
 const { Panel } = Collapse;
 
 
@@ -50,13 +52,20 @@ const updateJSON = (data, mods) => {
 }
 
 
-const AddChart = (props) => {
+const EditChartDrawer = (props) => {
+    let calculatedCols = props.dashboardDetails.project.calculatedColumns.map(e=>{
+        return{
+            label: `${e.colName} (${e.dataType})`,
+            value: e.colName
+        }
+    })
     let columnData = props.dashboardDetails.project.configData.filter(e => { return e.enabled }).map(e => {
         return {
             label: `${e.colName} (${e.dataType})`,
             value: e.colName
         }
     })
+    columnData = [...columnData,...calculatedCols];
 
     const addChartToDashboard = () => {
         let formattedDashboardDetails = JSON.parse(JSON.stringify(props.dashboardDetails));
@@ -107,11 +116,10 @@ const AddChart = (props) => {
             title='Edit Chart' placement="right" open={!!props.selectedCard} onClose={closeEditChartDialog}>
             <Space direction="vertical" style={{ height: "400px", width: "100%" }}>
                 <Typography.Paragraph>Configure the card properties here</Typography.Paragraph>
-                <KPICard settings={props.selectedCard} isInGrid={false} />
+                <KPICard settings={props.selectedCard} isInGrid={false} mode='view'/>
                 <Button form="cardForm" htmlType="submit" style={{ textAlign: "center", width: "100%" }} type="text" icon={<ReloadOutlined />}>Refresh</Button>
             </Space>
             <Form inial style={{ padding: "1rem" }} id="cardForm" onFinish={(evt) => {
-                debugger
                 ChartDataCreator.validateChartData(evt, props.setSelectedCard, props.selectedCard)
             }}>
                 <Form.Item label="Chart Title" name="chartTitle" initialValue={props.selectedCard.title} >
@@ -177,6 +185,7 @@ const AddChart = (props) => {
                             <Switch defaultChecked={props.selectedCard.options.config.isPercent} />
                         </Form.Item>
                     </Space>
+                    <EditChartLegend selectedCard={props.selectedCard}/>
 
                 </>
                     : null}
@@ -191,4 +200,4 @@ const AddChart = (props) => {
 }
 
 
-export default AddChart
+export default EditChartDrawer
