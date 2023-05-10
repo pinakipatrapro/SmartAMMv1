@@ -23,6 +23,11 @@ class Chart {
                     const objColumn = new Column();
                     return objColumn.getData(req.body.options.config)
                 break;
+                case "Area":
+                    const Area = require('./charts/Area');
+                    const objArea = new Area();
+                    return objArea.getData(req.body.options.config)
+                break;
                 case "Scatter":
                     const Scatter = require('./charts/Scatter');
                     const objScatter = new Scatter();

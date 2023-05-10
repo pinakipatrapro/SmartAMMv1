@@ -1,0 +1,6 @@
+@route = http://127.0.0.1:4004
+
+### Get Home Summary
+GET  {{route}}/home
+
+

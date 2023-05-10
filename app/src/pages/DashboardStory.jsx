@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { List, Button, Divider, Input, Statistic, Typography, Avatar, Tag, Space, Drawer } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined, createFromIconfontCN, SaveOutlined, CloseOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined, createFromIconfontCN, SaveOutlined, CloseOutlined, WindowsFilled } from '@ant-design/icons';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios"
 import { Responsive, WidthProvider } from "react-grid-layout";
@@ -52,7 +52,7 @@ const Dashboard = () => {
         axios
             .post("/api/updateDashboardConfig/" + route.id, payload)
             .then((res) => {
-
+                editStory(false)
             })
     }
 

@@ -138,12 +138,13 @@ const chart = {
                 chartType: "WordCloud",
                 config: {
                     ...commonProps,
-                    wordField: settings.dimension[0],
-                    colorField: settings.dimension[0],
-                    weightField: settings.measure[0],
+                    wordField: "word",
+                    colorField: "word",
+                    weightField: "count",
                     seriesField: !!settings.series ? settings.series[0] : null,
-                    radius: 1,
-                    innerRadius: 0.6
+                    wordStyle: {
+                        rotation: 0
+                    },
                 }
             }
 

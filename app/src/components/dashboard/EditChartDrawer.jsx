@@ -35,7 +35,6 @@ const chartTypes = [
     { value: 'Bar', label: 'Bar Chart' },
     { value: 'Line', label: 'Line Chart' },
     { value: 'Pie', label: 'Pie/Donught Chart' },
-    { value: 'DualAxes', label: 'DualAxes Chart' },
     { value: 'WordCloud', label: 'Word Cloud Chart' },
 
 ]
@@ -185,7 +184,7 @@ const EditChartDrawer = (props) => {
                             <Switch defaultChecked={props.selectedCard.options.config.isPercent} />
                         </Form.Item>
                     </Space>
-                    <EditChartLegend selectedCard={props.selectedCard}/>
+                    {/* <EditChartLegend selectedCard={props.selectedCard}/> */}
 
                 </>
                     : null}

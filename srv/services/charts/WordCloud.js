@@ -10,6 +10,7 @@ class WordCloud extends Common {
         let stopWords = this.getStopWords();
         let result = data.filter(e=>!stopWords.includes(e.word) )
         result = this.toObject(result)
+        result = result.filter(e=>{return e.count >10})
         return result;
     }
 
