@@ -52,12 +52,11 @@ const Dashboard = () => {
                     style={{margin:"10px"}}
                     actions={[
                         <Button icon={<LineChartOutlined />} type='link' onClick={() => { navigate(`/dashboardStory/${item.id}/view` )}} >View Dashboard</Button>,
-                        <Button type="text" icon={<EditOutlined />} />,
-                        <Button danger type="text" icon={<DeleteOutlined />} />
+                        <Button type="text" icon={<EditOutlined />} onClick={() => { navigate(`/dashboardStory/${item.id}/edit` )}} />,
                     ]}
                 >
                     <List.Item.Meta
-                        title={<>{item.name}   <Tag color="magenta">Project : {item.project.name}</Tag></>}
+                        title={<>{item.name} </>}
                         description={item.description}
                     />
                     <div>
