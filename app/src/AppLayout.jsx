@@ -1,6 +1,7 @@
-import { Breadcrumb, Layout, Menu, theme, Typography } from 'antd';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { Breadcrumb, Layout, Menu, theme, Tooltip, Typography,Button } from 'antd';
+import { AppstoreOutlined, PoweroffOutlined , SettingOutlined } from '@ant-design/icons';
 import { AppstoreAddOutlined, FundOutlined, UserOutlined, HomeOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from "react";
 
 import { Avatar, Space } from 'antd';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
@@ -11,12 +12,32 @@ import Dashboard from "./pages/Dashboard";
 import CreateProject from "./pages/CreateProject";
 import DashboardStory from "./pages/DashboardStory";
 
+import { useKeycloak } from '@react-keycloak/web'
+
+
 const { Title } = Typography;
 const { Header, Content, Footer } = Layout;
 
 
 
+
 const AppLayout = () => {
+
+    const { keycloak, initialized } = useKeycloak();
+    const [profile, setProfile] = React.useState([]);
+
+    useEffect(() => {
+        setTimeout(e => {
+            keycloak.loadUserInfo()
+                .then(e => {
+                    setProfile(e)
+                })
+        }, 3000)
+    }, []);
+
+    const userLogout = () => {
+        keycloak.logout()
+    }
     const pathFormatter = (path) => {
         let routePath = path.split('/')[1]
         let params = path.split('/')[2];
@@ -62,7 +83,9 @@ const AppLayout = () => {
                     <img style={{ height: "2.5rem", marginTop: "5px", marginRight: "2rem" }} src="/assets/smartamm.png" />
                 </div>
                 <div className="right-toolbar" >
-                    <Avatar size={32} style={{ backgroundColor: "#ffffff55", verticalAlign: 'middle' }} src="https://randomuser.me/api/portraits/men/41.jpg" icon={<UserOutlined />} />
+                    <Tooltip title={`Logout : ${profile.name}`} >
+                        <Button type="text" danger icon={<PoweroffOutlined/>} onClick={userLogout} ></Button>
+                    </Tooltip>
                 </div>
                 <Menu
                     style={{ width: "auto" }}
