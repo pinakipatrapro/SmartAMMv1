@@ -1,6 +1,6 @@
 
 
-import React, { useState, useEffect } from "react";
+import React, { useState,useRef, useEffect } from "react";
 import { Card, Divider, Button, Statistic, Space, Popover } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
@@ -19,6 +19,8 @@ const chartsMap = { Column, Area, Line, Bar, DualAxes, WordCloud, Pie };
 
 const KPICard = (props) => {
     const [data, setData] = React.useState([])
+    const ref = useRef(null)
+
 
     let getCardContent = () => {
         if (props.settings.type == "kpi") {
@@ -88,14 +90,14 @@ const KPICard = (props) => {
     }
     return (
         <Card className={props.isInGrid ? "cardFill" : "chartCardHeight"} size="small"
-            title={props.settings.title}
+            title={props.settings.title}  ref={ref}
             extra={props.mode == 'edit' ? <>
                 <Button type="text" icon={<EditOutlined />} onClick={props.onEdit} />
                 <Button type="text" danger icon={<DeleteOutlined />} onClick={props.onDelete} />
             </>
                 :
                 <>
-                    <Popover trigger="click" content={<CardOptions data={data} config={props.settings}/>} >
+                    <Popover trigger="click" content={<CardOptions data={data} config={props.settings} reference={ref}/>} >
                         <Button type="text" icon={<MoreOutlined />} />
                     </Popover>
 

@@ -4,6 +4,8 @@ import {
   ConfigProvider,
   theme
 } from 'antd';
+import React from 'react';
+
 import 'antd/dist/reset.css';
 import AppLayout from './AppLayout';
 import { BrowserRouter } from "react-router-dom";
@@ -29,11 +31,13 @@ function Application() {
         authClient={authClient}
         onLoad
       >
-        <App>
-          <BrowserRouter>
-            <AppLayout type="primary">Button</AppLayout>
-          </BrowserRouter>
-        </App>
+        <React.StrictMode>
+          <App>
+            <BrowserRouter>
+              <AppLayout type="primary">Button</AppLayout>
+            </BrowserRouter>
+          </App>
+        </React.StrictMode>
       </ReactKeycloakProvider>
     </ConfigProvider>
 
