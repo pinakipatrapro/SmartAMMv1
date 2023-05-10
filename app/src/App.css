@@ -53,3 +53,7 @@
 .chartCardHeight {
   height: 300px;
 }
+
+.ant-layout{
+  height:100vh
+}

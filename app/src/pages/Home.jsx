@@ -46,7 +46,7 @@ const Home = () => {
     return (
         <>
 
-            <Row  style={{ padding: "1rem", height: "80vh" }} gutter={[24, 12]}>
+            <Row  style={{ padding: "1rem", height: "80vh",justifyContent:"center" }} gutter={[24, 12]}>
                 <Col  md={12} sm={12} lg={6}>
                     <Card
                         hoverable
@@ -72,11 +72,11 @@ const Home = () => {
 
                         <Space style={{ width: "100%", padding: "1rem", justifyContent: "space-around" }} direction="horizontal" align="end">
                             <Space direction="vertical" align="center">
-                                <Statistic value={data.projectCount} />
+                                <Statistic valueStyle={{color:"#e20074"}} value={data.projectCount} />
                                 <Typography.Paragraph type="secondary">Total Projects</Typography.Paragraph>
                             </Space>
                             <Space direction="vertical" align="center">
-                                <Statistic value={data.recordsCount} />
+                                <Statistic valueStyle={{color:"#e20074"}} value={data.recordsCount} />
                                 <Typography.Paragraph type="secondary">Total Records</Typography.Paragraph>
                             </Space>
                         </Space>
@@ -103,7 +103,7 @@ const Home = () => {
 
 
                         <Space style={{ width: "100%", padding: "1rem" }} direction="vertical" align="center">
-                            <Statistic value={data.dashboardCount} />
+                            <Statistic valueStyle={{color:"#e20074"}} value={data.dashboardCount} />
                             <Typography.Paragraph type="secondary">Total Dashboards</Typography.Paragraph>
                         </Space>
                     </Card>
