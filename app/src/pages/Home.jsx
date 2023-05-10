@@ -98,7 +98,7 @@ const Home = () => {
                     >
                         <Meta
                             title="Dashboards"
-                            description="Create dashboard using project data and Drag and Drop Utility"
+                            description="Create charts using project data and configure dashboards using drag and drop utility "
                         />
 
 
