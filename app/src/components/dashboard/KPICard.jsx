@@ -1,13 +1,15 @@
 
 
 import React, { useState, useEffect } from "react";
-import { Card, Divider, Button, Statistic, Space, Switch } from 'antd';
+import { Card, Divider, Button, Statistic, Space, Popover } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import millify from "millify";
 import { Column, Area, Line, Bar, DualAxes, Pie, WordCloud } from '@ant-design/charts';
 import axios from "axios"
+import CardOptions from "./util/CardOptions"
+
 
 const chartsMap = { Column, Area, Line, Bar, DualAxes, WordCloud, Pie };
 
@@ -93,7 +95,10 @@ const KPICard = (props) => {
             </>
                 :
                 <>
-                    <Button type="text" icon={<MoreOutlined />} />
+                    <Popover trigger="click" content={<CardOptions data={data} config={props.settings}/>} >
+                        <Button type="text" icon={<MoreOutlined />} />
+                    </Popover>
+
                 </>}
 
         >
