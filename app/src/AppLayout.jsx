@@ -69,6 +69,7 @@ const AppLayout = () => {
                     theme="dark"
                     mode="horizontal"
                     defaultSelectedKeys={[location.pathname]}
+                    selectedKeys={[location.pathname]}
                     items={[
                         {
                             "key": "/",
