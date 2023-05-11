@@ -12,7 +12,7 @@ import 'react-resizable/css/styles.css'
 
 import KPICard from "../components/dashboard/KPICard";
 import AddChart from "../components/dashboard/EditChartDrawer"
-
+ import PPTGen from "../components/dashboard/util/PPTGen";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -145,6 +145,7 @@ const Dashboard = () => {
                     {route.mode == 'edit' ? <Button type="default" shape="round" icon={<SaveOutlined />} onClick={saveDashboardConfig} >Save </Button> : null}
                     {route.mode == 'edit' ? <Button type="default" shape="circle" icon={<CloseOutlined />} onClick={() => editStory(false)} ></Button> : null}
                 </Space>
+                <Button  onClick={()=>{PPTGen.generatePDF(dashboardDetails)}}>Generate PDF</Button>
             </div>
 
             <ResponsiveGridLayout

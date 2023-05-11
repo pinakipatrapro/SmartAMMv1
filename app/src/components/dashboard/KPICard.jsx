@@ -90,7 +90,7 @@ const KPICard = (props) => {
     }
     return (
         <Card className={props.isInGrid ? "cardFill" : "chartCardHeight"} size="small"
-            title={props.settings.title}  ref={ref}
+            title={props.settings.title}  ref={ref} id={`${props.settings.id}--chart`}
             extra={props.mode == 'edit' ? <>
                 <Button type="text" icon={<EditOutlined />} onClick={props.onEdit} />
                 <Button type="text" danger icon={<DeleteOutlined />} onClick={props.onDelete} />
