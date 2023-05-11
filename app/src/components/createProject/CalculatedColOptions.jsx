@@ -42,8 +42,8 @@ const CalculatedColOptions = (props) => {
                 <Space>
                     {item.prompts.map(e => {
                         return (
-                            <Form.Item name={[item.id, e.id, 'value']} rules={[{ required: true, message: 'Please select column' }]}>
-                                <Select style={{ width: "10rem" }} placeholder={e.name}
+                            <Form.Item name={[item.id, e.id, 'value']} rules={[{ required: true, message: 'Please select column' }]} >
+                                <Select style={{ width: "10rem" }} placeholder={e.name} defaultValue={e.value}
                                     options={props.previewData.filter(col => { return col.dataType == e.dataType }).map(options => {
                                         return {
                                             label: options.colName,

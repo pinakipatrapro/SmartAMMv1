@@ -158,7 +158,12 @@ class Project {
     async getProjectDetails(fastify, req, res) {
         const projectData = await prisma.Project.findFirst({
             select: {
-                configData: true
+                configData: true,
+                name:true,
+                description:true,
+                rowsAnalysed:true,
+                modifiedAt : true,
+                calculatedColumns:true
             },
             where: {
                 id: {
