@@ -14,11 +14,13 @@ Content-Type: application/json
       "isStack": true,
       "agg":{
       },
-      "projectID":"9c30147a-0d31-431b-8937-99a5d8eb7d56",
+      "projectID":"0622c0ab-9996-4e23-a3e3-31f1524cf79a",
       "xField": "Priority",
       "yField": "Category",
       "seriesField": "Country",
-      "dimension":["Subject"],
+      "dimension":["Assigned to Group","Contact Media"],
+      "languages":["eng","swe"],
+      "customWords":["100","sap"],
       "measure":[],
       "series":[]
     }

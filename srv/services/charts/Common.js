@@ -24,7 +24,7 @@ class Common{
         let dimensionString = this.getWordCloudSelectString(dimensions);
         return `
             WITH words AS (
-                SELECT unnest(string_to_array(lower(${dimensionString}), ' ')) AS word
+                SELECT unnest(string_to_array(${dimensionString}, ' ')) AS word
                 FROM "${process.env.DATA_SCHEMA}"."${viewName}"
             )
             SELECT word, count(*) FROM words

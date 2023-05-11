@@ -9,14 +9,15 @@
     "@prisma/client": "^4.10.1",
     "dotenv": "^16.0.3",
     "fastify": "^4.17.0",
+    "pg": "^8.10.0",
     "pg-format": "^1.0.4",
-    "uuidv4": "^6.2.13",
-    "pg": "^8.10.0"
+    "stopword": "^2.0.8",
+    "uuidv4": "^6.2.13"
   },
   "scripts": {
     "start": "node index.js",
     "prisma-init": "prisma migrate dev --name init && prisma generate",
-    "schema":"psql -d postgresql://postgres:1234@localhost:5432/smartamm -c \"CREATE SCHEMA IF NOT EXISTS AMMDATA\""
+    "schema": "psql -d postgresql://postgres:1234@localhost:5432/smartamm -c \"CREATE SCHEMA IF NOT EXISTS AMMDATA\""
   },
   "author": "",
   "license": "ISC",
