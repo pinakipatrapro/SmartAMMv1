@@ -59,5 +59,39 @@
             }
         ],
         "colName":""
+    },
+    {
+        "name": "Get Date (YYYY-MM-DD) from timestamp",
+        "key":"dateFromTimestamp",
+        "dataType": "Date-Time",
+        "tags": [
+            "Date"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"date",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":""
+    },
+    {
+        "name": "Get Hour  from timestamp",
+        "key":"hourFromTimestamp",
+        "dataType": "Number",
+        "tags": [
+            "Hour"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"date",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":""
     }
 ]
