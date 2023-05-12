@@ -22,6 +22,7 @@ class Bar extends Common {
                 ${this.getOrderByClauseString()}
               GROUP BY ${dimensionString}
             `;
+    console.log(sqlString)
     let data = await prisma.$queryRawUnsafe(`${sqlString}`);
     data = this.toObject(data)
     return data;

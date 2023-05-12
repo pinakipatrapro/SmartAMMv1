@@ -4,10 +4,8 @@ const Common = require('./Common');
 const sw = require('stopword')
 
 class WordCloud extends Common {
-    getStopWordsLangArr(arrLang,customWords){
-        if(!arrLang.length){
-            arrLang.push('eng')
-        }
+    getStopWordsArr(customWords){
+        let arrLang = this.getStopWordsLanguages()
         arrLang = arrLang.map(e=>sw[e]).flat();
         return [...arrLang,...customWords]
     }
@@ -19,7 +17,7 @@ class WordCloud extends Common {
             return [];
         }
         let words = data.map(e=>e.word);
-        let langArr = this.getStopWordsLangArr(payload.languages,payload.customWords);
+        let langArr = this.getStopWordsArr(payload.customWords);
         let dataWithoutStopWords = sw.removeStopwords(words,langArr)
         let result = data.filter(e=>dataWithoutStopWords.includes(e.word) )
         result = this.toObject(result)

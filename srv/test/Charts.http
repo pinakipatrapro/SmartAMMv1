@@ -1,6 +1,6 @@
 @route = http://127.0.0.1:4004
 
-### Get Chart Data
+### Get Chart Data Box Plot
 POST  {{route}}/getChartData
 Content-Type: application/json
 
@@ -9,22 +9,48 @@ Content-Type: application/json
   "type": "chart",
   "options": {
     "metrics": [],
-    "chartType": "WordCloud",
+    "chartType": "BoxPlot",
     "config": {
       "isStack": true,
       "agg":{
+        "age":"statisticalSummary"
       },
-      "projectID":"0622c0ab-9996-4e23-a3e3-31f1524cf79a",
+      "projectID":"917a1c2a-e21a-4ff4-8339-720039f1199d",
       "xField": "Priority",
       "yField": "Category",
-      "seriesField": "Country",
-      "dimension":["Assigned to Group","Contact Media"],
-      "languages":["eng","swe"],
-      "customWords":["100","sap"],
-      "measure":[],
+      "seriesField": [],
+      "measure":"age",
+      "dimension":["sport"],
       "series":[]
     }
   }
+}
+
+
+### Get Chart Data Box Plot
+POST  {{route}}/getChartData
+Content-Type: application/json
+
+{
+"title":"MyNewChart",
+"type":"chart",
+"options":{
+"metrics":[],
+"chartType":"Bar",
+"config":{
+"isStack":true,
+"agg":{
+"age":"avg"
+},
+"projectID":"917a1c2a-e21a-4ff4-8339-720039f1199d",
+"xField":"Priority",
+"yField":"Category",
+"seriesField":"sport",
+"dimension":["sport_name"],
+"measure":["age"],
+"series":["sport"]
+}
+}
 }
 
 
