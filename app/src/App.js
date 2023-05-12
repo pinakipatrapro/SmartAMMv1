@@ -9,10 +9,7 @@ import React from 'react';
 import 'antd/dist/reset.css';
 import AppLayout from './AppLayout';
 import { BrowserRouter } from "react-router-dom";
-import { ReactKeycloakProvider } from '@react-keycloak/web'
 
-
-import authClient from './keycloak'
 
 
 const { defaultAlgorithm, darkAlgorithm } = theme;
@@ -26,19 +23,13 @@ function Application() {
         },
       }}
     >
-      <ReactKeycloakProvider
-        initOptions={{ onLoad: 'login-required' }}
-        authClient={authClient}
-        onLoad
-      >
-        <React.StrictMode>
-          <App>
-            <BrowserRouter>
-              <AppLayout type="primary">Button</AppLayout>
-            </BrowserRouter>
-          </App>
-        </React.StrictMode>
-      </ReactKeycloakProvider>
+
+
+      <App>
+        <BrowserRouter>
+          <AppLayout type="primary">Button</AppLayout>
+        </BrowserRouter>
+      </App>
     </ConfigProvider>
 
 

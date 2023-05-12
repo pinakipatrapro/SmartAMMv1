@@ -12,7 +12,6 @@ import Dashboard from "./pages/Dashboard";
 import CreateProject from "./pages/CreateProject";
 import DashboardStory from "./pages/DashboardStory";
 
-import { useKeycloak } from '@react-keycloak/web'
 import ProjectEdit from './pages/ProjectsEdit';
 
 
@@ -24,21 +23,7 @@ const { Header, Content, Footer } = Layout;
 
 const AppLayout = () => {
 
-    const { keycloak, initialized } = useKeycloak();
-    const [profile, setProfile] = React.useState([]);
 
-    useEffect(() => {
-        setTimeout(e => {
-            keycloak.loadUserInfo()
-                .then(e => {
-                    setProfile(e)
-                })
-        }, 3000)
-    }, []);
-
-    const userLogout = () => {
-        keycloak.logout()
-    }
     const pathFormatter = (path) => {
         let routePath = path.split('/')[1]
         let params = path.split('/')[2];
@@ -87,8 +72,8 @@ const AppLayout = () => {
                     <img style={{ height: "2.5rem", marginTop: "5px", marginRight: "2rem" }} src="/assets/smartamm.png" />
                 </div>
                 <div className="right-toolbar" >
-                    <Tooltip title={`Logout : ${profile.name}`} >
-                        <Button type="text" danger icon={<PoweroffOutlined />} onClick={userLogout} ></Button>
+                    <Tooltip title={`Logout`} >
+                        <Button type="text" danger icon={<PoweroffOutlined />}  ></Button>
                     </Tooltip>
                 </div>
                 <Menu

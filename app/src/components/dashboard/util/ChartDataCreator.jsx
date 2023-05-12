@@ -164,10 +164,6 @@ const chart = {
                     ...commonProps,
                     xField: settings.dimension[0],
                     yField: ['minimum', 'q1', 'median', 'q3', 'maximum'],
-                    // outliersField: 'outliers',
-                    // outliersStyle: {
-                    //     fill: '#f6f'
-                    // }
                     // groupField: !!settings.series ? settings.series[0] : null,
                 }
             }

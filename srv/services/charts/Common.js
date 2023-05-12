@@ -114,11 +114,6 @@ class Common{
                      FROM details
                 )
                 SELECT ${selectString} 
-                array_remove(ARRAY_AGG(CASE WHEN value < q1 - ((q3-q1) * 1.5)
-                    THEN value
-                    WHEN value > q3 + ((q3-q1) * 1.5)
-                    THEN value 
-                    ELSE NULL END),NULL) AS outliers,
                 MIN(CASE WHEN value >= q1 - ((q3-q1) * 1.5) THEN value ELSE NULL END) :: FLOAT AS minimum,
                 AVG(q1)  :: FLOAT AS q1,
                 AVG(median)  :: FLOAT AS median,
