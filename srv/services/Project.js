@@ -173,6 +173,7 @@ class Project {
         let rows = this.orderColumnsAndMapData(data,colNames);
         await this.insertBulkData(fastify,rows,colNames,referenceTable)
         await this.createReferenceView(referenceView,referenceTable,calculatedCols)
+        await this.updateCalculatedColumns(projectID,calculatedCols)
     }
 
     async createProject(fastify, req, res) {
@@ -260,6 +261,25 @@ class Project {
         }
         const data  = await prisma.$queryRawUnsafe( ` SELECT * FROM "${process.env.DATA_SCHEMA}"."${referenceView.referenceView}"; `);
         return data;
+    }
+
+    async updateCalculatedColumns(projectID,calculatedCols){
+        await prisma.Project.update({
+            where: {
+                id: projectID,
+            },
+            data: {
+                calculatedColumns: calculatedCols
+            },
+        })
+    }
+
+    async editCalculatedColumns(fastify,req,res){
+        const {referenceTable,referenceView} = await this.geTableAndViewName(req.params.id);
+        await prisma.$executeRawUnsafe(` DROP VIEW "${process.env.DATA_SCHEMA}"."${referenceView}" `);
+        await this.createReferenceView(referenceView,referenceTable,req.body)
+        await this.updateCalculatedColumns(req.params.id,req.body)
+        return {message :"Calculated Columns Updated Successfully"}
     }
 }
 module.exports = Project;

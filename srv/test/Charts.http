@@ -19,7 +19,7 @@ Content-Type: application/json
       "xField": "Priority",
       "yField": "Category",
       "seriesField": [],
-      "measure":"age",
+      "measure":["age"],
       "dimension":["sport"],
       "series":[]
     }
