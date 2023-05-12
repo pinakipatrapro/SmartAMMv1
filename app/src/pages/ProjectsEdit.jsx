@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Divider, Input, Statistic, Space, Card, notification,Form, Col, Row } from 'antd';
+import { Typography, Button, Divider, Input, Statistic, Space, Card, notification, Form, Col, Row } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined, SaveOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import constant from "../constants/MockData.json"
@@ -26,8 +26,21 @@ const ProjectEdit = () => {
 
     }
 
-    const saveCalculatedColumns=(e)=>{
-        debugger;
+    const saveCalculatedColumns = (values) => {
+        let projectData = JSON.parse(JSON.stringify(projectDetails));
+        let calculatedCols = projectData.calculatedColumns;
+
+        calculatedCols.forEach(col => {
+            col.colName = values[col.id].columnName;
+            col.prompts.forEach(prompt => {
+                prompt.value = values[col.id][prompt.id].value
+            })
+        })
+        axios
+            .post("/api/editCalculatedColumns/" + route.id,calculatedCols)
+            .then((res) => {
+                alert('Project Saved')
+        })
     }
     const fetchProjectDetails = async () => {
         axios
@@ -50,7 +63,7 @@ const ProjectEdit = () => {
             <Card title={projectDetails.name}
                 extra={
                     <Space>Total Records : <Statistic value={projectDetails.rowsAnalysed} />
-                        
+
                     </Space>
                 }
             >
@@ -62,7 +75,7 @@ const ProjectEdit = () => {
 
             <Divider style={{ padding: "0rem 1rem 0 1rem" }}> Define Calculated Columns</Divider>
             <Form id="calculatedColumn" onFinish={saveCalculatedColumns}>
-                
+
                 <CalculatedColOptionsEdit setCalculatedColumns={setCalculatedColumns} calculatedColumns={projectDetails.calculatedColumns}
                     previewData={projectDetails.configData}
                 />
