@@ -69,12 +69,6 @@ class Common{
         return measures.map(e=> ` ROUND(${!(agg && agg[e]) ? 'COUNT' : agg[e]}("${e}")::Decimal,2)::FLOAT as "${e}" `).join(",")
     }
 
-    getSeriesString(series){
-        if(!(series && series.length)){
-            return ''
-        }
-        return series.map(e=> ` "${e}" `).join(",");
-    }
     getPartitionByString(seriesString){
         if(seriesString=='')return '';
         return ` PARTITION BY ${seriesString} `;
@@ -82,11 +76,13 @@ class Common{
 
     prepareSQLForBoxPlot(viewName,dimensions,series,measure){
         measure = measure[0]
-        let dimensionString = this.getDimensionString(dimensions);
-        let seriesString=this.getSeriesString(series);
-        let partitionBySeriesString = this.getPartitionByString(seriesString);
-        let selectString = ` ${dimensions&&dimensions.length ? dimensionString + ' , ': ''} ${series&&series.length ? seriesString + ' , ': ''} `;
-        let groupByString = ` ${dimensionString} ${dimensions.length && series.length ? ' , ' :''} ${ seriesString} `;
+        if(!(series && series.length)){
+            series = [];
+        }
+        let dimensionString = this.getDimensionString([...dimensions,...series]);
+        let partitionBySeriesString = this.getPartitionByString(dimensionString);
+        let selectString = ` ${dimensions&&dimensions.length ? dimensionString + ' , ': ''} `;
+        let groupByString = ` ${dimensionString} `;
         return `WITH raw_data AS (
                    SELECT 
                     ${selectString}
