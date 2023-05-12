@@ -177,7 +177,7 @@ const CreateProject = () => {
         let payload = {
             name: values.name,
             description: values.description,
-            modifiedBy: "Admin",
+            modifiedBy: JSON.parse(localStorage.getItem('userInfo')).name,
             configData: previewData,
             data: formattedData,
             calculatedCols : calculatedCols

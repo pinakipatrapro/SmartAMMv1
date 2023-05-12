@@ -13,6 +13,7 @@ import CreateProject from "./pages/CreateProject";
 import DashboardStory from "./pages/DashboardStory";
 
 import ProjectEdit from './pages/ProjectsEdit';
+import { useKeycloak } from '@react-keycloak/web'
 
 
 const { Title } = Typography;
@@ -24,6 +25,23 @@ const { Header, Content, Footer } = Layout;
 const AppLayout = () => {
 
 
+    const { keycloak, initialized } = useKeycloak()
+    const [profile, setProfile] = React.useState([]);
+    useEffect(() => {
+        setTimeout(e => {
+            keycloak.loadUserInfo()
+                .then(e => {
+                    setProfile(e)
+                    localStorage.setItem('userInfo', JSON.stringify(e))
+                })
+        }, 3000)
+    }, [])
+
+    const userLogout = () => {
+        keycloak.logout()
+    }
+
+    
     const pathFormatter = (path) => {
         let routePath = path.split('/')[1]
         let params = path.split('/')[2];
@@ -59,12 +77,15 @@ const AppLayout = () => {
         token: { colorBgContainer },
     } = theme.useToken();
 
+    if(!initialized){
+        return null
+    }
+
     return (
         <Layout>
             <Header style={{
                 position: 'sticky',
                 top: 0,
-                zIndex: 1,
                 width: '100%',
             }}>
                 <div className="logo" onClick={() => { navigate("/") }} >
@@ -72,7 +93,7 @@ const AppLayout = () => {
                     <img style={{ height: "2.5rem", marginTop: "5px", marginRight: "2rem" }} src="/assets/smartamm.png" />
                 </div>
                 <div className="right-toolbar" >
-                    <Tooltip title={`Logout`} >
+                    <Tooltip title={`Logout ${profile.name}`} onClick={userLogout} >
                         <Button type="text" danger icon={<PoweroffOutlined />}  ></Button>
                     </Tooltip>
                 </div>
@@ -131,7 +152,7 @@ const AppLayout = () => {
                     </Routes>
                 </div>
             </Content>
-            {/* <Footer style={{ textAlign: 'center', fontSize: ".5rem" }}>© 2023 T-Systems - All Rights Reserved.</Footer> */}
+            <Footer style={{ textAlign: 'center', fontSize: ".75rem" }}>© 2023 T-Systems - All Rights Reserved.</Footer>
         </Layout>
     );
 };

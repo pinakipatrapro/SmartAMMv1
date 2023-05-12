@@ -21,7 +21,10 @@ class WordCloud extends Common {
         let dataWithoutStopWords = sw.removeStopwords(words,langArr)
         let result = data.filter(e=>dataWithoutStopWords.includes(e.word) )
         result = this.toObject(result)
-        //result = result.filter(e=>{return e.count >10})
+        result  =  result.sort((a,b)=>{
+            return b.count - a.count
+        })
+        result = result.splice(0,100)
         return result;
     }
 
