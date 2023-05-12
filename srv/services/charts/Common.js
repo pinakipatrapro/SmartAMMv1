@@ -7,12 +7,8 @@ class Common{
         return ` SELECT * FROM "${process.env.DATA_SCHEMA}"."${viewName}" `
     }
 
-    getStopWords(){
-        return ["the", "a", "to", "if", "is", "it", "of", "and", "or", "an", "as", "i", "me", "my", 
-        "we", "our", "ours", "you", "your", "yours", "he", "she", "him", "his", "her", "hers", "its", "they", "them", 
-        "their", "what", "which", "who", "whom", "this", "that", "am", "are", "was", "were", "be", "been", "being",
-        "have", "has", "had", "do", "does", "did", "but", "at", "by", "with", "from", "here", "when", "where", "how",
-        "all", "any", "both", "each", "few", "more", "some", "such", "no", "nor", "too", "very", "can", "will", "just"]
+    getStopWordsLanguages(){
+        return ['eng','nld','est','fin','fra','deu','ell','hin','ita','jpn','kor','lat','pol','por','porBr','rus','spa','swe','tur','ukr']
     }
 
     getWordCloudSelectString(dimensions){
@@ -70,7 +66,70 @@ class Common{
         if(!measures.length){
             return ''
         }
-        return measures.map(e=> ` ${!(agg && agg[e]) ? 'COUNT' : agg[e]}("${e}") as "${e}" `).join(",")
+        return measures.map(e=> ` ROUND(${!(agg && agg[e]) ? 'COUNT' : agg[e]}("${e}")::Decimal,2)::FLOAT as "${e}" `).join(",")
+    }
+
+    getSeriesString(series){
+        if(!(series && series.length)){
+            return ''
+        }
+        return series.map(e=> ` "${e}" `).join(",");
+    }
+    getPartitionByString(seriesString){
+        if(seriesString=='')return '';
+        return ` PARTITION BY ${seriesString} `;
+    }
+
+    prepareSQLForBoxPlot(viewName,dimensions,series,measure){
+        let dimensionString = this.getDimensionString(dimensions);
+        let seriesString=this.getSeriesString(series);
+        let partitionBySeriesString = this.getPartitionByString(seriesString);
+        let selectString = ` ${dimensions&&dimensions.length ? dimensionString + ' , ': ''} ${series&&series.length ? seriesString + ' , ': ''} `;
+        let groupByString = ` ${dimensionString} ${dimensions.length && series.length ? ' , ' :''} ${ seriesString} `;
+        return `WITH raw_data AS (
+                   SELECT 
+                    ${selectString}
+                   "${measure}" as value
+                   FROM "${process.env.DATA_SCHEMA}"."${viewName}"
+                ),
+                details AS (
+                    SELECT ${selectString} 
+                           value,
+                           ROW_NUMBER() OVER ( ${partitionBySeriesString} ORDER BY value) AS row_number,
+                           SUM(1) OVER (${partitionBySeriesString}) AS total
+                      FROM raw_data
+                ),
+                quartiles AS (
+                    SELECT ${selectString} 
+                           value,
+                           AVG(CASE WHEN row_number >= (FLOOR(total/2.0)/2.0) 
+                                     AND row_number <= (FLOOR(total/2.0)/2.0) + 1 
+                                    THEN value/1.0 ELSE NULL END
+                               ) OVER (${partitionBySeriesString}) AS q1,
+                           AVG(CASE WHEN row_number >= (total/2.0) 
+                                     AND row_number <= (total/2.0) + 1 
+                                    THEN value/1.0 ELSE NULL END
+                               ) OVER (${partitionBySeriesString}) AS median,
+                           AVG(CASE WHEN row_number >= (CEIL(total/2.0) + (FLOOR(total/2.0)/2.0))
+                                     AND row_number <= (CEIL(total/2.0) + (FLOOR(total/2.0)/2.0) + 1) 
+                                    THEN value/1.0 ELSE NULL END
+                               ) OVER (${partitionBySeriesString}) AS q3
+                     FROM details
+                )
+                SELECT ${selectString} 
+                array_remove(ARRAY_AGG(CASE WHEN value < q1 - ((q3-q1) * 1.5)
+                    			THEN value
+						  	   WHEN value > q3 + ((q3-q1) * 1.5)
+                   			    THEN value 
+						       ELSE NULL END),NULL) AS outliers,
+                MIN(CASE WHEN value >= q1 - ((q3-q1) * 1.5) THEN value ELSE NULL END) AS minimum,
+                AVG(q1) AS q1,
+                AVG(median) AS median,
+                AVG(q3) AS q3,
+                MAX(CASE WHEN value <= q3 + ((q3-q1) * 1.5) THEN value ELSE NULL END) AS maximum
+                FROM quartiles
+                GROUP BY ${groupByString} 
+                `;
     }
 }
 module.exports = Common;

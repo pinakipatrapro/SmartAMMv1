@@ -38,6 +38,11 @@ class Chart {
                     const objWordCloud = new WordCloud();
                     return objWordCloud.getData(req.body.options.config)
                 break;
+                case "BoxPlot":
+                    const BoxPlot = require('./charts/BoxPlot');
+                    const objBoxPlot = new BoxPlot();
+                    return objBoxPlot.getData(req.body.options.config)
+                break;               
                 default: throw new Error("Chart Type does not Exist!!!")
             }
         }

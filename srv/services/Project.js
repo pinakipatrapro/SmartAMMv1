@@ -1,4 +1,4 @@
-const { PrismaClient, Prisma } = require('@prisma/client');
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { uuid } = require('uuidv4');
 const format = require('pg-format');
@@ -22,7 +22,7 @@ class Project {
                     (EXTRACT(
                         EPOCH from ("${prompts[1].value}"::timestamp - "${prompts[0].value}"::timestamp)
                     )/86400
-                    )::Decimal,2)
+                    )::Decimal,2)::FLOAT
                   AS "${colName}" 
             `
     }
@@ -39,10 +39,16 @@ class Project {
                     sqlString.push(this.getMTTRSqlString(e.prompts,e.colName))
                     break;
                 case 'DayFromDate' :
-                    sqlString.push(this.getDateSqlString('day',e.prompts,e.colName))
+                    sqlString.push(this.getDateSqlString('Day',e.prompts,e.colName))
                     break;
                 case 'MonthFromDate':
-                    sqlString.push(this.getDateSqlString('month',e.prompts,e.colName))
+                    sqlString.push(this.getDateSqlString('Month',e.prompts,e.colName))
+                    break;
+                case 'dateFromTimestamp':
+                    sqlString.push(this.getDateSqlString('YYYY-MM-DD',e.prompts,e.colName))
+                    break;
+                case 'hourFromTimestamp':
+                    sqlString.push(this.getDateSqlString('HH24',e.prompts,e.colName))
                     break;
             }
         }.bind(this))
@@ -64,7 +70,6 @@ class Project {
     }
 
     async createReferenceTable(fastify, referenceTable, configData, data) {
-        var rows;
         let columns = configData.filter(e => e.enabled)
         let createSqlString = columns.map(e => {
             if (e.dataType == 'Text') {
@@ -79,18 +84,9 @@ class Project {
             ${createSqlString}
         )`;
         let columnNames = columns.map(e => e.colName);
-        for (const column of columnNames) {
-            rows = data.map(obj => {
-                obj[column] = column in obj ? obj[column] : null
-                return obj
-            })
-        }
-        rows = this.orderedDataByCustomizedKey(data, columnNames);
-        rows = rows.map(obj => Object.values(obj));
-        columnNames = columnNames.map(e => ` "${e}" `).join(',');
+        let rows = this.orderColumnsAndMapData(data,columnNames);
         await prisma.$executeRawUnsafe(`${sql}`);
-        let sqlFormat = format(`INSERT INTO "${process.env.DATA_SCHEMA}"."${referenceTable}" (${columnNames}) VALUES %L`, rows);
-        await fastify.pg.query(sqlFormat)
+        await this.insertBulkData(fastify,rows,columnNames,referenceTable)
     }
 
     async createDashboardEntry(payload,projectID){
@@ -126,14 +122,73 @@ class Project {
         return result.id;
     }
 
+    orderColumnsAndMapData(data,columnNames){
+        let rows;
+        for (const column of columnNames) {
+            rows = data.map(obj => {
+                obj[column] = column in obj ? obj[column] : null
+                return obj
+            })
+        }
+        rows = this.orderedDataByCustomizedKey(data, columnNames);
+        return rows.map(obj => Object.values(obj));
+    }
+
+    async geTableAndViewName(projectID){
+        const referenceData = await prisma.Project.findFirst({
+            where : {
+                id:projectID
+            },
+            select :{
+                referenceTable:true,
+                referenceView:true
+            }
+        });
+        return referenceData;
+    }
+
+    getColumnNamesSql(tableName){
+        return `select column_name
+                from information_schema.columns
+                where table_name = '${tableName}'
+                and table_schema = '${process.env.DATA_SCHEMA}' 
+                order by ordinal_position
+              `;
+    }
+
+    async insertBulkData(fastify,rows,columnNames,referenceTable){
+        columnNames = columnNames.map(e => ` "${e}" `).join(',');
+        let sqlFormat = format(`INSERT INTO "${process.env.DATA_SCHEMA}"."${referenceTable}" (${columnNames}) VALUES %L`, rows);
+        await fastify.pg.query(sqlFormat)
+    }
+
+
+    async editProject(fastify,projectID,data,calculatedCols){
+        const {referenceTable,referenceView} = await this.geTableAndViewName(projectID);
+        await prisma.$executeRawUnsafe(` DELETE  FROM "${process.env.DATA_SCHEMA}"."${referenceTable}" `);
+        await prisma.$executeRawUnsafe(` DROP VIEW "${process.env.DATA_SCHEMA}"."${referenceView}" `);
+        let sqlString =  this.getColumnNamesSql(referenceTable);
+        let colNames = await prisma.$queryRawUnsafe(` ${sqlString} `);
+        colNames = colNames.map(e=>e.column_name)
+        let rows = this.orderColumnsAndMapData(data,colNames);
+        await this.insertBulkData(fastify,rows,colNames,referenceTable)
+        await this.createReferenceView(referenceView,referenceTable,calculatedCols)
+    }
+
     async createProject(fastify, req, res) {
-        const referenceTable = `Reftable_${uuid()}`;
-        const referenceView = `Refview_${uuid()}`;
-        await this.createReferenceTable(fastify,referenceTable,req.body.configData,req.body.data);
-        await this.createReferenceView(referenceView,referenceTable,req.body.calculatedCols)
-        const projectID = await this.createProjectEntry(req.body,referenceTable,referenceView);
-        await this.createDashboardEntry(req.body,projectID)
-        return {message:"Project Created Successfully"}
+        if(!req.body.projectID||req.body.projectID==''){
+            const referenceTable = `Reftable_${uuid()}`;
+            const referenceView = `Refview_${uuid()}`;
+            await this.createReferenceTable(fastify,referenceTable,req.body.configData,req.body.data);
+            await this.createReferenceView(referenceView,referenceTable,req.body.calculatedCols)
+            const projectID = await this.createProjectEntry(req.body,referenceTable,referenceView);
+            await this.createDashboardEntry(req.body,projectID)
+            return {message:"Project Created Successfully"}
+        }else{
+            await this.editProject(fastify,req.body.projectID,req.body.data,req.body.calculatedCols);
+            return {message :"Project Edited Successfully"}
+        }
+
     }
 
     async getProjects(fastify, req, res) {
@@ -180,17 +235,9 @@ class Project {
                 projectID:req.params.id
             }
         })
-        const referenceTable = await  prisma.Project.findFirst({
-            where : {
-                id:req.params.id
-            },
-            select :{
-                referenceTable:true,
-                referenceView:true
-            }
-        });
-        await prisma.$executeRawUnsafe(` DROP VIEW "${process.env.DATA_SCHEMA}"."${referenceTable.referenceView}" `);
-        await prisma.$executeRawUnsafe(` DROP TABLE "${process.env.DATA_SCHEMA}"."${referenceTable.referenceTable}" `);
+        const referenceObj = await  this.geTableAndViewName(req.params.id);
+        await prisma.$executeRawUnsafe(` DROP VIEW "${process.env.DATA_SCHEMA}"."${referenceObj.referenceView}" `);
+        await prisma.$executeRawUnsafe(` DROP TABLE "${process.env.DATA_SCHEMA}"."${referenceObj.referenceTable}" `);
         const project = await prisma.Project.delete({
             where: {
                 id: req.params.id
@@ -200,18 +247,18 @@ class Project {
     }
 
     async getTableData(fastify,req,res){
-        const referenceTable = await  prisma.Project.findFirst({
+        const referenceView = await  prisma.Project.findFirst({
             where : {
                 id:req.params.id
             },
             select :{
-                referenceTable:true
+                referenceView:true
             }
         });
-        if(!referenceTable){
+        if(!referenceView){
             throw new Error("Project Does not Exist")
         }
-        const data  = await prisma.$queryRawUnsafe( ` SELECT * FROM "${process.env.DATA_SCHEMA}"."${referenceTable.referenceTable}"; `);
+        const data  = await prisma.$queryRawUnsafe( ` SELECT * FROM "${process.env.DATA_SCHEMA}"."${referenceView.referenceView}"; `);
         return data;
     }
 }
