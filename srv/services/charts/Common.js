@@ -81,6 +81,7 @@ class Common{
     }
 
     prepareSQLForBoxPlot(viewName,dimensions,series,measure){
+        measure = measure[0]
         let dimensionString = this.getDimensionString(dimensions);
         let seriesString=this.getSeriesString(series);
         let partitionBySeriesString = this.getPartitionByString(seriesString);
@@ -117,16 +118,12 @@ class Common{
                      FROM details
                 )
                 SELECT ${selectString} 
-                array_remove(ARRAY_AGG(CASE WHEN value < q1 - ((q3-q1) * 1.5)
-                    			THEN value
-						  	   WHEN value > q3 + ((q3-q1) * 1.5)
-                   			    THEN value 
-						       ELSE NULL END),NULL) AS outliers,
-                MIN(CASE WHEN value >= q1 - ((q3-q1) * 1.5) THEN value ELSE NULL END) AS minimum,
-                AVG(q1) AS q1,
-                AVG(median) AS median,
-                AVG(q3) AS q3,
-                MAX(CASE WHEN value <= q3 + ((q3-q1) * 1.5) THEN value ELSE NULL END) AS maximum
+                
+                MIN(CASE WHEN value >= q1 - ((q3-q1) * 1.5) THEN value ELSE NULL END) :: FLOAT AS minimum,
+                AVG(q1)  :: FLOAT AS q1,
+                AVG(median)  :: FLOAT AS median,
+                AVG(q3) :: FLOAT AS q3 ,
+                MAX(CASE WHEN value <= q3 + ((q3-q1) * 1.5) THEN value ELSE NULL END)  :: FLOAT AS maximum
                 FROM quartiles
                 GROUP BY ${groupByString} 
                 `;

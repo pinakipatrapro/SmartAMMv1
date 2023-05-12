@@ -141,6 +141,7 @@ const chart = {
                     wordField: "word",
                     colorField: "word",
                     weightField: "count",
+                    customWords: [],
                     seriesField: !!settings.series ? settings.series[0] : null,
                     wordStyle: {
                         rotation: 0
@@ -151,7 +152,30 @@ const chart = {
 
         };
         return configValue
-    }
+    },
+    Box: (settings, commonProps) => {
+        let configValue = {
+            title: settings.chartTitle,
+            type: "chart",
+            options: {
+                metrics: [],
+                chartType: "Box",
+                config: {
+                    ...commonProps,
+                    xField: settings.dimension[0],
+                    yField: ['minimum', 'q1', 'median', 'q3', 'maximum'],
+                    // outliersField: 'outliers',
+                    // outliersStyle: {
+                    //     fill: '#f6f'
+                    // }
+                    // groupField: !!settings.series ? settings.series[0] : null,
+                }
+            }
+
+
+        };
+        return configValue
+    },
 }
 
 

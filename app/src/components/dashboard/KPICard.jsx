@@ -6,12 +6,12 @@ import { PlusOutlined, EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-d
 import { Table } from 'antd';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import millify from "millify";
-import { Column, Area, Line, Bar, DualAxes, Pie, WordCloud } from '@ant-design/charts';
+import { Column, Area, Line, Bar, DualAxes, Pie, WordCloud,Box } from '@ant-design/charts';
 import axios from "axios"
 import CardOptions from "./util/CardOptions"
 
 
-const chartsMap = { Column, Area, Line, Bar, DualAxes, WordCloud, Pie };
+const chartsMap = { Column, Area, Line, Bar, DualAxes, WordCloud, Pie,Box };
 
 
 

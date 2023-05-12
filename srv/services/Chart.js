@@ -38,7 +38,7 @@ class Chart {
                     const objWordCloud = new WordCloud();
                     return objWordCloud.getData(req.body.options.config)
                 break;
-                case "BoxPlot":
+                case "Box":
                     const BoxPlot = require('./charts/BoxPlot');
                     const objBoxPlot = new BoxPlot();
                     return objBoxPlot.getData(req.body.options.config)

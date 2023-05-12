@@ -25,7 +25,7 @@ const aggregationOptions = [
     { value: 'max', label: 'Maximum' },
     { value: 'min', label: 'Minimum' },
     { value: 'sum', label: 'Sum' },
-    { value: 'avg', label: 'Average' },
+    { value: 'avg', label: 'Average' }
 ]
 
 
@@ -36,6 +36,7 @@ const chartTypes = [
     { value: 'Line', label: 'Line Chart' },
     { value: 'Pie', label: 'Pie/Donught Chart' },
     { value: 'WordCloud', label: 'Word Cloud Chart' },
+    { value: 'Box', label: 'Box Plot' },
 
 ]
 
