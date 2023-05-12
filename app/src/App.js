@@ -26,17 +26,19 @@ function Application() {
     >
 
 
-      <App>
-        <ReactKeycloakProvider
-          initOptions={{ onLoad: 'login-required' }}
-          authClient={authClient}
-          onLoad
-        >
+
+      <ReactKeycloakProvider
+        initOptions={{ onLoad: 'login-required' }}
+        authClient={authClient}
+        onLoad
+      >
+        <App>
           <BrowserRouter>
             <AppLayout type="primary">Button</AppLayout>
           </BrowserRouter>
-        </ReactKeycloakProvider>
-      </App>
+        </App>
+      </ReactKeycloakProvider>
+
     </ConfigProvider>
 
 

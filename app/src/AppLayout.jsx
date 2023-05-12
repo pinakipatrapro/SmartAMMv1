@@ -86,6 +86,7 @@ const AppLayout = () => {
             <Header style={{
                 position: 'sticky',
                 top: 0,
+                zIndex:99,
                 width: '100%',
             }}>
                 <div className="logo" onClick={() => { navigate("/") }} >
@@ -140,7 +141,7 @@ const AppLayout = () => {
                         }
                     ]}
                 />
-                <div style={{ background: colorBgContainer, height: "100%" }}>
+                <div style={{ background: colorBgContainer, height: "auto",paddingBottom:"1rem" }}>
                     <Routes>
                         <Route index element={<Home />} />
                         <Route path="projects" element={<Projects />} />
