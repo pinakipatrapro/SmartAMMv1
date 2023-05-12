@@ -37,7 +37,7 @@ const PPTGen = {
 
     generatePDF: async (dashboardDetails) => {
 
-
+        pptx = new pptxgen();
         pptx.author = 'SmartAMM';
         pptx.company = 'T-Systems';
         pptx.revision = '1';
@@ -65,8 +65,12 @@ const PPTGen = {
             slide.addText(card.title,
                 { x: "3%", y: "5%", w: "95%", color: "#E20074", fontSize: 20, fontFace: "TeleGrotesk Next Ultra (Headings)" }
             );
+            try {
+                chartGenerator[card.options.chartType](slide, card)
+            } catch (error) {
+                console.log('Error Generating Chart')
+            }
 
-            chartGenerator[card.options.chartType](slide, card)
 
         })
 
@@ -86,7 +90,7 @@ const chartGenerator = {
         slide.addChart(pptx.ChartType.bar, data, {
             ...chartCommonProperties,
             barDir: "bar",
-            barGrouping : card.options.config.isStack?'stacked':'clustered',
+            barGrouping: card.options.config.isStack ? 'stacked' : 'clustered',
             chartColors: chartColors.splice(0, data.length)
         });
     },

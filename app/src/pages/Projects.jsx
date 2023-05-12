@@ -88,8 +88,8 @@ const Projects = () => {
             dataIndex: 'id',
             render: (id) => (
                 <>
-                    {/* <Button type="text" icon={<EditOutlined />} /> */}
-                    {/* <Divider type="vertical" /> */}
+                    <Button type="text" icon={<EditOutlined />} onClick={()=>{navigate('/projectEdit/'+id)}} />
+                    <Divider type="vertical" />
                     {/* <Button type="text" icon={<LineChartOutlined />} /> */}
                     {/* <Divider type="vertical" /> */}
                     <Popconfirm
@@ -114,7 +114,7 @@ const Projects = () => {
                 bordered
                 title={() => header}
                 pagination={false}
-                // scroll={{ y: "60vh" }}
+            // scroll={{ y: "60vh" }}
             />
 
         </>

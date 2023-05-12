@@ -1,5 +1,5 @@
-import { Breadcrumb, Layout, Menu, theme, Tooltip, Typography,Button } from 'antd';
-import { AppstoreOutlined, PoweroffOutlined , SettingOutlined } from '@ant-design/icons';
+import { Breadcrumb, Layout, Menu, theme, Tooltip, Typography, Button } from 'antd';
+import { AppstoreOutlined, PoweroffOutlined, SettingOutlined } from '@ant-design/icons';
 import { AppstoreAddOutlined, FundOutlined, UserOutlined, HomeOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from "react";
 
@@ -13,6 +13,7 @@ import CreateProject from "./pages/CreateProject";
 import DashboardStory from "./pages/DashboardStory";
 
 import { useKeycloak } from '@react-keycloak/web'
+import ProjectEdit from './pages/ProjectsEdit';
 
 
 const { Title } = Typography;
@@ -58,6 +59,9 @@ const AppLayout = () => {
             case 'dashboardStory':
                 name = `Dashboard`
                 break;
+            case 'projectEdit':
+                name = `Projects`
+                break;
             default:
                 name = ""
         }
@@ -84,7 +88,7 @@ const AppLayout = () => {
                 </div>
                 <div className="right-toolbar" >
                     <Tooltip title={`Logout : ${profile.name}`} >
-                        <Button type="text" danger icon={<PoweroffOutlined/>} onClick={userLogout} ></Button>
+                        <Button type="text" danger icon={<PoweroffOutlined />} onClick={userLogout} ></Button>
                     </Tooltip>
                 </div>
                 <Menu
@@ -134,6 +138,7 @@ const AppLayout = () => {
                     <Routes>
                         <Route index element={<Home />} />
                         <Route path="projects" element={<Projects />} />
+                        <Route path="projectEdit/:id" element={<ProjectEdit />} />
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="createProject" element={<CreateProject />} />
                         <Route path="createProject" element={<CreateProject />} />
@@ -141,7 +146,7 @@ const AppLayout = () => {
                     </Routes>
                 </div>
             </Content>
-            <Footer style={{ textAlign: 'center', fontSize: ".5rem" }}>© 2023 T-Systems - All Rights Reserved.</Footer>
+            {/* <Footer style={{ textAlign: 'center', fontSize: ".5rem" }}>© 2023 T-Systems - All Rights Reserved.</Footer> */}
         </Layout>
     );
 };

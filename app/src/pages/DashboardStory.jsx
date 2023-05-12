@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { List, Button, Divider, Input, Statistic, Typography, Avatar, Tag, Space, Drawer } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined, createFromIconfontCN, SaveOutlined, CloseOutlined, WindowsFilled } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, FilePptOutlined, LineChartOutlined, createFromIconfontCN, SaveOutlined, CloseOutlined, WindowsFilled } from '@ant-design/icons';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios"
 import { Responsive, WidthProvider } from "react-grid-layout";
@@ -12,7 +12,7 @@ import 'react-resizable/css/styles.css'
 
 import KPICard from "../components/dashboard/KPICard";
 import AddChart from "../components/dashboard/EditChartDrawer"
- import PPTGen from "../components/dashboard/util/PPTGen";
+import PPTGen from "../components/dashboard/util/PPTGen";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -140,12 +140,13 @@ const Dashboard = () => {
                 <Typography.Title level={5} style={{ display: "inline" }}>{dashboardDetails.name}</Typography.Title>
                 <Tag color="magenta" style={{ marginLeft: "2rem" }}>Project : {dashboardDetails.project.name}</Tag>
                 <Space style={{ float: 'right' }}>
+                    <Button icon={<FilePptOutlined />} type="text"  onClick={() => { PPTGen.generatePDF(dashboardDetails) }}>Download PPT</Button>
                     {route.mode == 'view' ? <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => editStory(true)}  ></Button> : null}
                     {route.mode == 'edit' ? <Button type="primary" shape="round" icon={<PlusOutlined />} onClick={() => { addCard(true) }} >Add Chart</Button> : null}
                     {route.mode == 'edit' ? <Button type="default" shape="round" icon={<SaveOutlined />} onClick={saveDashboardConfig} >Save </Button> : null}
                     {route.mode == 'edit' ? <Button type="default" shape="circle" icon={<CloseOutlined />} onClick={() => editStory(false)} ></Button> : null}
                 </Space>
-                <Button  onClick={()=>{PPTGen.generatePDF(dashboardDetails)}}>Generate PDF</Button>
+
             </div>
 
             <ResponsiveGridLayout
