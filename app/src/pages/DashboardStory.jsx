@@ -17,7 +17,7 @@ import PPTGen from "../components/dashboard/util/PPTGen";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 
-const Dashboard = () => {
+const Dashboard = (props) => {
 
     const route = useParams()
     const navigate = useNavigate();
@@ -52,6 +52,8 @@ const Dashboard = () => {
         axios
             .post("/api/updateDashboardConfig/" + route.id, payload)
             .then((res) => {
+                props.openNotification('success', "Operation Successful", `Dashboard updated successfully.`);
+
                 editStory(false)
             })
     }
@@ -185,6 +187,7 @@ const Dashboard = () => {
                     setSelectedCard={setSelectedCard}
                     dashboardDetails={dashboardDetails}
                     setDashboardDetails={setDashboardDetails}
+                    openNotification={props.openNotification}
                 // newChart={newChart}
                 // openAddChart={openAddChart}
                 // // addChart={addChart}

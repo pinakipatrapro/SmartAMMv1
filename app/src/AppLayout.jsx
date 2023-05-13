@@ -1,4 +1,4 @@
-import { Breadcrumb, Layout, Menu, theme, Tooltip, Typography, Button } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Tooltip, Typography, Button,notification } from 'antd';
 import { AppstoreOutlined, PoweroffOutlined, SettingOutlined } from '@ant-design/icons';
 import { AppstoreAddOutlined, FundOutlined, UserOutlined, HomeOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from "react";
@@ -24,6 +24,14 @@ const { Header, Content, Footer } = Layout;
 
 const AppLayout = () => {
 
+
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (type, text, description) => {
+        api[type]({
+            message: text,
+            description: description,
+        });
+    };
 
     const { keycloak, initialized } = useKeycloak()
     const [profile, setProfile] = React.useState([]);
@@ -144,16 +152,17 @@ const AppLayout = () => {
                 <div style={{ background: colorBgContainer, height: "auto",paddingBottom:"1rem" }}>
                     <Routes>
                         <Route index element={<Home />} />
-                        <Route path="projects" element={<Projects />} />
-                        <Route path="projectEdit/:id" element={<ProjectEdit />} />
-                        <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="createProject" element={<CreateProject />} />
-                        <Route path="createProject" element={<CreateProject />} />
-                        <Route path="dashboardStory/:id/:mode" element={<DashboardStory />} />
+                        <Route path="projects" element={<Projects openNotification={openNotification} />} />
+                        <Route path="projectEdit/:id" element={<ProjectEdit openNotification={openNotification}/>} />
+                        <Route path="dashboard" element={<Dashboard openNotification={openNotification}/>} />
+                        <Route path="createProject" element={<CreateProject openNotification={openNotification}/>} />
+                        <Route path="createProject" element={<CreateProject openNotification={openNotification}/>} />
+                        <Route path="dashboardStory/:id/:mode" element={<DashboardStory openNotification={openNotification}/>} />
                     </Routes>
                 </div>
             </Content>
             <Footer style={{ textAlign: 'center', fontSize: ".75rem" }}>© 2023 T-Systems - All Rights Reserved.</Footer>
+            {contextHolder}
         </Layout>
     );
 };

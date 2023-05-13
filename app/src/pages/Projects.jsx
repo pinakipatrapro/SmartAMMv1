@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Divider, Input, Statistic, Popconfirm, notification } from 'antd';
+import { Typography, Button, Divider, Input, Statistic, Popconfirm } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import constant from "../constants/MockData.json"
@@ -14,17 +14,10 @@ const { Title } = Typography;
 
 
 
-const Projects = () => {
+const Projects = (props) => {
 
     const [projectData, setProjectData] = React.useState([])
 
-    const [api, contextHolder] = notification.useNotification();
-    const openNotificationWithIcon = (type, text, description) => {
-        api[type]({
-            message: text,
-            description: description,
-        });
-    };
 
     const fetchProjects = async () => {
         axios
@@ -34,12 +27,14 @@ const Projects = () => {
             })
     }
     const deleteProject = async (id) => {
-        ;
         axios
             .get(`/api/deleteProject/${id}`)
             .then((res) => {
-                openNotificationWithIcon('success', "Operation Successful", "Project deleted successfully")
+                props.openNotification('success', "Operation Successful", "Project deleted successfully")
                 fetchProjects()
+            })
+            .catch(e=>{
+                props.openNotification('error', "Error Deleting Project", ""+e)
             })
     }
 
@@ -108,8 +103,6 @@ const Projects = () => {
 
     return (
         <>
-            {contextHolder}
-
             <Table columns={columns} dataSource={projectData}
                 bordered
                 title={() => header}

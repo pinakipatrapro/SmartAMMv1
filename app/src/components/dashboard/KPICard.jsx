@@ -78,6 +78,10 @@ const KPICard = (props) => {
             .post("/api/getChartData", props.settings)
             .then((res) => {
                 setData(res.data)
+            }).catch(e=>{
+                if(!props.isInGrid){
+                   props.openNotification('error',"Error Fetching Data","Chart parameters not configured properly : "+e)
+                }
             })
     }
 

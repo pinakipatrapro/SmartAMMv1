@@ -116,7 +116,7 @@ const EditChartDrawer = (props) => {
             title='Edit Chart' placement="right" open={!!props.selectedCard} onClose={closeEditChartDialog}>
             <Space direction="vertical" style={{ height: "400px", width: "100%" }}>
                 <Typography.Paragraph>Configure the card properties here</Typography.Paragraph>
-                <KPICard settings={props.selectedCard} isInGrid={false} mode='view'/>
+                <KPICard settings={props.selectedCard} isInGrid={false} mode='view' openNotification={props.openNotification}/>
                 <Button form="cardForm" htmlType="submit" style={{ textAlign: "center", width: "100%" }} type="text" icon={<ReloadOutlined />}>Refresh</Button>
             </Space>
             <Form inial style={{ padding: "1rem" }} id="cardForm" onFinish={(evt) => {

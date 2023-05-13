@@ -16,7 +16,7 @@ const { Title } = Typography;
 
 
 
-const ProjectEdit = () => {
+const ProjectEdit = (props) => {
     const route = useParams()
     const [projectDetails, setProjectDetails] = useState(null)
     const setCalculatedColumns = (e) => {
@@ -39,7 +39,7 @@ const ProjectEdit = () => {
         axios
             .post("/api/editCalculatedColumns/" + route.id,calculatedCols)
             .then((res) => {
-                alert('Project Saved')
+                props.openNotification('success', "Operation Successful", `Project updated successfully.`);
         })
     }
     const fetchProjectDetails = async () => {
