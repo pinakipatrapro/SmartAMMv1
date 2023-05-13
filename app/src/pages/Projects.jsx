@@ -8,8 +8,15 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-ro
 import millify from "millify";
 import axios from "axios"
 
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+TimeAgo.addDefaultLocale(en)
+const timeAgo = new TimeAgo('en-US')
+
 const { Search } = Input;
 const { Title } = Typography;
+
+
 
 
 
@@ -33,8 +40,8 @@ const Projects = (props) => {
                 props.openNotification('success', "Operation Successful", "Project deleted successfully")
                 fetchProjects()
             })
-            .catch(e=>{
-                props.openNotification('error', "Error Deleting Project", ""+e)
+            .catch(e => {
+                props.openNotification('error', "Error Deleting Project", "" + e)
             })
     }
 
@@ -67,7 +74,10 @@ const Projects = (props) => {
         },
         {
             title: 'Modified At',
-            dataIndex: 'modifiedAt'
+            dataIndex: 'modifiedAt',
+            sorter: (a, b) => new Date(a.modifiedAt) - new Date(b.modifiedAt),
+            sortDirections: ["descend", "ascend"],
+            render: (date) => timeAgo.format(new Date(date))
         },
         {
             title: 'Updated By',
@@ -83,7 +93,7 @@ const Projects = (props) => {
             dataIndex: 'id',
             render: (id) => (
                 <>
-                    <Button type="text" icon={<EditOutlined />} onClick={()=>{navigate('/projectEdit/'+id)}} />
+                    <Button type="text" icon={<EditOutlined />} onClick={() => { navigate('/projectEdit/' + id) }} />
                     <Divider type="vertical" />
                     {/* <Button type="text" icon={<LineChartOutlined />} /> */}
                     {/* <Divider type="vertical" /> */}
