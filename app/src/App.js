@@ -11,9 +11,11 @@ import AppLayout from './AppLayout';
 import { BrowserRouter } from "react-router-dom";
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import authClient from './keycloak'
-
+import axios from "axios";
 
 const { defaultAlgorithm, darkAlgorithm } = theme;
+axios.defaults.headers.common['Authorization'] = process.env.REACT_APP_API_AUTH
+
 function Application() {
   return (
     <ConfigProvider
@@ -24,6 +26,7 @@ function Application() {
         },
       }}
     >
+
 
 
 
