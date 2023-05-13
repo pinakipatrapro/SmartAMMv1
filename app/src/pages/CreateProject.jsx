@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import customColTypes from "../constants/CalculatedColumns.json"
 import CalulatedColOptions from "../components/createProject/CalculatedColOptions";
+import randomItem from 'random-item';
 
 const { Option } = Select;
 
@@ -59,17 +60,20 @@ const CreateProject = () => {
         setPreviewData(previewDataCopy)
     }
 
+    const dataTypeChanged = (type,index)=>{
+        ;
+        let previewDataCopy = JSON.parse(JSON.stringify(previewData));
+        previewDataCopy[index].dataType = type;
+        setPreviewData(previewDataCopy)
+    }
+
     const createDatPreview = (sheetData) => {
         if (!sheetData.length) {
             return
         }
         let previewData = [];
-        let counter = sheetData.length > 5 ? 5 : sheetData.length;
-        let dataSubset = [];
-        for(let i=0;i<counter;i++){
-            dataSubset.push(sheetData[i])
-        }
-
+        let counter = sheetData.length > 10 ? 10 : sheetData.length;
+        let dataSubset = randomItem.multiple(sheetData, counter);
 
         Object.keys(dataSubset[0]).forEach((e, i) => {
             let sampleValues = dataSubset.map(f => { return f[e] })
@@ -223,7 +227,7 @@ const CreateProject = () => {
                     {previewData.map((e, i) => {
                         return (
                             <Col sm={24} md={3} lg={4} xl={6} >
-                                <ColumnCards info={e} changeColumnEnabled={changeColumnEnabled} index={i} />
+                                <ColumnCards info={e} changeColumnEnabled={changeColumnEnabled} index={i} dataTypeChanged={dataTypeChanged} />
                             </Col>
                         )
                     })}

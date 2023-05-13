@@ -53,8 +53,8 @@ const PPTGen = {
         slide.addImage({ x: 0, y: 0, w: "100%", h: "100%", path: "/assets/ppt/bg.png" })
         slide.addImage(footerLogo)
         slide.addImage({ x: "3%", y: "0%", w: "75%", h: "80%", path: "/assets/ppt/banner.png" })
-        slide.addText("SmarTAMM Report - " + dashboardDetails.project.name, { x: "5%", y: "40%", w: "25%", color: "#ffffff", fontSize: 32, fontFace: "TeleGrotesk Next Ultra (Headings)" });
-        slide.addText(`Report Generated on ${new Date().toString().substring(0, 25)}`, { x: "5%", y: "60%", w: "25%", color: "#ffffff", fontSize: 14, fontFace: "TeleGrotesk Next" });
+        slide.addText("SmarTAMM Report - " + dashboardDetails.project.name, { x: "5%", y: "40%", w: "35%", color: "#ffffff", fontSize: 32, fontFace: "TeleGrotesk Next Ultra (Headings)" });
+        slide.addText(`Report Generated on ${new Date().toString().substring(0, 25)}`, { x: "5%", y: "60%", w: "35%", color: "#ffffff", fontSize: 14, fontFace: "TeleGrotesk Next" });
 
 
         dashboardDetails.configData.cards.forEach(card => {

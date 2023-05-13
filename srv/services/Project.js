@@ -166,7 +166,7 @@ class Project {
     async editProject(fastify,projectID,data,calculatedCols){
         const {referenceTable,referenceView} = await this.geTableAndViewName(projectID);
         await prisma.$executeRawUnsafe(` DELETE  FROM "${process.env.DATA_SCHEMA}"."${referenceTable}" `);
-        await prisma.$executeRawUnsafe(` DROP VIEW "${process.env.DATA_SCHEMA}"."${referenceView}" `);
+        await prisma.$executeRawUnsafe(` DROP VIEW IF EXISTS  "${process.env.DATA_SCHEMA}"."${referenceView}" `);
         let sqlString =  this.getColumnNamesSql(referenceTable);
         let colNames = await prisma.$queryRawUnsafe(` ${sqlString} `);
         colNames = colNames.map(e=>e.column_name)
@@ -237,8 +237,8 @@ class Project {
             }
         })
         const referenceObj = await  this.geTableAndViewName(req.params.id);
-        await prisma.$executeRawUnsafe(` DROP VIEW "${process.env.DATA_SCHEMA}"."${referenceObj.referenceView}" `);
-        await prisma.$executeRawUnsafe(` DROP TABLE "${process.env.DATA_SCHEMA}"."${referenceObj.referenceTable}" `);
+        await prisma.$executeRawUnsafe(` DROP VIEW  IF EXISTS "${process.env.DATA_SCHEMA}"."${referenceObj.referenceView}" `);
+        await prisma.$executeRawUnsafe(` DROP TABLE IF EXISTS  "${process.env.DATA_SCHEMA}"."${referenceObj.referenceTable}" `);
         const project = await prisma.Project.delete({
             where: {
                 id: req.params.id
@@ -276,7 +276,7 @@ class Project {
 
     async editCalculatedColumns(fastify,req,res){
         const {referenceTable,referenceView} = await this.geTableAndViewName(req.params.id);
-        await prisma.$executeRawUnsafe(` DROP VIEW "${process.env.DATA_SCHEMA}"."${referenceView}" `);
+        await prisma.$executeRawUnsafe(` DROP VIEW  IF EXISTS  "${process.env.DATA_SCHEMA}"."${referenceView}" `);
         await this.createReferenceView(referenceView,referenceTable,req.body)
         await this.updateCalculatedColumns(req.params.id,req.body)
         return {message :"Calculated Columns Updated Successfully"}

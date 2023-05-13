@@ -34,7 +34,7 @@ const Projects = () => {
             })
     }
     const deleteProject = async (id) => {
-        debugger;
+        ;
         axios
             .get(`/api/deleteProject/${id}`)
             .then((res) => {
