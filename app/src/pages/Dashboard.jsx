@@ -8,6 +8,10 @@ import constant from "../constants/MockData.json"
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios"
 
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+TimeAgo.addDefaultLocale(en)
+const timeAgo = new TimeAgo('en-US')
 
 const { Search } = Input;
 
@@ -52,17 +56,16 @@ const Dashboard = () => {
                     style={{margin:"10px"}}
                     actions={[
                         <Button icon={<LineChartOutlined />} type='link' onClick={() => { navigate(`/dashboardStory/${item.id}/view` )}} >View Dashboard</Button>,
-                        <Button type="text" icon={<EditOutlined />} />,
-                        <Button danger type="text" icon={<DeleteOutlined />} />
+                        <Button type="text" icon={<EditOutlined />} onClick={() => { navigate(`/dashboardStory/${item.id}/edit` )}} />,
                     ]}
                 >
                     <List.Item.Meta
-                        title={<>{item.name}   <Tag color="magenta">Project : {item.project.name}</Tag></>}
+                        title={<>{item.name} </>}
                         description={item.description}
                     />
                     <div>
                         <Typography.Paragraph style={{ margin: "5px", color: "#00000051" }}>
-                            Updated by {item.modifiedBy},{item.modifiedAt}
+                            Updated by {item.modifiedBy},{timeAgo.format(new Date(item.modifiedAt))}
                         </Typography.Paragraph>
 
                     </div>

@@ -1,6 +1,7 @@
 const { PrismaClient, Prisma } = require('@prisma/client');
 const prisma = new PrismaClient();
 const Common = require('./Common')
+
 class Bar extends Common {
 
   async getData(payload) {
@@ -21,6 +22,7 @@ class Bar extends Common {
                 ${this.getOrderByClauseString()}
               GROUP BY ${dimensionString}
             `;
+    console.log(sqlString)
     let data = await prisma.$queryRawUnsafe(`${sqlString}`);
     data = this.toObject(data)
     return data;

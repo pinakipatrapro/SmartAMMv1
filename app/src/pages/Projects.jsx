@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Divider, Input, Statistic, Popconfirm, notification } from 'antd';
+import { Typography, Button, Divider, Input, Statistic, Popconfirm } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import constant from "../constants/MockData.json"
@@ -8,23 +8,23 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-ro
 import millify from "millify";
 import axios from "axios"
 
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+TimeAgo.addDefaultLocale(en)
+const timeAgo = new TimeAgo('en-US')
+
 const { Search } = Input;
 const { Title } = Typography;
 
 
 
 
-const Projects = () => {
+
+
+const Projects = (props) => {
 
     const [projectData, setProjectData] = React.useState([])
 
-    const [api, contextHolder] = notification.useNotification();
-    const openNotificationWithIcon = (type, text, description) => {
-        api[type]({
-            message: text,
-            description: description,
-        });
-    };
 
     const fetchProjects = async () => {
         axios
@@ -34,12 +34,14 @@ const Projects = () => {
             })
     }
     const deleteProject = async (id) => {
-        debugger;
         axios
             .get(`/api/deleteProject/${id}`)
             .then((res) => {
-                openNotificationWithIcon('success', "Operation Successful", "Project deleted successfully")
+                props.openNotification('success', "Operation Successful", "Project deleted successfully")
                 fetchProjects()
+            })
+            .catch(e => {
+                props.openNotification('error', "Error Deleting Project", "" + e)
             })
     }
 
@@ -72,7 +74,10 @@ const Projects = () => {
         },
         {
             title: 'Modified At',
-            dataIndex: 'modifiedAt'
+            dataIndex: 'modifiedAt',
+            sorter: (a, b) => new Date(a.modifiedAt) - new Date(b.modifiedAt),
+            sortDirections: ["descend", "ascend"],
+            render: (date) => timeAgo.format(new Date(date))
         },
         {
             title: 'Updated By',
@@ -88,8 +93,8 @@ const Projects = () => {
             dataIndex: 'id',
             render: (id) => (
                 <>
-                    {/* <Button type="text" icon={<EditOutlined />} /> */}
-                    {/* <Divider type="vertical" /> */}
+                    <Button type="text" icon={<EditOutlined />} onClick={() => { navigate('/projectEdit/' + id) }} />
+                    <Divider type="vertical" />
                     {/* <Button type="text" icon={<LineChartOutlined />} /> */}
                     {/* <Divider type="vertical" /> */}
                     <Popconfirm
@@ -108,13 +113,11 @@ const Projects = () => {
 
     return (
         <>
-            {contextHolder}
-
             <Table columns={columns} dataSource={projectData}
                 bordered
                 title={() => header}
                 pagination={false}
-                // scroll={{ y: "60vh" }}
+            // scroll={{ y: "60vh" }}
             />
 
         </>

@@ -2,6 +2,7 @@
     {
         "name": "Time difference in days",
         "key":"TimeDiffDays",
+        "dataType": "Number",
         "tags": [
             "MTTR",
             "Time",
@@ -26,6 +27,7 @@
     {
         "name": "Get day (Mondat,Tuesday etc.) from date",
         "key":"DayFromDate",
+        "dataType": "Text",
         "tags": [
             "Day",
             "Dayname"
@@ -43,9 +45,44 @@
     {
         "name": "Get Month name (January,February etc.) from date",
         "key":"MonthFromDate",
+        "dataType": "Text",
         "tags": [
             "Month",
             "Month Name"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"date",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":""
+    },
+    {
+        "name": "Get Date (YYYY-MM-DD) from timestamp",
+        "key":"dateFromTimestamp",
+        "dataType": "Date-Time",
+        "tags": [
+            "Date"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"date",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":""
+    },
+    {
+        "name": "Get Hour  from timestamp",
+        "key":"hourFromTimestamp",
+        "dataType": "Number",
+        "tags": [
+            "Hour"
         ],
         "prompts": [
             {

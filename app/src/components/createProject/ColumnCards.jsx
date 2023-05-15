@@ -16,7 +16,7 @@ const ColumnCards = (props) => {
                 <Tooltip title="Include or exclude columns from analysis project">
                     <Switch
                         defaultChecked={props.info.enabled}
-                        onClick={(checked,evt) => {
+                        onClick={(checked, evt) => {
                             props.changeColumnEnabled(checked, props.index)
                         }}
                     />
@@ -27,16 +27,21 @@ const ColumnCards = (props) => {
                 border: "1px #00000022 solid"
             }}
         >
-            <Form.Item label="Data Type" name="layout">
-                <Tooltip title={`System determined type : ${props.info.dataType}`}>
-                    <Radio.Group value={props.info.dataType} buttonStyle="solid">
+            <Form.Item label="Data Type" name="layout" initialValue={props.info.dataType}>
+                <Tooltip title={`Selected Data Type : ${props.info.dataType}`}>
+                    <Radio.Group defaultValue={props.info.dataType} buttonStyle="solid"
+                        onChange={(e) => {
+                            ;
+                            props.dataTypeChanged(e.target.value,props.index)
+                        }}
+                    >
                         <Radio.Button value="Text"><FontSizeOutlined />  Text</Radio.Button>
                         <Radio.Button value="Number"><AreaChartOutlined /> Number</Radio.Button>
                         <Radio.Button value="Date-Time"> <FieldTimeOutlined /> Date-Time</Radio.Button>
                     </Radio.Group>
                 </Tooltip>
             </Form.Item>
-            <Divider   style={{ fontSize: ".75rem" }}>Sample Values</Divider>
+            <Divider style={{ fontSize: ".75rem" }}>Sample Values</Divider>
             <Typography.Paragraph ellipsis={{
                 rows: 2,
                 expandable: true,

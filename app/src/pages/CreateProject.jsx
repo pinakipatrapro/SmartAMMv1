@@ -1,7 +1,7 @@
 
 import {
     Typography, Button, Form, Input, Upload, Select,
-    Divider, Space, Popconfirm, notification
+    Divider, Space, Popconfirm
 } from 'antd';
 import { Col, Row } from 'antd';
 import { UploadOutlined, FileExcelOutlined, SaveOutlined, PlusOutlined } from '@ant-design/icons';
@@ -12,15 +12,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import customColTypes from "../constants/CalculatedColumns.json"
 import CalulatedColOptions from "../components/createProject/CalculatedColOptions";
+import randomItem from 'random-item';
 
 const { Option } = Select;
 
 const { Dragger } = Upload;
 
 
-const CreateProject = () => {
+const CreateProject = (props) => {
     const navigate = useNavigate();
-
+    
 
     const [workbook, setWorkbook] = React.useState([]);
     const [data, setData] = React.useState([]);
@@ -28,15 +29,7 @@ const CreateProject = () => {
     const [calculatedColumns, setCalculatedColumns] = React.useState([]);
 
 
-    //TODO Putin a seperate function
-    const [api, contextHolder] = notification.useNotification();
-
-    const openNotificationWithIcon = (type, text, description) => {
-        api[type]({
-            message: text,
-            description: description,
-        });
-    };
+    
 
     const onFileSelected = (uploader) => {
         setWorkbook([]);
@@ -59,17 +52,20 @@ const CreateProject = () => {
         setPreviewData(previewDataCopy)
     }
 
+    const dataTypeChanged = (type,index)=>{
+        ;
+        let previewDataCopy = JSON.parse(JSON.stringify(previewData));
+        previewDataCopy[index].dataType = type;
+        setPreviewData(previewDataCopy)
+    }
+
     const createDatPreview = (sheetData) => {
         if (!sheetData.length) {
             return
         }
         let previewData = [];
-        let counter = sheetData.length > 5 ? 5 : sheetData.length;
-        let dataSubset = [];
-        for(let i=0;i<counter;i++){
-            dataSubset.push(sheetData[i])
-        }
-
+        let counter = sheetData.length > 10 ? 10 : sheetData.length;
+        let dataSubset = randomItem.multiple(sheetData, counter);
 
         Object.keys(dataSubset[0]).forEach((e, i) => {
             let sampleValues = dataSubset.map(f => { return f[e] })
@@ -140,7 +136,7 @@ const CreateProject = () => {
                 formattedData.forEach((f, j) => {
                     try {
                         if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
-                            if(new Date(f[e.colName])>new Date(9999-12-31)){
+                            if(new Date(f[e.colName])>new Date('9999-12-31')){
                                 f[e.colName] =null
                             }else{
                                 f[e.colName] = new Date(f[e.colName]).toISOString()
@@ -177,7 +173,7 @@ const CreateProject = () => {
         let payload = {
             name: values.name,
             description: values.description,
-            modifiedBy: "Admin",
+            modifiedBy: JSON.parse(localStorage.getItem('userInfo')).name,
             configData: previewData,
             data: formattedData,
             calculatedCols : calculatedCols
@@ -185,16 +181,15 @@ const CreateProject = () => {
         axios
             .post("/api/createProject", payload)
             .then((res) => {
-                openNotificationWithIcon('success', "Operation Successful", "Project created successfully. Navigating to project list in 3 seconds");
-                setTimeout(e=>navigate("/projects"),3000)
+                props.openNotification('success', "Operation Successful", `Project "${values.name}" created successfully.`);
+                navigate("/projects")
             }).catch(e => {
-                openNotificationWithIcon('error', "Error", "Error creating project" + e.message+"  Details: "+e.response.data.message)
+                props.openNotification('error', "Error", "Error creating project" + e.message+"  Details: "+e.response.data.message)
             })
     };
 
     return (
         <>
-            {contextHolder}
             <Typography.Title level={3} style={{ padding: "1rem" }}>Create New Project</Typography.Title>
 
             <Form onFinish={onFinish}>
@@ -223,7 +218,7 @@ const CreateProject = () => {
                     {previewData.map((e, i) => {
                         return (
                             <Col sm={24} md={3} lg={4} xl={6} >
-                                <ColumnCards info={e} changeColumnEnabled={changeColumnEnabled} index={i} />
+                                <ColumnCards info={e} changeColumnEnabled={changeColumnEnabled} index={i} dataTypeChanged={dataTypeChanged} />
                             </Col>
                         )
                     })}

@@ -3,23 +3,198 @@
 ### Get Projects
 GET  {{route}}/getProjects
 
-
 ### Get Project Details
-GET  {{route}}/getProjectDetails/90cefe11-de18-49c3-8223-ea69526a3e5a
+GET  {{route}}/getProjectDetails/15e0dd55-3f1a-4590-b22c-804b01dde2b7
 
 ### Delete Project
-GET  {{route}}/deleteProject/9f96b191-5a07-4b7a-b583-08d883cbd481
-
+GET  {{route}}/deleteProject/402f9e8d-9b69-410a-8047-b88f406a1233
 
 ### Get Table Data
-GET  {{route}}/getTableData/72bec567-7882-422f-bab9-ba0de3221d81
+GET  {{route}}/getTableData/fd4f384d-80e2-4b22-a3c8-481c49e275ea
+
+### Edit Calculated Columns
+POST {{route}}/editCalculatedColumns/96bd2d1d-b3a5-4a31-a25d-ab99543be6e3
+Content-Type: application/json
+
+[
+    {
+        "name": "Time difference in days",
+        "key": "TimeDiffDays",
+        "tags": [
+        "MTTR",
+        "Time",
+        "Days"
+        ],
+        "prompts": [
+        {
+            "name": "Start Date-Time",
+            "dataType": "Date-Time",
+            "id": "startDate",
+            "value": "Open Time"
+        },
+        {
+            "name": "End Date-Time",
+            "id": "endDate",
+            "dataType": "Date-Time",
+            "value": "Closed Time"
+        }
+        ],
+        "colName": "MTTR_CC"
+    },
+    {
+        "name": "Get day (Mondat,Tuesday etc.) from date",
+        "key": "DayFromDate",
+        "tags": [
+        "Day",
+        "Dayname"
+        ],
+        "prompts": [
+        {
+            "name": "Date Field",
+            "id": "date",
+            "dataType": "Date-Time",
+            "value": "Closed Time"
+        }
+        ],
+        "colName": "DAY_CC"
+    },
+    {
+        "name": "Get Month name (January,February etc.) from date",
+        "key": "MonthFromDate",
+        "tags": [
+        "Month",
+        "Month Name"
+        ],
+        "prompts": [
+        {
+            "name": "Date Field",
+            "id": "date",
+            "dataType": "Date-Time",
+            "value": "Closed Time"
+        }
+        ],
+        "colName": "MONTH_CC"
+    },
+    {
+        "name": "Get Date (YYYY-MM-DD) from Timestamp ",
+        "key": "dateFromTimestamp",
+        "tags": [
+        "Date"
+        ],
+        "prompts": [
+        {
+            "name": "Date Field",
+            "id": "date",
+            "dataType": "Date-Time",
+            "value": "Open Time"
+        }
+        ],
+        "colName": "DATE_CC"
+    }
+]
+
+
 
 ### Create Project
 POST  {{route}}/createProject
 Content-Type: application/json
 
 {
-    "name": "Analysis 2", 
+ 
+    "name": "Analysis New - 12May", 
+	"calculatedCols":
+	[
+			{
+				"name": "Time difference in days",
+				"key":"TimeDiffDays",
+				"tags": [
+					"MTTR",
+					"Time",
+					"Days"
+				],
+				"prompts": [
+					{
+						"name": "Start Date-Time",
+						"dataType": "Date-Time",
+						"id":"startDate",
+						"value": "Open Time"
+					},
+					{
+						"name": "End Date-Time",
+						"id":"endDate",
+						"dataType": "Date-Time",
+						"value": "Closed Time"
+					}
+				],
+				"colName":"MTTR_CC"
+			},
+			{
+				"name": "Get day (Mondat,Tuesday etc.) from date",
+				"key":"DayFromDate",
+				"tags": [
+					"Day",
+					"Dayname"
+				],
+				"prompts": [
+					{
+						"name": "Date Field",
+						"id":"date",
+						"dataType": "Date-Time",
+						"value": "Closed Time"
+					}
+				],
+				"colName":"DAY_CC"
+			},
+			{
+				"name": "Get Month name (January,February etc.) from date",
+				"key":"MonthFromDate",
+				"tags": [
+					"Month",
+					"Month Name"
+				],
+				"prompts": [
+					{
+						"name": "Date Field",
+						"id":"date",
+						"dataType": "Date-Time",
+						"value": "Closed Time"
+					}
+				],
+				"colName":"MONTH_CC"
+			},
+      {
+				"name": "Get Date (YYYY-MM-DD) from Timestamp ",
+				"key":"dateFromTimestamp",
+				"tags": [
+					"Date"
+				],
+				"prompts": [
+					{
+						"name": "Date Field",
+						"id":"date",
+						"dataType": "Date-Time",
+						"value": "Open Time"
+					}
+				],
+				"colName":"DATE_CC"
+			},
+      {
+				"name": "Get Hour (HH24 Format) from Timestamp ",
+				"key":"hourFromTimestamp",
+				"tags": [
+					"Hour"
+				],
+				"prompts": [
+					{
+						"name": "Hour Field",
+						"id":"hour",
+						"dataType": "Date-Time",
+						"value": "Open Time"
+					}
+				],
+				"colName":"HOUR_CC"
+			}
+		],
     "data":  [
   {
     "Incident ID": "IM19004815",
@@ -256,7 +431,7 @@ Content-Type: application/json
             "02.01.2019  21:02:11 "
             ],
             "enabled": true,
-            "dataType": "Text"
+            "dataType": "Date-Time"
         },
         {
             "colName": "Resolved by",
@@ -292,7 +467,7 @@ Content-Type: application/json
             "16.01.2019  21:46:43 "
             ],
             "enabled": true,
-            "dataType": "Text"
+            "dataType": "Date-Time"
         },
         {
             "colName": "Closed by",

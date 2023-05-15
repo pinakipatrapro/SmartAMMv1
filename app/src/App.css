@@ -29,7 +29,7 @@
 }
 
 .dashboardStoryHeader {
-  box-shadow: 0 5px 12px 1px #08080836;
+  box-shadow: 0 5px 12px 1px #0808081a;
   padding: 1rem;
 }
 
@@ -53,3 +53,4 @@
 .chartCardHeight {
   height: 300px;
 }
+

@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:latest
+    hostname: db
+    ports:
+      - "5432:5432"
+    environment:  
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "123"
+      POSTGRES_DB: "smartamm"
+    restart: unless-stopped
+    command: -p 5432
+
+  server:
+    image: pinakipatra/smartamm-server:latest
+    build: 
+      context: srv
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "4004:4004"
+
+  client:
+    image: pinakipatra/smartamm-client:latest
+    build:
+      context: app
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+

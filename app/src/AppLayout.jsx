@@ -1,6 +1,7 @@
-import { Breadcrumb, Layout, Menu, theme, Typography } from 'antd';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { Breadcrumb, Layout, Menu, theme, Tooltip, Typography, Button,notification } from 'antd';
+import { AppstoreOutlined, PoweroffOutlined, SettingOutlined } from '@ant-design/icons';
 import { AppstoreAddOutlined, FundOutlined, UserOutlined, HomeOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from "react";
 
 import { Avatar, Space } from 'antd';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
@@ -11,12 +12,44 @@ import Dashboard from "./pages/Dashboard";
 import CreateProject from "./pages/CreateProject";
 import DashboardStory from "./pages/DashboardStory";
 
+import ProjectEdit from './pages/ProjectsEdit';
+import { useKeycloak } from '@react-keycloak/web'
+
+
 const { Title } = Typography;
 const { Header, Content, Footer } = Layout;
 
 
 
+
 const AppLayout = () => {
+
+
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (type, text, description) => {
+        api[type]({
+            message: text,
+            description: description,
+        });
+    };
+
+    const { keycloak, initialized } = useKeycloak()
+    const [profile, setProfile] = React.useState([]);
+    useEffect(() => {
+        setTimeout(e => {
+            keycloak.loadUserInfo()
+                .then(e => {
+                    setProfile(e)
+                    localStorage.setItem('userInfo', JSON.stringify(e))
+                })
+        }, 3000)
+    }, [])
+
+    const userLogout = () => {
+        keycloak.logout()
+    }
+
+    
     const pathFormatter = (path) => {
         let routePath = path.split('/')[1]
         let params = path.split('/')[2];
@@ -35,7 +68,10 @@ const AppLayout = () => {
                 name = "Create Project"
                 break;
             case 'dashboardStory':
-                name = `Dashboard ${params}`
+                name = `Dashboard`
+                break;
+            case 'projectEdit':
+                name = `Projects`
                 break;
             default:
                 name = ""
@@ -49,12 +85,16 @@ const AppLayout = () => {
         token: { colorBgContainer },
     } = theme.useToken();
 
+    if(!initialized){
+        return null
+    }
+
     return (
         <Layout>
             <Header style={{
                 position: 'sticky',
                 top: 0,
-                zIndex: 1,
+                zIndex:99,
                 width: '100%',
             }}>
                 <div className="logo" onClick={() => { navigate("/") }} >
@@ -62,13 +102,16 @@ const AppLayout = () => {
                     <img style={{ height: "2.5rem", marginTop: "5px", marginRight: "2rem" }} src="/assets/smartamm.png" />
                 </div>
                 <div className="right-toolbar" >
-                    <Avatar size={32} style={{ backgroundColor: "#ffffff55", verticalAlign: 'middle' }} src="https://randomuser.me/api/portraits/men/41.jpg" icon={<UserOutlined />} />
+                    <Tooltip title={`Logout ${profile.name}`} onClick={userLogout} >
+                        <Button type="text" danger icon={<PoweroffOutlined />}  ></Button>
+                    </Tooltip>
                 </div>
                 <Menu
                     style={{ width: "auto" }}
                     theme="dark"
                     mode="horizontal"
                     defaultSelectedKeys={[location.pathname]}
+                    selectedKeys={[location.pathname]}
                     items={[
                         {
                             "key": "/",
@@ -106,18 +149,20 @@ const AppLayout = () => {
                         }
                     ]}
                 />
-                <div style={{ background: colorBgContainer, height: "100%" }}>
+                <div style={{ background: colorBgContainer, height: "auto",paddingBottom:"1rem" }}>
                     <Routes>
                         <Route index element={<Home />} />
-                        <Route path="projects" element={<Projects />} />
-                        <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="createProject" element={<CreateProject />} />
-                        <Route path="createProject" element={<CreateProject />} />
-                        <Route path="dashboardStory/:id/:mode" element={<DashboardStory />} />
+                        <Route path="projects" element={<Projects openNotification={openNotification} />} />
+                        <Route path="projectEdit/:id" element={<ProjectEdit openNotification={openNotification}/>} />
+                        <Route path="dashboard" element={<Dashboard openNotification={openNotification}/>} />
+                        <Route path="createProject" element={<CreateProject openNotification={openNotification}/>} />
+                        <Route path="createProject" element={<CreateProject openNotification={openNotification}/>} />
+                        <Route path="dashboardStory/:id/:mode" element={<DashboardStory openNotification={openNotification}/>} />
                     </Routes>
                 </div>
             </Content>
-            <Footer style={{ textAlign: 'center', fontSize: ".5rem" }}>© 2023 T-Systems - All Rights Reserved.</Footer>
+            <Footer style={{ textAlign: 'center', fontSize: ".75rem" }}>© 2023 T-Systems - All Rights Reserved.</Footer>
+            {contextHolder}
         </Layout>
     );
 };
