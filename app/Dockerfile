@@ -7,7 +7,9 @@ RUN npm install --force
 COPY ./src ./src
 RUN rm -rf /app/src/setupProxy.js
 COPY ./public ./public
+ENV REACT_APP_API_AUTH='Basic NzVGMUY2NTY2MUFBOEVGNTU2QjNDNTFERjlGOEY6QkMzMUVBQjhDN0ZCNTdCMjk2QjRDNUNFOTc1NzI='
 RUN npm run build
+
 # Build step #2: build an nginx container
 FROM nginx:stable-alpine
 COPY --from=build-step /app/build /usr/share/nginx/html

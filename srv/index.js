@@ -39,7 +39,7 @@ async function createSchema() {
     await fastify.pg.query(`CREATE SCHEMA IF NOT EXISTS "${process.env.DATA_SCHEMA}"`)
 }
 
-fastify.listen({ port: process.env.PORT }, function (err, address) {
+fastify.listen(process.env.PORT, '0.0.0.0' , function (err, address) {
     if (err) {
         fastify.log.error(err)
         process.exit(1)
