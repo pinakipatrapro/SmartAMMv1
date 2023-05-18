@@ -29,22 +29,99 @@ class Common{
     }
     
     async getViewName(projectID){
-        const referenceView = await  prisma.Project.findFirst({
+        const referenceObj = await  prisma.Project.findFirst({
             where : {
                 id:projectID
             },
             select :{
-                referenceView:true
+                referenceView:true,
+                referenceTable:true
             }
         });
-        return referenceView.referenceView;
+        return referenceObj;
     }
     
     getFilterString(){
         return ``;
     }
+
+    getColumnNamesSql(tableName){
+        return `select column_name
+                from information_schema.columns
+                where table_name = '${tableName}'
+                and table_schema = '${process.env.DATA_SCHEMA}' 
+                order by ordinal_position
+              `;
+    }
+
+    async getTimestampColumns(tableName,columns){
+        let columnString = columns.map(e=> ` '${e}' `).join(',')
+        let sqlString = ` SELECT column_name,data_type FROM information_schema.columns WHERE 
+                            table_name = '${tableName}' AND column_name in (${columnString})
+                            AND data_type like '%timestamp%' `
+        let colNames = await prisma.$queryRawUnsafe(` ${sqlString} `);
+        colNames = colNames.map(e=> ` "${e.column_name}" `);
+        return colNames
+    }
+
+    async getCalculatedColumns(tableName){
+        let calculatedColumnsJSON = await  prisma.Project.findFirst({
+            where : {
+                referenceTable:tableName
+            },
+            select :{
+                calculatedColumns:true
+            }
+        });
+        if(!calculatedColumnsJSON){
+            return [];
+        }
+        return calculatedColumnsJSON['calculatedColumns'];
+    }
+
+    getOrderByStringForCC(columnArray){
+        let orderByArr = [];
+        this.calculatedColumns.forEach(function(e){
+            if(columnArray.indexOf(e.colName)>-1){
+                switch(e.key){
+                    case 'DayFromDate' :
+                        orderByArr.push( ` CASE
+                                            WHEN trim("${e.colName}") = 'Monday' THEN 1
+                                            WHEN trim("${e.colName}") = 'Tuesday' THEN 2
+                                            WHEN trim("${e.colName}") = 'Wednesday' THEN 3
+                                            WHEN trim("${e.colName}") = 'Thursday' THEN 4
+                                            WHEN trim("${e.colName}") = 'Friday' THEN 5
+                                            WHEN trim("${e.colName}") = 'Saturday' THEN 6
+                                            WHEN trim("${e.colName}") = 'Sunday' THEN 7
+                                            END 
+                                        `);
+                        break;
+                    case 'MonthFromDate':
+                        orderByArr.push( ` to_date("${e.colName}",'Month') `);
+                        break;
+                    case 'dateFromTimestamp':
+                        orderByArr.push( `  to_date("${e.colName}",'YYYY-MM-DD') `)  
+                        break;
+                    default: orderByArr.push(` "${e.colName}" `);
+                }
+            }
+        }.bind(this))
+        return orderByArr;
+    }
+
+    async getOrderByStringForColumns(tableName,columnArray){
+        let timestampColumns =  await this.getTimestampColumns(tableName,columnArray)
+        this.calculatedColumns = await this.getCalculatedColumns(tableName)
+        let orderByColumns = this.getOrderByStringForCC(columnArray)
+        return [...orderByColumns,...timestampColumns]
+    }
     
-    getOrderByClauseString(){
+    async getOrderByClauseString(tableName,orderByColumns){
+        let orderByStringArr  = await this.getOrderByStringForColumns(tableName,orderByColumns)
+        if(orderByStringArr.length){
+            orderByStringArr = orderByStringArr.join(',')
+            return ` ORDER BY ${orderByStringArr} `;
+        }
         return ``;
     }
     

@@ -2,6 +2,7 @@
 
 ### Get Chart Data Box Plot
 POST  {{route}}/getChartData
+Authorization: Basic 75F1F65661AA8EF556B3C51DF9F8F:BC31EAB8C7FB57B296B4C5CE97572
 Content-Type: application/json
 
 {
@@ -29,6 +30,7 @@ Content-Type: application/json
 
 ### Get Chart Data Box Plot
 POST  {{route}}/getChartData
+Authorization: Basic 75F1F65661AA8EF556B3C51DF9F8F:BC31EAB8C7FB57B296B4C5CE97572
 Content-Type: application/json
 
 {
@@ -40,15 +42,15 @@ Content-Type: application/json
 "config":{
 "isStack":true,
 "agg":{
-"age":"avg"
+"count":"Impact"
 },
-"projectID":"917a1c2a-e21a-4ff4-8339-720039f1199d",
+"projectID":"ed136cad-31b1-4b0e-9255-f96ee73bc164",
 "xField":"Priority",
 "yField":"Category",
 "seriesField":"sport",
-"dimension":["sport_name"],
-"measure":["age"],
-"series":["sport"]
+"dimension":["Contact Media"],
+"measure":["Impact"],
+"series":["DAY_CC"]
 }
 }
 }
