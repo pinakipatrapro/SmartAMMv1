@@ -54,11 +54,11 @@ const Projects = (props) => {
     const navigate = useNavigate();
     const header = (
         <>
-            <span>Available Projects ({constant.projectTable.length})</span>
+            <span>Available Projects ({projectData.length})</span>
             <Button shape="round" type="primary" icon={<PlusOutlined />} style={{ float: "right" }}
                 onClick={() => { navigate("/createProject") }}
             >Create Project</Button>
-            <Search placeholder="Search by Project Name or Description" style={{ float: "right", width: "30rem", marginRight: "2rem" }} />
+            {/* <Search placeholder="Search by Project Name or Description" style={{ float: "right", width: "30rem", marginRight: "2rem" }} /> */}
 
 
         </>

@@ -35,11 +35,11 @@ const Dashboard = () => {
 
     const header = (
         <>
-            <span>Available Dashboards ({constant.dashboardData.length})</span>
+            <span>Available Dashboards ({dashboardData.length})</span>
             {/* <Button shape="round" type="primary" icon={<PlusOutlined />} style={{ float: "right" }}
                 onClick={() => { navigate("/createProject") }}
             >Create Dashboard</Button> */}
-            <Search placeholder="Search by Dashboard Name or Description" style={{ float: "right", width: "30rem", marginRight: "2rem" }} />
+            {/* <Search placeholder="Search by Dashboard Name or Description" style={{ float: "right", width: "30rem", marginRight: "2rem" }} /> */}
 
 
         </>
