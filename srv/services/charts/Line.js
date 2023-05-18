@@ -5,7 +5,7 @@ const Common = require('./Common')
 class Line extends Common{
 
     async getData(payload){
-        const viewName = await this.getViewName(payload.projectID)
+        const {referenceView,referenceTable} = await this.getViewName(payload.projectID)
         if (!payload.series) {
           payload.series = []
         }
@@ -17,10 +17,10 @@ class Line extends Common{
                 ${payload.measure.length && payload.dimension.length  ? ' , ':''}
                 ${measureString}
               FROM
-                (${this.getSqlString(viewName)}) AS V
+                (${this.getSqlString(referenceView)}) AS V
                 ${this.getFilterString()}
-                ${this.getOrderByClauseString()}
               GROUP BY ${dimensionString}
+                ${await this.getOrderByClauseString(referenceTable,[...payload.dimension,...payload.series])}
             `;
         let  data = await prisma.$queryRawUnsafe( `${sqlString}`);
         data = this.toObject(data)

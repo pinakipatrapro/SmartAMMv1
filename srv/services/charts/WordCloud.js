@@ -10,8 +10,8 @@ class WordCloud extends Common {
         return [...arrLang,...customWords]
     }
     async getData(payload){
-        const viewName = await this.getViewName(payload.projectID)
-        let sqlString = this.getWordCloudSql(payload.dimension,viewName)
+        const {referenceView} = await this.getViewName(payload.projectID)
+        let sqlString = this.getWordCloudSql(payload.dimension,referenceView)
         let  data = await prisma.$queryRawUnsafe( `${sqlString}`);
         if(!data.length){
             return [];
