@@ -16,7 +16,23 @@ const ChartDataCreator = {
             dimension: settings.dimension,
             series: settings.series,
             agg: settings.agg,
-            projectID: prevSettings.options.config.projectID
+            projectID: prevSettings.options.config.projectID,
+            xAxis: {
+                label: {
+                    autoRotate: true
+                },
+                title: {
+                    text: settings.dimension[0]
+                }
+            },
+            yAxis: {
+                label: {
+                    autoRotate: true
+                },
+                title: {
+                    text: settings.measure[0]
+                }
+            }
         }
 
 
