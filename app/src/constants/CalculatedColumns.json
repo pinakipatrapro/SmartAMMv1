@@ -25,6 +25,31 @@
         "colName":""
     },
     {
+        "name": "Time difference in hours",
+        "key":"TimeDiffHours",
+        "dataType": "Number",
+        "tags": [
+            "MTTR",
+            "Time",
+            "Hours"
+        ],
+        "prompts": [
+            {
+                "name": "Start Date-Time",
+                "dataType": "Date-Time",
+                "id":"startDate",
+                "value": null
+            },
+            {
+                "name": "End Date-Time",
+                "id":"endDate",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":""
+    },
+    {
         "name": "Get day (Mondat,Tuesday etc.) from date",
         "key":"DayFromDate",
         "dataType": "Text",
@@ -83,6 +108,24 @@
         "dataType": "Number",
         "tags": [
             "Hour"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"date",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":""
+    },
+    {
+        "name": "Get month year from timestamp",
+        "key":"YearMonthFromTimestamp",
+        "dataType": "Number",
+        "tags": [
+            "Month-Year",
+            "MMM-YYYY"
         ],
         "prompts": [
             {
