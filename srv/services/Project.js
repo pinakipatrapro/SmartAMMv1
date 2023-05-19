@@ -17,14 +17,22 @@ class Project {
         return newjData;
     }
 
-    getMTTRSqlString(prompts,colName){
-        return `  ROUND(
+    getMTTRSqlString(prompts,colName,option){
+        if(!option){
+            return `  ROUND(
                     (EXTRACT(
                         EPOCH from ("${prompts[1].value}"::timestamp - "${prompts[0].value}"::timestamp)
                     )/86400
-                    )::Decimal,2)::FLOAT
-                  AS "${colName}" 
-            `
+                    )::Decimal,2)::FLOAT AS "${colName}" 
+                `
+        }
+        return `  ROUND(
+            (EXTRACT(
+                EPOCH from ("${prompts[1].value}"::timestamp - "${prompts[0].value}"::timestamp)
+            )/3600
+            )::Decimal,2)::FLOAT AS "${colName}" 
+        `;
+
     }
 
     getDateSqlString(func,prompts,colName){
@@ -49,6 +57,12 @@ class Project {
                     break;
                 case 'hourFromTimestamp':
                     sqlString.push(this.getDateSqlString('HH24',e.prompts,e.colName))
+                    break;
+                case 'TimeDiffHours':
+                    sqlString.push(this.getMTTRSqlString(e.prompts,e.colName,'hrs'))
+                    break;
+                case 'YearMonthFromTimestamp':
+                    sqlString.push(this.getDateSqlString('YYYY-Mon',e.prompts,e.colName))
                     break;
             }
         }.bind(this))

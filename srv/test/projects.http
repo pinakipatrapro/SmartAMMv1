@@ -14,6 +14,7 @@ GET  {{route}}/getTableData/fd4f384d-80e2-4b22-a3c8-481c49e275ea
 
 ### Edit Calculated Columns
 POST {{route}}/editCalculatedColumns/96bd2d1d-b3a5-4a31-a25d-ab99543be6e3
+Authorization: Basic 75F1F65661AA8EF556B3C51DF9F8F:BC31EAB8C7FB57B296B4C5CE97572
 Content-Type: application/json
 
 [
@@ -97,11 +98,12 @@ Content-Type: application/json
 
 ### Create Project
 POST  {{route}}/createProject
+Authorization: Basic 75F1F65661AA8EF556B3C51DF9F8F:BC31EAB8C7FB57B296B4C5CE97572
 Content-Type: application/json
 
 {
  
-    "name": "Analysis New - 12May", 
+    "name": "Analysis New - 19May", 
 	"calculatedCols":
 	[
 			{
@@ -127,6 +129,30 @@ Content-Type: application/json
 					}
 				],
 				"colName":"MTTR_CC"
+			},
+			{
+				"name": "Time difference in Hours",
+				"key":"TimeDiffHours",
+				"tags": [
+					"MTTR",
+					"Time",
+					"Days"
+				],
+				"prompts": [
+					{
+						"name": "Start Date-Time",
+						"dataType": "Date-Time",
+						"id":"startDate",
+						"value": "Open Time"
+					},
+					{
+						"name": "End Date-Time",
+						"id":"endDate",
+						"dataType": "Date-Time",
+						"value": "Closed Time"
+					}
+				],
+				"colName":"MTTR_CC_HRS"
 			},
 			{
 				"name": "Get day (Mondat,Tuesday etc.) from date",
@@ -161,6 +187,23 @@ Content-Type: application/json
 					}
 				],
 				"colName":"MONTH_CC"
+			},
+			{
+				"name": "Get Year Month  (January,February etc.) from date",
+				"key":"YearMonthFromTimestamp",
+				"tags": [
+					"Month",
+					"Month Name"
+				],
+				"prompts": [
+					{
+						"name": "Date Field",
+						"id":"date",
+						"dataType": "Date-Time",
+						"value": "Closed Time"
+					}
+				],
+				"colName":"YEAR_MONTH_CC"
 			},
       {
 				"name": "Get Date (YYYY-MM-DD) from Timestamp ",
@@ -239,7 +282,7 @@ Content-Type: application/json
     "Resolved Time": "07.01.2019  21:00:46 ",
     "Resolved by": "AUTO S&P WW SAP AUTHORIZATION",
     "Classification 1": "HORIZATION",
-    "Closed Time": "21.01.2019  21:51:57 ",
+    "Closed Time": "13-02-2021 04:00:00",
     "Closed by": "",
     "Category": "SAP",
     "SubCategory": "EP1/111",
@@ -297,7 +340,7 @@ Content-Type: application/json
     "Resolved Time": "04.02.2019  03:09:07 ",
     "Resolved by": "AUTO SAP AP CIP 100 SD",
     "Classification 1": "CIP 100 SD",
-    "Closed Time": "04.02.2019  05:24:11 ",
+    "Closed Time": "04.02.2019  09:24:11 ",
     "Closed by": "",
     "Category": "General Information (IN)",
     "SubCategory": "Information",
