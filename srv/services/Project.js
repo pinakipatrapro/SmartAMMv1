@@ -36,7 +36,7 @@ class Project {
     }
 
     getDateSqlString(func,prompts,colName){
-        return ` to_char("${prompts[0].value}",'${func}') AS "${colName}" `
+        return ` replace(to_char("${prompts[0].value}",'${func}'),' ','') AS "${colName}" `
     }
 
     formulateCalculatedColString(calculatedCols){
@@ -62,7 +62,7 @@ class Project {
                     sqlString.push(this.getMTTRSqlString(e.prompts,e.colName,'hrs'))
                     break;
                 case 'YearMonthFromTimestamp':
-                    sqlString.push(this.getDateSqlString('YYYY-Mon',e.prompts,e.colName))
+                    sqlString.push(this.getDateSqlString('Month-YYYY',e.prompts,e.colName))
                     break;
             }
         }.bind(this))
