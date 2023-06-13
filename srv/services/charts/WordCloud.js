@@ -7,6 +7,12 @@ class WordCloud extends Common {
     getStopWordsArr(customWords){
         let arrLang = this.getStopWordsLanguages()
         arrLang = arrLang.map(e=>sw[e]).flat();
+        if(!customWords){
+            customWords = []  
+        }else{
+            customWords = customWords.split(",").map(e=>e.toLowerCase())
+        }
+        
         return [...arrLang,...customWords]
     }
     async getData(payload){
@@ -16,10 +22,10 @@ class WordCloud extends Common {
         if(!data.length){
             return [];
         }
-        let words = data.map(e=>e.word);
-        let langArr = this.getStopWordsArr(payload.customWords);
+        let words = data.map(e=>e.word.toLowerCase());
+        let langArr = this.getStopWordsArr(payload.stopWords);
         let dataWithoutStopWords = sw.removeStopwords(words,langArr)
-        let result = data.filter(e=>dataWithoutStopWords.includes(e.word) )
+        let result = data.filter(e=>dataWithoutStopWords.indexOf(e.word.toLowerCase()) !== -1 )
         result = this.toObject(result)
         result  =  result.sort((a,b)=>{
             return b.count - a.count
