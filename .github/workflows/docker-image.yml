@@ -21,7 +21,7 @@ jobs:
         with:
           username: pinakipatra
           password: Pinaki@2022
-      - name: Push the Docker image
+      - name: Push the  client Docker image
         run: docker push pinakipatra/smartamm-client
-      - name: Push the Docker image
+      - name: Push the server Docker image
         run: docker push pinakipatra/smartamm-server
