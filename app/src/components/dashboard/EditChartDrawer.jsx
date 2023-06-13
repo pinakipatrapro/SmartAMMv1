@@ -81,12 +81,10 @@ const EditChartDrawer = (props) => {
 
     const [selectedMeasures, setSelectedMeasures] = useState([])
 
-
-
-
     const onMeasureChange = (values, evt) => {
         setSelectedMeasures(values);
     }
+
 
     let setValue = (value, path) => {
         let selectedCardData = JSON.parse(JSON.stringify(props.selectedCard))
@@ -133,7 +131,7 @@ const EditChartDrawer = (props) => {
                     </Form.Item>
                     <Form.Item label="Select Dimension(s)" name="dimension" initialValue={props.selectedCard.options.config.dimension}>
                         <Select mode="multiple" options={columnData} />
-                    </Form.Item>
+                    </Form.Item>                 
                     <Form.Item label="Select Measure(s)" name="measure" initialValue={props.selectedCard.options.config.measure}>
                         <Select mode="multiple" options={columnData} onChange={onMeasureChange} />
                     </Form.Item>
@@ -173,7 +171,9 @@ const EditChartDrawer = (props) => {
                     <Form.Item label="Select Series(s)" name="series" initialValue={props.selectedCard.options.config.series}>
                         <Select mode="multiple" options={columnData} />
                     </Form.Item>
-
+                    <Form.Item label="Enter Stopword(s)" name="stopWords" initialValue={props.selectedCard.options.config.stopWords}>
+                        <Input placeholder="Enter Stopwords(Comma Separated)" />
+                    </Form.Item>  
                     <Space direction="horizontal" >
                         <Form.Item label="Stacked" name="isStack" >
                             <Switch defaultChecked={props.selectedCard.options.config.isStack} />
