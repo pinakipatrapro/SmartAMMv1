@@ -14,6 +14,7 @@ const ChartDataCreator = {
             isPercent: settings.isPercent,
             measure: settings.measure,
             dimension: settings.dimension,
+            stopWords:settings.stopWords,
             series: settings.series,
             agg: settings.agg,
             projectID: prevSettings.options.config.projectID,
