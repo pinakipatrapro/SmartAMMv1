@@ -1,7 +1,9 @@
 @route = http://127.0.0.1:4004
-
+@username = 75F1F65661AA8EF556B3C51DF9F8F
+@password = BC31EAB8C7FB57B296B4C5CE97572
 ### Get Projects
 GET  {{route}}/getProjects
+Authorization: Basic {{username}} {{password}}
 
 ### Get Project Details
 GET  {{route}}/getProjectDetails/15e0dd55-3f1a-4590-b22c-804b01dde2b7
@@ -43,7 +45,7 @@ Content-Type: application/json
         "colName": "MTTR_CC"
     },
     {
-        "name": "Get day (Mondat,Tuesday etc.) from date",
+        "name": "Get day (Monday,Tuesday etc.) from date",
         "key": "DayFromDate",
         "tags": [
         "Day",
@@ -155,7 +157,7 @@ Content-Type: application/json
 				"colName":"MTTR_CC_HRS"
 			},
 			{
-				"name": "Get day (Mondat,Tuesday etc.) from date",
+				"name": "Get day (Monday,Tuesday etc.) from date",
 				"key":"DayFromDate",
 				"tags": [
 					"Day",

@@ -174,6 +174,30 @@ const chart = {
         };
         return configValue
     },
+    Bigram: (settings, commonProps) => {
+        let configValue = {
+            title: settings.chartTitle,
+            type: "chart",
+            options: {
+                metrics: [],
+                chartType: "WordCloud",
+                config: {
+                    ...commonProps,
+                    wordField: "word",
+                    colorField: "word",
+                    weightField: "count",
+                    customWords: [],
+                    seriesField: !!settings.series ? settings.series[0] : null,
+                    wordStyle: {
+                        rotation: 0
+                    },
+                }
+            }
+
+
+        };
+        return configValue
+    },
     Box: (settings, commonProps) => {
         let configValue = {
             title: settings.chartTitle,

@@ -28,6 +28,36 @@ class Common{
         `
     }
     
+    getBigramWordCloudSelectString(dimensions) {
+        let dimensionString = dimensions.map(e => ` coalesce("${e}",'') `).join(`|| ' ' ||`);
+        return dimensionString;
+    }
+
+    getBigramWordCloudSql(dimensions, viewName) {
+        let dimensionString = this.getBigramWordCloudSelectString(dimensions);
+        return `
+            WITH sentences AS (
+                SELECT string_agg(${dimensionString}, ' ') AS text
+                FROM "${process.env.DATA_SCHEMA}"."${viewName}"
+            ),
+            words AS (
+                SELECT word
+                FROM sentences,
+                     regexp_split_to_table(text, E'\\s+') AS word
+            ),
+            bigrams AS (
+                SELECT word AS word1, LEAD(word) OVER () AS word2
+                FROM words
+            )
+            SELECT word1 || ' ' || word2 AS bigram, count(*)
+            FROM bigrams
+            WHERE word2 IS NOT NULL
+            GROUP BY word1, word2
+        `;
+    }
+    
+    
+
     async getViewName(projectID){
         const referenceObj = await  prisma.Project.findFirst({
             where : {

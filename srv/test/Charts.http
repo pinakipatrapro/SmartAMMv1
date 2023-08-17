@@ -56,7 +56,44 @@ Content-Type: application/json
 }
 
 
+###Get Chart Data Bigram Word Cloud
+POST {{route}}/getChartData
+Authorization: Basic 75F1F65661AA8EF556B3C51DF9F8F:BC31EAB8C7FB57B296B4C5CE97572
+Content-Type: application/json
 
+{
+  "title": "My New Chart",
+  "type": "chart",
+  "options": {
+    "metrics": [],
+    "chartType": "Bigram", 
+     "config": {
+      "dimension": ["Short Description"], 
+      "stopWords": "custom,stop,words",
+      "projectID": "04b704db-92d2-49e0-a25a-b6e72a4d9cef"
+    }
+  }
+}
+
+
+###Get Chart Data  Word Cloud
+POST {{route}}/getChartData
+Authorization: Basic 75F1F65661AA8EF556B3C51DF9F8F:BC31EAB8C7FB57B296B4C5CE97572
+Content-Type: application/json
+
+{
+  "title": "My New Chart",
+  "type": "chart",
+  "options": {
+    "metrics": [],
+    "chartType": "WordCloud", 
+     "config": {
+      "dimension": ["Short Description"], 
+      "stopWords": "custom,stop,words",
+      "projectID": "04b704db-92d2-49e0-a25a-b6e72a4d9cef"
+    }
+  }
+}
 
 # {
 #   "title": "My New Chart",
