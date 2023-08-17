@@ -50,7 +50,7 @@
         "colName":""
     },
     {
-        "name": "Get day (Mondat,Tuesday etc.) from date",
+        "name": "Get day (Monday,Tuesday etc.) from date",
         "key":"DayFromDate",
         "dataType": "Text",
         "tags": [
