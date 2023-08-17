@@ -42,7 +42,12 @@ class Chart {
                     const BoxPlot = require('./charts/BoxPlot');
                     const objBoxPlot = new BoxPlot();
                     return objBoxPlot.getData(req.body.options.config)
-                break;               
+                break;
+                case "Bigram":
+                    const Bigram = require('./charts/Bigram'); 
+                    const objBigram = new Bigram(); 
+                    return objBigram.getData(req.body.options.config);
+                break;              
                 default: throw new Error("Chart Type does not Exist!!!")
             }
         }
