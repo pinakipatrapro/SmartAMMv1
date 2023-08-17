@@ -13,7 +13,8 @@
     "pg": "^8.10.0",
     "pg-format": "^1.0.4",
     "stopword": "^2.0.8",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "pluralize": "^8.0.0"
   },
   "scripts": {
     "start": "node index.js",
