@@ -10,8 +10,8 @@ import { Column, Area, Line, Bar, DualAxes, Pie, WordCloud,Box } from '@ant-desi
 import axios from "axios"
 import CardOptions from "./util/CardOptions"
 
-
-const chartsMap = { Column, Area, Line, Bar, DualAxes, WordCloud, Pie,Box };
+let Bigram = WordCloud;
+const chartsMap = { Column, Area, Line, Bar, DualAxes, WordCloud, Pie,Box,Bigram };
 
 
 
@@ -47,7 +47,7 @@ const KPICard = (props) => {
             if (!props.settings.options.chartType) {
                 return null
             }
-            const ChartType = chartsMap[props.settings.options.chartType === 'Bigram' ? 'WordCloud' : props.settings.options.chartType]
+            const ChartType = chartsMap[props.settings.options.chartType]
             props.settings.options.config.data = data;
             props.settings.options.config.theme = {
                 // styleSheet: {

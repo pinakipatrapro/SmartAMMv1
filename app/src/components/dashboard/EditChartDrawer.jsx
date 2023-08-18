@@ -37,7 +37,7 @@ const chartTypes = [
     { value: 'Pie', label: 'Pie/Donught Chart' },
     { value: 'WordCloud', label: 'Word Cloud Chart' },
     { value: 'Box', label: 'Box Plot' },
-    { value: 'Bigram', label: 'Bigram Word Cloud Chart' },
+    { value: 'Bigram', label: 'Bigram Chart' },
 
 ]
 
