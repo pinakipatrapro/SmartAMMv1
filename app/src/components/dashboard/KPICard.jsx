@@ -47,9 +47,8 @@ const KPICard = (props) => {
             if (!props.settings.options.chartType) {
                 return null
             }
-            const ChartType = chartsMap[props.settings.options.chartType]
+            const ChartType = chartsMap[props.settings.options.chartType === 'Bigram' ? 'WordCloud' : props.settings.options.chartType]
             props.settings.options.config.data = data;
-
             props.settings.options.config.theme = {
                 // styleSheet: {
                 //     paletteQualitative10: [

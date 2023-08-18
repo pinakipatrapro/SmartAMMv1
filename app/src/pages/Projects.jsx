@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Typography, Button, Divider, Input, Statistic, Popconfirm } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, LineChartOutlined, CloudDownloadOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import constant from "../constants/MockData.json"
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import axios from "axios"
 
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
+import csvDownload from "json-to-csv-export";
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -23,9 +24,7 @@ const { Title } = Typography;
 
 const Projects = (props) => {
 
-    const [projectData, setProjectData] = React.useState([])
-
-
+    const [projectData, setProjectData] = React.useState([]);
     const fetchProjects = async () => {
         axios
             .get("/api/getProjects")
@@ -43,6 +42,16 @@ const Projects = (props) => {
             .catch(e => {
                 props.openNotification('error', "Error Deleting Project", "" + e)
             })
+    }
+
+    const downloadCSVData = async (id) => {
+        const result = await axios.get(`/api/getTableData/${id}`);
+        const jsonData =  result.data;
+        csvDownload({
+            data: jsonData,
+            filename: id,
+            delimiter: ','
+        })
     }
 
     useEffect(() => {
@@ -94,6 +103,8 @@ const Projects = (props) => {
             render: (id) => (
                 <>
                     <Button type="text" icon={<EditOutlined />} onClick={() => { navigate('/projectEdit/' + id) }} />
+                    <Divider type="vertical" />
+                    <Button type="text" icon={<CloudDownloadOutlined />} onClick={() => downloadCSVData(id)} />
                     <Divider type="vertical" />
                     {/* <Button type="text" icon={<LineChartOutlined />} /> */}
                     {/* <Divider type="vertical" /> */}
