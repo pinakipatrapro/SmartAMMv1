@@ -34,6 +34,8 @@ const ChartDataCreator = {
                     text: settings.measure[0]
                 }
             },
+            sorter:settings.sorter,
+            sortAscending:settings.sortAscending,
             // slider: {
             //     start: 0.1,
             //     end: 0.9,
