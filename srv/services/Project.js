@@ -64,6 +64,12 @@ class Project {
                 case 'YearMonthFromTimestamp':
                     sqlString.push(this.getDateSqlString('Month-YYYY',e.prompts,e.colName))
                     break;
+                case 'YearFromTimestamp':
+                    sqlString.push(this.getDateSqlString('YYYY',e.prompts,e.colName))
+                    break;
+                case 'DayoftheMonthFromTimestamp' :
+                    sqlString.push(this.getDateSqlString('DD',e.prompts,e.colName))
+                    break;
             }
         }.bind(this))
         return sqlString.join(',')+' , '

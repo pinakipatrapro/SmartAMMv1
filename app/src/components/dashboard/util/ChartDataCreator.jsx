@@ -34,6 +34,8 @@ const ChartDataCreator = {
                     text: settings.measure[0]
                 }
             },
+            sorter:settings.sorter,
+            sortAscending:settings.sortAscending,
             // slider: {
             //     start: 0.1,
             //     end: 0.9,
@@ -165,8 +167,10 @@ const chart = {
                     customWords: [],
                     seriesField: !!settings.series ? settings.series[0] : null,
                     wordStyle: {
-                        rotation: 0
-                    },
+                        fontFamily: 'Verdana',
+                        fontSize: [8, 32],
+                        rotation: 0,
+                    }
                 }
             }
 
@@ -209,7 +213,9 @@ const chart = {
                     customWords: [],
                     seriesField: !!settings.series ? settings.series[0] : null,
                     wordStyle: {
-                        rotation: 0
+                        fontFamily: 'Verdana',
+                        fontSize: [8, 32],
+                        rotation: 0,
                     },
                 }
             }

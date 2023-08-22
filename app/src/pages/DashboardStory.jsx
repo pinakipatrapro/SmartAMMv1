@@ -125,7 +125,9 @@ const Dashboard = (props) => {
                     projectID: dashboardDetails.project.id,
                     measure: [],
                     dimension: [],
-                    series: []
+                    series: [],
+                    sorter:[],
+                    sortAscending:false
                 }
             }
         })

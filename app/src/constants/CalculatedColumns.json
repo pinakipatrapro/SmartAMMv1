@@ -136,5 +136,41 @@
             }
         ],
         "colName":""
+    },
+    {
+        "name": "Get Year from timestamp",
+        "key":"YearFromTimestamp",
+        "dataType": "Number",
+        "tags": [
+            "Year",
+            "YYYY"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"date",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":""
+    },
+    {
+        "name": "Get Day of the Month(1-30/31) from timestamp",
+        "key":"DayoftheMonthFromTimestamp",
+        "dataType": "Number",
+        "tags": [
+            "Day of the Month",
+            "DD"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"date",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":""
     }
 ]
