@@ -119,7 +119,9 @@ const chartGenerator = {
         let data = dataFormatter(card)
         slide.addChart(pptx.ChartType.bar, data, {
             ...chartCommonProperties,
-            chartColors: chartColors
+            barDir: "col",
+            barGrouping: card.options.config.isStack ? 'stacked' : 'clustered',
+            chartColors: card.options.config.series.length ? chartColors :  chartColors[0]
         });
     },
     WordCloud: (slide, card) => {
