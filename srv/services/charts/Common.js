@@ -105,6 +105,12 @@ class Common{
                     case 'YearMonthFromTimestamp':
                         orderByArr.push( ` to_date("${e.colName}",'Month-YYYY') `);
                         break;
+                    case 'YearFromTimestamp':
+                        orderByArr.push( ` "${e.colName}" `);
+                        break;
+                    case 'DayoftheMonthFromTimestamp':
+                        orderByArr.push( ` "${e.colName}" `);
+                        break;                    
                     default: orderByArr.push(` "${e.colName}" `);
                 }
             }

@@ -57,6 +57,59 @@ Content-Type: application/json
 
 
 
+### Bigram
+
+
+
+
+POST  {{route}}/getChartData
+Authorization: Basic 75F1F65661AA8EF556B3C51DF9F8F:BC31EAB8C7FB57B296B4C5CE97572
+Content-Type: application/json
+
+{
+  "title": "My New Chart 1",
+  "type": "chart",
+  "options": {
+    "metrics": [],
+    "chartType": "Bigram",
+    "config": {
+      "measure": [],
+      "dimension": [
+        "Contact Media"
+      ],
+      "series": [],
+      "projectID": "23c5f190-a8fc-475a-849f-d66b040e719d",
+      "xAxis": {
+        "label": {
+          "autoRotate": true
+        },
+        "title": {
+          "text": "Contact Media"
+        }
+      },
+      "yAxis": {
+        "label": {
+          "autoRotate": true
+        },
+        "title": {}
+      },
+      "wordField": "word",
+      "colorField": "word",
+      "weightField": "count",
+      "customWords": [],
+      "wordStyle": {
+        "rotation": 0
+      },
+      "data": [],
+      "theme": {}
+    }
+  },
+  "id": "54c4d6d4-8db1-4b89-9eb8-6e9aab63f305"
+}
+
+
+
+
 
 # {
 #   "title": "My New Chart",

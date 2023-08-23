@@ -80,12 +80,11 @@ const EditChartDrawer = (props) => {
     }
 
 
-    const [selectedMeasures, setSelectedMeasures] = useState([])
+    const [selectedMeasures, setSelectedMeasures] = useState([]);
 
     const onMeasureChange = (values, evt) => {
         setSelectedMeasures(values);
     }
-
 
     let setValue = (value, path) => {
         let selectedCardData = JSON.parse(JSON.stringify(props.selectedCard))
@@ -186,6 +185,16 @@ const EditChartDrawer = (props) => {
                             <Switch defaultChecked={props.selectedCard.options.config.isPercent} />
                         </Form.Item>
                     </Space>
+                    <Space direction="horizontal" size={30}>
+                        <Form.Item label="Sorter" name="sorter" initialValue={props.selectedCard.options.config.sorter} style={{ width: "400px", maxWidth: "400px", overflow: "hidden" }} >
+                            <Select mode="multiple" options={columnData}   />
+                        </Form.Item>
+                        <Form.Item name="sortAscending" initialValue={props.selectedCard.options.config.sortAscending} >
+                            <Switch defaultChecked={props.selectedCard.options.config.sortAscending} checkedChildren="ASC" unCheckedChildren="DESC" />
+                        </Form.Item>
+                    </Space>
+                    
+
                     {/* <EditChartLegend selectedCard={props.selectedCard}/> */}
 
                 </>
