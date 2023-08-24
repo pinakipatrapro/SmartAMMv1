@@ -9,7 +9,7 @@ COPY . /app
 
 EXPOSE  4004
 
-ENV DATABASE_URL="postgresql://postgres:123@db:5432/smartamm?schema=public"
+ENV DATABASE_URL="postgresql://postgres:123@db:5052/smartamm?schema=public"
 ENV PORT="4004"
 ENV DATA_SCHEMA="AMMDATA"
 ENV API_USER="75F1F65661AA8EF556B3C51DF9F8F"
