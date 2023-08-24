@@ -134,6 +134,11 @@ const chartGenerator = {
         slide.addImage({ ...chartCommonProperties, data: canvasImage })
 
     },
+    Bigram: (slide, card) => {
+        let canvasImage = document.getElementById(card.id + '--chart').children[1].children[0].children[0].children[0].children[0].toDataURL()
+        slide.addImage({ ...chartCommonProperties, data: canvasImage })
+
+    },
 }
 
 const dataFormatter = (card) => {
