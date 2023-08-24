@@ -5,13 +5,18 @@ services:
     image: postgres:latest
     hostname: db
     ports:
-      - "5432:5432"
+      - "5052:5052"
     environment:  
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "123"
       POSTGRES_DB: "smartamm"
+      PGDATA: /var/lib/postgresql/data/smartamm/
     restart: unless-stopped
-    command: -p 5432
+    command: -p 5052
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    
+
 
   server:
     image: pinakipatra/smartamm-server:latest
@@ -33,3 +38,20 @@ services:
     depends_on:
       - server
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pinaki.patra@t-systems.com
+      PGADMIN_DEFAULT_PASSWORD: Sap#2016
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin4/storage
+    depends_on:
+      - db
+
+volumes:
+  pg-data:
+  pgadmin-data:
