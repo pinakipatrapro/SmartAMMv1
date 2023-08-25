@@ -149,7 +149,7 @@ const dataFormatter = (card) => {
         card.options.config.measure.forEach(mes => {
             seriesValues.forEach(seriesVal => {
                 let chartSeries = {};
-                chartSeries.name = seriesVal
+                chartSeries.name = String(seriesVal)
                 chartSeries.labels = card.options.config.data.filter(dataPoint => {
                     return dataPoint[card.options.config.series[0]] == seriesVal
                 }).map(dataPoint => {
