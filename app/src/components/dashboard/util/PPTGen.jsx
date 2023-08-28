@@ -86,12 +86,17 @@ const PPTGen = {
 
 const chartGenerator = {
     Bar: (slide, card) => {
-        let data = dataFormatter(card)
+        let data = dataFormatter(card);
+        let catAxisOrientation;
+        if( card?.options?.config?.sorter.length){
+            catAxisOrientation = card.options.config.sortAscending ? "minMax": "maxMin"
+        }
         slide.addChart(pptx.ChartType.bar, data, {
             ...chartCommonProperties,
             barDir: "bar",
             barGrouping: card.options.config.isStack ? 'stacked' : 'clustered',
-            chartColors: chartColors.splice(0, data.length)
+            chartColors: chartColors.splice(0, data.length),
+            catAxisOrientation: catAxisOrientation || "minMax",
         });
     },
     Pie: (slide, card) => {
