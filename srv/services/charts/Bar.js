@@ -23,6 +23,10 @@ class Bar extends Common {
             ${await this.getOrderByClauseString(referenceTable,[...payload.dimension,...payload.series])}
         `;
     let data = await prisma.$queryRawUnsafe(`${sqlString}`);
+    if(data.length && payload.sorter && payload.sorter.length){
+      console.log("sorter")
+      data = this.sortData(data,payload.sorter,payload.sortAscending)
+    }
     data = this.toObject(data)
     return data;
   }
