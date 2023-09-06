@@ -17,7 +17,7 @@ class FuzzyMatcher {
                 "dataType": "Text"
             },
             {
-                "colName": "Contact Media",
+                "colName": "Importance",
                 "enabled": true,
                 "dataType": "Text"
             },
@@ -30,6 +30,21 @@ class FuzzyMatcher {
                 "colName": "End date",
                 "enabled": true,
                 "dataType": "Date-Time"   
+            },
+            {
+                "colName": "Type",
+                "enabled": true,
+                "dataType": "Number"   
+            },
+            {
+                "colName": "Sys",
+                "enabled": true,
+                "dataType": "Text"   
+            },
+            {
+                "colName": "Location",
+                "enabled": true,
+                "dataType": "Text"   
             }
             // Add more columns as needed
         ];
@@ -49,7 +64,7 @@ class FuzzyMatcher {
                         if (dataType === 'Date-Time' && columnDataType === 'Date-Time') {
                             const score = fuzzball.ratio(colName.toLowerCase(), name.toLowerCase());
                             fuzzyColumnScores[name] = [{ string: name, score }];
-                        } else if (dataType === 'Text' && columnDataType === 'Text') {
+                        } else {
                             fuzzyColumnScores[name] = fuzzyColumnScores[name] || [];
 
                             keywords.forEach((keyword) => {

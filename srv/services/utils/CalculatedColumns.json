@@ -22,7 +22,7 @@
                 "value": null
             }
         ],
-        "colName":""
+        "colName":"Date Difference (Days)"
     },
     {
         "name": "Time difference in hours",
@@ -47,7 +47,7 @@
                 "value": null
             }
         ],
-        "colName":""
+        "colName":"Date Difference (Hours)"
     },
     {
         "name": "Get day (Monday,Tuesday etc.) from date",
@@ -65,7 +65,7 @@
                 "value": null
             }
         ],
-        "colName":""
+        "colName":"Day-Name for Open Date"
     },
     {
         "name": "Get Month name (January,February etc.) from date",
@@ -83,7 +83,7 @@
                 "value": null
             }
         ],
-        "colName":""
+        "colName":"Month-Name for open date"
     },
     {
         "name": "Get Date (YYYY-MM-DD) from timestamp",
@@ -100,10 +100,10 @@
                 "value": null
             }
         ],
-        "colName":""
+        "colName":"Date for created open date"
     },
     {
-        "name": "Get Hour  from timestamp",
+        "name": "Get Hour from timestamp",
         "key":"hourFromTimestamp",
         "dataType": "Number",
         "tags": [
@@ -117,7 +117,7 @@
                 "value": null
             }
         ],
-        "colName":""
+        "colName":"Hour for open date"
     },
     {
         "name": "Get month year from timestamp",
@@ -135,7 +135,7 @@
                 "value": null
             }
         ],
-        "colName":""
+        "colName":"Month-year for open date"
     },
     {
         "name": "Get Year from timestamp",
@@ -153,7 +153,7 @@
                 "value": null
             }
         ],
-        "colName":""
+        "colName":"Year for open date"
     },
     {
         "name": "Get Day of the Month(1-30/31) from timestamp",
@@ -171,6 +171,6 @@
                 "value": null
             }
         ],
-        "colName":""
+        "colName":"Day(30/31) for open date"
     }
 ]
