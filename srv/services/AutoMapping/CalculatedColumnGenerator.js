@@ -1,36 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
 const CalculatedColumns = require("../utils/CalculatedColumns.json");
+const Common = require('./Common');
 
-class CalculatedColumnGenerator {
-    // ... (constructor and other methods)
-
-    async getMappingJSONfromDB(projectID) {
-        console.log(`Fetching mapping JSON for projectID: ${projectID}`);
-        const prisma = new PrismaClient();
-
-        try {
-            const mappingRecord = await prisma.mappedColumnJSON.findFirst({
-                where: {
-                    projectID,
-                },
-            });
-
-            if (mappingRecord) {
-                const mappingJson = JSON.parse(mappingRecord.jsonMapping[0]);
-                //console.log("Mapping JSON found:", JSON.stringify(mappingJson, null, 2));
-                return mappingJson;
-            } else {
-                console.error(`Mapping JSON not found for projectID: ${projectID}`);
-                return null; // Return null or an appropriate value if no mapping is found
-            }
-        } catch (error) {
-            console.error("Error fetching mapping JSON:", error);
-            throw error;
-        } finally {
-            await prisma.$disconnect();
-        }
-    }
-    
+class CalculatedColumnGenerator extends Common {
+       
      createCalculatedcolumnjson(mappingJson, calculatedColumnsJson) {
         const updatedColumns = JSON.parse(JSON.stringify(calculatedColumnsJson)); // Deep copy to avoid modifying the original data
       
@@ -46,16 +19,6 @@ class CalculatedColumnGenerator {
         return updatedColumns;
       }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // ... (other methods)
 }
 
 const generator = new CalculatedColumnGenerator();
@@ -63,9 +26,9 @@ const generator = new CalculatedColumnGenerator();
 async function main() {
     const projectID = "testingProjectID"; // Replace with the actual project ID
     const mappingJson = await generator.getMappingJSONfromDB(projectID);
-    console.log("Mapping JSON from DB:", JSON.stringify(mappingJson, null, 2));
+    // console.log("Mapping JSON from DB:", JSON.stringify(mappingJson, null, 2));
     const calculatedColumnJson = generator.createCalculatedcolumnjson(mappingJson, CalculatedColumns);
-    console.log(JSON.stringify(calculatedColumnJson, null, 2));
+    // console.log(JSON.stringify(calculatedColumnJson, null, 2));
 }
 
 main().catch(error => {

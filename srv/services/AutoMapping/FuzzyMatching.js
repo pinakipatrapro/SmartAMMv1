@@ -164,7 +164,6 @@ const fuzzyMatcher = new FuzzyMatcher();
 
 try {
     const scores = fuzzyMatcher.getFuzzyScores(fuzzyMatcher.configData, fuzzyMatcher.jsonData);
-    console.log("line 139 ran")
     const mappedJson = fuzzyMatcher.mapGreens(scores);
     fuzzyMatcher.storeJsonInDb("testingProjectID", mappedJson);
     // console.log("Mapping JSON:", JSON.stringify(mappedJson, null, 2)); // Print the mapping JSON
