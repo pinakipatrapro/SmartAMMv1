@@ -2,6 +2,11 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { uuid } = require('uuidv4');
 const format = require('pg-format');
+const FuzzyMatcher = require("../services/AutoMapping/FuzzyMatching");
+const CalculatedColumnGenerator = require('../services/AutoMapping/CalculatedColumnGenerator');
+const CalculatedColumns = require("../services/utils/CalculatedColumns.json");
+const AutoCharts = require('../services/AutoMapping/AutoChartGenerator');
+const AutoChartsJson = require("../services/utils/AutoCharts.json");
 require('dotenv').config()
 
 class Project {
@@ -109,15 +114,12 @@ class Project {
         await this.insertBulkData(fastify,rows,columnNames,referenceTable)
     }
 
-    async createDashboardEntry(payload,projectID){
+    async createDashboardEntry(payload,projectID,AutoChartpayload){
         let data ={
             name:payload.name,
             description: payload.description,
             projectID:projectID,
-            configData:{
-                "layout" : [],
-                "cards" : []
-            },
+            configData:AutoChartpayload,
             modifiedBy:payload.modifiedBy
         }
         await prisma.Dashboard.create({
@@ -125,8 +127,9 @@ class Project {
         })
     }
 
-    async createProjectEntry(payload,referenceTable,referenceView){
+    async createProjectEntry(payload,referenceTable,referenceView,projectID){
         let data = {
+            id : projectID,
             name: payload.name,
             description: payload.description,
             configData: payload.configData,
@@ -200,10 +203,27 @@ class Project {
         if(!req.body.projectID||req.body.projectID==''){
             const referenceTable = `Reftable_${uuid()}`;
             const referenceView = `Refview_${uuid()}`;
+            const projectID = uuid();
+            const fuzzyMatcher = new FuzzyMatcher();
+            const scores = fuzzyMatcher.getFuzzyScores(req.body.configData, fuzzyMatcher.jsonData);
+            const mappedJson = fuzzyMatcher.mapWithUserCols(scores);
+            await fuzzyMatcher.storeJsonInDb(projectID, mappedJson);
+
+            const ccgenerator = new CalculatedColumnGenerator()
+            const mappingJson = await ccgenerator.getMappingJSONfromDB(projectID);
+            const calculatedColumnJson = ccgenerator.createCalculatedcolumnjson(mappingJson, CalculatedColumns);
+            req.body.calculatedCols = calculatedColumnJson;
+            
             await this.createReferenceTable(fastify,referenceTable,req.body.configData,req.body.data);
+
             await this.createReferenceView(referenceView,referenceTable,req.body.calculatedCols)
-            const projectID = await this.createProjectEntry(req.body,referenceTable,referenceView);
-            await this.createDashboardEntry(req.body,projectID)
+            await this.createProjectEntry(req.body,referenceTable,referenceView,projectID);
+
+         
+            const AutoChartsfunction = new AutoCharts();
+            
+            const AutoChartpayload = AutoChartsfunction.modifyAutoChartsJson(projectID, mappingJson, AutoChartsJson);
+            await this.createDashboardEntry(req.body,projectID,AutoChartpayload)
             return {message:"Project Created Successfully"}
         }else{
             await this.editProject(fastify,req.body.projectID,req.body.data,req.body.calculatedCols);

@@ -1,0 +1,517 @@
+{
+    "layout": [
+        {
+          "w": 4,
+          "h": 7,
+          "x": 8,
+          "y": 7,
+          "moved": false,
+          "static": false,
+          "id": null
+        },
+        {
+          "w": 6,
+          "h": 6,
+          "x": 0,
+          "y": 21,
+          "moved": false,
+          "static": false,
+          "id": null
+        },
+        {
+          "w": 6,
+          "h": 7,
+          "x": 6,
+          "y": 14,
+          "moved": false,
+          "static": false,
+          "id": null
+        },
+        {
+          "w": 6,
+          "h": 7,
+          "x": 0,
+          "y": 14,
+          "moved": false,
+          "static": false,
+          "id": null
+        },
+        {
+          "w": 4,
+          "h": 7,
+          "x": 4,
+          "y": 7,
+          "moved": false,
+          "static": false,
+          "id": null
+        },
+        {
+          "w": 4,
+          "h": 7,
+          "x": 0,
+          "y": 7,
+          "moved": false,
+          "static": false,
+          "id": null
+        },
+        {
+          "w": 3,
+          "h": 7,
+          "x": 9,
+          "y": 0,
+          "moved": false,
+          "static": false,
+          "id": null
+        },
+        {
+          "w": 4,
+          "h": 7,
+          "x": 5,
+          "y": 0,
+          "moved": false,
+          "static": false,
+          "id": null
+        },
+        {
+          "w": 5,
+          "h": 7,
+          "x": 0,
+          "y": 0,
+          "moved": false,
+          "static": false,
+          "id": null
+        },
+        {
+          "w": 6,
+          "h": 6,
+          "x": 6,
+          "y": 21,
+          "moved": false,
+          "static": false,
+          "id": null
+        }
+      ],
+    "cards": [
+        {
+            "id": null,
+            "type": "chart",
+            "title": "Priority Distribution",
+            "options": {
+                "config": {
+                    "theme": {},
+                    "xAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "Priority"
+                        }
+                    },
+                    "yAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "IncidentID"
+                        }
+                    },
+                    "radius": 1,
+                    "series": [],
+                    "sorter": [],
+                    "measure": [
+                        "IncidentID"
+                    ],
+                    "dimension": [
+                        "Priority"
+                    ],
+                    "projectID": "$prjID",
+                    "angleField": "IncidentID",
+                    "colorField": "Priority",
+                    "innerRadius": 0.6,
+                    "appendPadding": 10,
+                    "sortAscending": false
+                },
+                "metrics": [],
+                "chartType": "Pie"
+            }
+        },
+        {
+            "id": null,
+            "type": "chart",
+            "title": "Module wise ticket distribution",
+            "options": {
+                "config": {
+                    "theme": {},
+                    "xAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "Module"
+                        }
+                    },
+                    "yAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "IncidentID"
+                        }
+                    },
+                    "series": [],
+                    "sorter": [],
+                    "xField": "Module",
+                    "yField": "IncidentID",
+                    "measure": [
+                        "IncidentID"
+                    ],
+                    "dimension": [
+                        "Module"
+                    ],
+                    "projectID": "$prjID",
+                    "seriesField": "",
+                    "sortAscending": false
+                },
+                "metrics": [],
+                "chartType": "Column"
+            }
+        },
+        {
+            "id": null,
+            "type": "chart",
+            "title": "System wise Distribution",
+            "options": {
+                "config": {
+                    "theme": {},
+                    "xAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "System"
+                        }
+                    },
+                    "yAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "IncidentID"
+                        }
+                    },
+                    "series": [],
+                    "sorter": [],
+                    "xField": "System",
+                    "yField": "IncidentID",
+                    "measure": [
+                        "IncidentID"
+                    ],
+                    "dimension": [
+                        "System"
+                    ],
+                    "projectID": "$prjID",
+                    "seriesField": "",
+                    "sortAscending": false
+                },
+                "metrics": [],
+                "chartType": "Column"
+            }
+        },
+        {
+            "id": null,
+            "type": "chart",
+            "title": "Month wise ticket split",
+            "options": {
+                "config": {
+                    "theme": {},
+                    "xAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "Month"
+                        }
+                    },
+                    "yAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "IncidentID"
+                        }
+                    },
+                    "series": [],
+                    "sorter": [],
+                    "xField": "Month-Name for open date",
+                    "yField": "IncidentID",
+                    "measure": [
+                        "IncidentID"
+                    ],
+                    "dimension": [
+                        "Month-Name for open date"
+                    ],
+                    "projectID": "$prjID",
+                    "seriesField": "",
+                    "sortAscending": false
+                },
+                "metrics": [],
+                "chartType": "Column"
+            }
+        },
+        {
+            "id": null,
+            "type": "chart",
+            "title": "Day wise Distribution",
+            "options": {
+                "config": {
+                    "theme": {},
+                    "xAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "Day"
+                        }
+                    },
+                    "yAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "IncidentID"
+                        }
+                    },
+                    "series": [],
+                    "sorter": [],
+                    "xField": "Day-Name for Open Date",
+                    "yField": "IncidentID",
+                    "measure": [
+                        "IncidentID"
+                    ],
+                    "dimension": [
+                        "Day-Name for Open Date"
+                    ],
+                    "projectID": "$prjID",
+                    "seriesField": "",
+                    "sortAscending": false
+                },
+                "metrics": [],
+                "chartType": "Column"
+            }
+        },
+        {
+            "id": null,
+            "type": "chart",
+            "title": "Hourly Distribution",
+            "options": {
+                "config": {
+                    "theme": {},
+                    "xAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "Hour"
+                        }
+                    },
+                    "yAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "IncidentID"
+                        }
+                    },
+                    "series": [],
+                    "sorter": [],
+                    "xField": "Hour for open date",
+                    "yField": "IncidentID",
+                    "measure": [
+                        "IncidentID"
+                    ],
+                    "dimension": [
+                        "Hour for open date"
+                    ],
+                    "projectID": "$prjID",
+                    "seriesField": "",
+                    "sortAscending": false
+                },
+                "metrics": [],
+                "chartType": "Column"
+            }
+        },
+        {
+            "id": null,
+            "type": "chart",
+            "title": "Distribution of tickets based on date",
+            "options": {
+                "config": {
+                    "theme": {},
+                    "xAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "Date"
+                        }
+                    },
+                    "yAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "IncidentID"
+                        }
+                    },
+                    "series": [],
+                    "sorter": [],
+                    "xField": "Day(30/31) for open date",
+                    "yField": "IncidentID",
+                    "measure": [
+                        "IncidentID"
+                    ],
+                    "dimension": [
+                        "Day(30/31) for open date"
+                    ],
+                    "projectID": "$prjID",
+                    "seriesField": "",
+                    "sortAscending": false
+                },
+                "metrics": [],
+                "chartType": "Column"
+            }
+        },
+        {
+            "id": "7d7c7e90-b115-42bd-84db-11f9a5cff9a3",
+            "type": "chart",
+            "title": "Location Split",
+            "options": {
+                "config": {
+                    "theme": {},
+                    "xAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "Region"
+                        }
+                    },
+                    "yAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "IncidentID"
+                        }
+                    },
+                    "series": [],
+                    "sorter": [],
+                    "xField": "IncidentID",
+                    "yField": "Region",
+                    "measure": [
+                        "IncidentID"
+                    ],
+                    "dimension": [
+                        "Region"
+                    ],
+                    "projectID": "c5b7a81f-edbc-413c-b612-6fc9cb59475d",
+                    "sortAscending": false
+                },
+                "metrics": [],
+                "chartType": "Bar"
+            }
+        },
+        {
+            "id": null,
+            "type": "chart",
+            "title": "MTTR in Days",
+            "options": {
+                "config": {
+                    "theme": {},
+                    "xAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "Status"
+                        }
+                    },
+                    "yAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "Time difference in Days"
+                        }
+                    },
+                    "series": [],
+                    "sorter": [],
+                    "xField": "Priority",
+                    "yField": [
+                        "minimum",
+                        "q1",
+                        "median",
+                        "q3",
+                        "maximum"
+                    ],
+                    "measure": [
+                        "Date Difference (Days)"
+                    ],
+                    "dimension": [
+                        "Priority"
+                    ],
+                    "projectID": "$prjID",
+                    "sortAscending": false
+                },
+                "metrics": [],
+                "chartType": "Box"
+            }
+        },
+        {
+            "id": null,
+            "type": "chart",
+            "title": "Wordcloud",
+            "options": {
+                "config": {
+                    "theme": {},
+                    "xAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {
+                            "text": "ShortDescription"
+                        }
+                    },
+                    "yAxis": {
+                        "label": {
+                            "autoRotate": true
+                        },
+                        "title": {}
+                    },
+                    "series": [],
+                    "sorter": [],
+                    "measure": [],
+                    "dimension": [
+                        "ShortDescription"
+                    ],
+                    "projectID": "$prjID",
+                    "wordField": "word",
+                    "wordStyle": {
+                        "fontSize": [
+                            8,
+                            32
+                        ],
+                        "rotation": 0,
+                        "fontFamily": "Verdana"
+                    },
+                    "colorField": "word",
+                    "customWords": [],
+                    "weightField": "count",
+                    "sortAscending": false
+                },
+                "metrics": [],
+                "chartType": "WordCloud"
+            }
+        }
+    ]
+}

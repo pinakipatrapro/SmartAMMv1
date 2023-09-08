@@ -38,6 +38,10 @@ model testTBD{
   id           String   @id @default(uuid())
 }
 
-
+model MappedColumnJSON{
+  id           String   @id @default(uuid())
+  projectID    String   
+  jsonMapping  String[]
+}
 
 

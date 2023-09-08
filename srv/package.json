@@ -10,11 +10,12 @@
     "@prisma/client": "^4.10.1",
     "dotenv": "^16.0.3",
     "fastify": "^4.17.0",
+    "fuzzball": "^2.1.2",
     "pg": "^8.10.0",
     "pg-format": "^1.0.4",
+    "pluralize": "^8.0.0",
     "stopword": "^2.0.8",
-    "uuidv4": "^6.2.13",
-    "pluralize": "^8.0.0"
+    "uuidv4": "^6.2.13"
   },
   "scripts": {
     "start": "node index.js",
