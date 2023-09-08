@@ -206,22 +206,22 @@ class Project {
             const projectID = uuid();
             const fuzzyMatcher = new FuzzyMatcher();
             const scores = fuzzyMatcher.getFuzzyScores(req.body.configData, fuzzyMatcher.jsonData);
-            const mappedJson = fuzzyMatcher.mapGreens(scores);
+            const mappedJson = fuzzyMatcher.mapWithUserCols(scores);
             await fuzzyMatcher.storeJsonInDb(projectID, mappedJson);
 
             const ccgenerator = new CalculatedColumnGenerator()
             const mappingJson = await ccgenerator.getMappingJSONfromDB(projectID);
             const calculatedColumnJson = ccgenerator.createCalculatedcolumnjson(mappingJson, CalculatedColumns);
             req.body.calculatedCols = calculatedColumnJson;
-            console.log(JSON.stringify(calculatedColumnJson,null,2));
+            
             await this.createReferenceTable(fastify,referenceTable,req.body.configData,req.body.data);
-            //create calculated columns
+
             await this.createReferenceView(referenceView,referenceTable,req.body.calculatedCols)
             await this.createProjectEntry(req.body,referenceTable,referenceView,projectID);
 
-            //create autocharts
+         
             const AutoChartsfunction = new AutoCharts();
-            // const mappingJson = await generator.getMappingJSONfromDB(projectID);
+            
             const AutoChartpayload = AutoChartsfunction.modifyAutoChartsJson(projectID, mappingJson, AutoChartsJson);
             await this.createDashboardEntry(req.body,projectID,AutoChartpayload)
             return {message:"Project Created Successfully"}

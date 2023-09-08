@@ -9,21 +9,29 @@ class FuzzyMatcher {
 
     getFuzzyScores(configData, jsonData) {
         const scores = {};
-    
+
         try {
             configData.forEach((configItem) => {
                 const { colName, dataType } = configItem;
                 const fuzzyColumnScores = {};
-    
+
                 jsonData.columns.forEach((column) => {
                     const { name, keywords, type, dataType: columnDataType } = column;
                     if (type === 'Standard') {
                         if (dataType === 'Date-Time' && columnDataType === 'Date-Time') {
-                            const score = fuzzball.ratio(colName.toLowerCase(), name.toLowerCase());
-                            fuzzyColumnScores[name] = [{ string: name, score }];
+                            // const score = fuzzball.ratio(colName.toLowerCase(), name.toLowerCase());
+                            fuzzyColumnScores[name] = fuzzyColumnScores[name] || [];
+
+                            keywords.forEach((keyword) => {
+                                const score = fuzzball.ratio(colName.toLowerCase(), keyword.toLowerCase());
+                                fuzzyColumnScores[name].push({
+                                    string: keyword,
+                                    score,
+                                });
+                            });
                         } else if (dataType === columnDataType) { // Check data type
                             fuzzyColumnScores[name] = fuzzyColumnScores[name] || [];
-    
+
                             keywords.forEach((keyword) => {
                                 const score = fuzzball.ratio(colName.toLowerCase(), keyword.toLowerCase());
                                 fuzzyColumnScores[name].push({
@@ -34,23 +42,24 @@ class FuzzyMatcher {
                         }
                     }
                 });
-    
+
                 if (Object.keys(fuzzyColumnScores).length > 0) {
                     scores[colName] = fuzzyColumnScores;
                 }
             });
-    
+
             return scores;
-    
+
         } catch (error) {
             console.error("Error in getFuzzyScores:", error);
             throw error;
         }
     }
-    
-    
 
-    mapGreens(fuzzyScores) {
+
+
+    mapWithUserCols(fuzzyScores) {
+
         const mapping = {};
 
         this.jsonData.columns.forEach((column) => {
@@ -79,13 +88,11 @@ class FuzzyMatcher {
                 if (bestMatch !== null) {
                     mapping[name] = { match: bestMatch, score: highestScore };
                 } else {
-                    mapping[name] = { match: null, score: -1 }; // Set it to null if no suitable match is found
+                    mapping[name] = { match: null, score: -1 };
                 }
             }
         });
 
-        // console.log("Mapping JSON:");
-        // console.log(mapping); // Log the mapping JSON
 
         return mapping;
     }
