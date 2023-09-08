@@ -446,7 +446,7 @@
                     },
                     "series": [],
                     "sorter": [],
-                    "xField": "Status",
+                    "xField": "Priority",
                     "yField": [
                         "minimum",
                         "q1",
