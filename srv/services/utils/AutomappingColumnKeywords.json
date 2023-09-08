@@ -15,7 +15,7 @@
       {
         "name": "startDate",
         "type": "Standard",
-        "keywords": ["Open date", "Created", "Start date", "Created date"],
+        "keywords": ["Open", "Created", "Start"],
         "dataType": "Date-Time"
       },
       {
@@ -47,7 +47,7 @@
       {
         "name": "endDate",
         "type": "Standard",
-        "keywords": ["Closed", "Resolved", "Solved", "Resolved time", "Closed Time", "End Date"],
+        "keywords": ["Closed", "Resolved", "Solved"],
         "dataType": "Date-Time"
       },
       {

@@ -455,7 +455,7 @@
                         "maximum"
                     ],
                     "measure": [
-                        "Time difference in days"
+                        "Date Difference (Days)"
                     ],
                     "dimension": [
                         "Priority"

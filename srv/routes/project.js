@@ -1,7 +1,4 @@
 const Project = require("../services/Project");
-const FuzzyMatcher = require("../services/AutoMapping/fuzzymatching");
-const CalculatedColumnGenerator = require('../services/AutoMapping/calculatedcolumngenerator');
-const AutoChartingtest = require('../services/AutoMapping/AutoChartGenerator')
 
 async function routes(fastify, options) {
     fastify.post('/createProject', async function (req, res) {
