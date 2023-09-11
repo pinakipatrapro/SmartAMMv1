@@ -23,17 +23,17 @@ class AutoCharting extends Common {
       }
 
       if (card.options && card.options.config) {
-       
+
         if (card.options.config.dimension && mappingJson[card.options.config.dimension]) {
           card.options.config.dimension = [mappingJson[card.options.config.dimension].match];
         }
 
-   
+
         if (card.options.config.measure && mappingJson[card.options.config.measure]) {
           card.options.config.measure = [mappingJson[card.options.config.measure].match];
         }
 
-       
+
         if (card.options.config.angleField && mappingJson[card.options.config.angleField]) {
           card.options.config.angleField = mappingJson[card.options.config.angleField].match;
         }
@@ -51,6 +51,14 @@ class AutoCharting extends Common {
 
         if (card.options.config.yField && mappingJson[card.options.config.yField]) {
           card.options.config.yField = mappingJson[card.options.config.yField].match;
+        }
+
+        if (card.options.config.xAxis.title.text && mappingJson[card.options.config.xAxis.title.text]) {
+          card.options.config.xAxis.title.text = mappingJson[card.options.config.xAxis.title.text].match;
+        }
+
+        if (card.options.config.yAxis.title.text && mappingJson[card.options.config.yAxis.title.text]) {
+          card.options.config.yAxis.title.text = mappingJson[card.options.config.yAxis.title.text].match;
         }
       }
     });

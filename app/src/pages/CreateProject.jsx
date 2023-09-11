@@ -227,10 +227,10 @@ const CreateProject = (props) => {
                 </Row> : null}
                 {!!data.length ?
                     < >
-                        <Divider style={{ padding: "0rem 1rem 0 1rem" }}> Define Calculated Columns</Divider>
+                        {/* <Divider style={{ padding: "0rem 1rem 0 1rem" }}> Define Calculated Columns</Divider>
                         <CalulatedColOptions setCalculatedColumns={setCalculatedColumns} calculatedColumns={calculatedColumns}
                             previewData={previewData}
-                        />
+                        /> */}
 
                         <Divider >Upload data and create project</Divider>
                         <div style={{margin:"1rem"}}>
