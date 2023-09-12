@@ -1,0 +1,23 @@
+kompose convert -n smartamm   
+
+
+
+kubectl -n smartamm apply -f db-deployment.yaml
+kubectl -n smartamm apply -f db-service.yaml
+kubectl -n smartamm apply -f pg-data-persistentvolumeclaim.yaml
+
+
+kubectl -n smartamm apply -f pgadmin-deployment.yaml
+kubectl -n smartamm apply -f pgadmin-service.yaml
+kubectl -n smartamm apply -f pgadmin-data-persistentvolumeclaim.yaml
+
+kubectl -n smartamm apply -f server-deployment.yaml
+kubectl -n smartamm apply -f server-service.yaml
+
+
+kubectl -n smartamm apply -f client-deployment.yaml
+kubectl -n smartamm apply -f client-service.yaml
+
+
+
+smartamm.c-05dceb2.kyma.ondemand.com

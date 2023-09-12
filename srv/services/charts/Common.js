@@ -239,5 +239,32 @@ class Common{
             GROUP BY word1, word2
         `;
     }
+
+    dynamicSort(data, sortBy, sortOrder) {
+        return data.sort((a, b) => {
+            for (const column of sortBy) {
+                if (a[column] < b[column]) {
+                    return sortOrder === 'desc' ? 1 : -1;
+                }
+                if (a[column] > b[column]) {
+                    return sortOrder === 'desc' ? -1 : 1;
+                }
+            }
+            return 0;
+        });
+    }
+
+
+
+    sortData(data,sorter,sortAscending){
+        const keys = Object.keys(data[0]);
+        const sortColumns = sorter.filter(item => keys.includes(item));
+        if(sortColumns.length){
+            const sortOrder = sortAscending ? 'asc' : 'desc';
+            console.log("sort order",sortOrder)
+            return this.dynamicSort(data, sortColumns, sortOrder);
+        }
+        return data;
+    }
 }
 module.exports = Common;

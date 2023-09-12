@@ -1,0 +1,61 @@
+{
+    "columns": [
+      {
+        "name": "Priority",
+        "type": "Standard",
+        "keywords": ["Priority", "Criticality", "Importance", "Urgency"],
+        "dataType": "Text"
+      },
+      {
+        "name": "Module",
+        "type": "Standard",
+        "keywords": ["Type", "Module", "Category"],
+        "dataType": "Text"
+      },
+      {
+        "name": "startDate",
+        "type": "Standard",
+        "keywords": ["Open", "Created", "Start"],
+        "dataType": "Date-Time"
+      },
+      {
+        "name": "System",
+        "type": "Standard",
+        "keywords": ["System", "Subcategory", "Application"],
+        "dataType": "Text"
+      },
+      {
+        "name": "Region",
+        "type": "Standard",
+        "keywords": ["Region", "Location", "Locality", "Country"],
+        "dataType": "Text"
+      },
+      {
+        "name": "MTTR",
+        "type": "Calculated"
+      },
+      {
+        "name": "ShortDescription",
+        "type": "Standard",
+        "keywords": ["Description", "Subject", "Summary", "Short Description"],
+        "dataType": "Text"
+      },
+      {
+        "name": "OpenTime",
+        "type": "Calculated"
+      },
+      {
+        "name": "endDate",
+        "type": "Standard",
+        "keywords": ["Closed", "Resolved", "Solved"],
+        "dataType": "Date-Time"
+      },
+      {
+        "name": "IncidentID",
+        "type": "Standard",
+        "keywords": ["Number", "ID", "incident ID", "Incidence key", "Issue key", "Issue id"],
+        "dataType": "Text"
+      }
+    ]
+  }
+  

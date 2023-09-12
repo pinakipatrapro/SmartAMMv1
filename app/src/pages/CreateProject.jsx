@@ -27,11 +27,13 @@ const CreateProject = (props) => {
     const [data, setData] = React.useState([]);
     const [previewData, setPreviewData] = React.useState([]);
     const [calculatedColumns, setCalculatedColumns] = React.useState([]);
+    const [inputFileName,setInputFileName] = React.useState('');
 
 
     
 
     const onFileSelected = (uploader) => {
+        setInputFileName(uploader.file.name.replace(/\.(xls[x]*)$/, ''));
         setWorkbook([]);
         setData([]);
         setPreviewData([])
@@ -225,10 +227,10 @@ const CreateProject = (props) => {
                 </Row> : null}
                 {!!data.length ?
                     < >
-                        <Divider style={{ padding: "0rem 1rem 0 1rem" }}> Define Calculated Columns</Divider>
+                        {/* <Divider style={{ padding: "0rem 1rem 0 1rem" }}> Define Calculated Columns</Divider>
                         <CalulatedColOptions setCalculatedColumns={setCalculatedColumns} calculatedColumns={calculatedColumns}
                             previewData={previewData}
-                        />
+                        /> */}
 
                         <Divider >Upload data and create project</Divider>
                         <div style={{margin:"1rem"}}>
@@ -236,6 +238,7 @@ const CreateProject = (props) => {
                                 label="Project Name"
                                 name="name"
                                 rules={[{ required: true, message: 'Please input Project Name' }]}
+                                initialValue={inputFileName}
 
                             >
                                 <Input placeholder="My Anaysis Project" />

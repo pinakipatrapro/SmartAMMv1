@@ -1,0 +1,176 @@
+[
+    {
+        "name": "Time difference in days",
+        "key":"TimeDiffDays",
+        "dataType": "Number",
+        "tags": [
+            "MTTR",
+            "Time",
+            "Days"
+        ],
+        "prompts": [
+            {
+                "name": "Start Date-Time",
+                "dataType": "Date-Time",
+                "id":"startDate",
+                "value": null
+            },
+            {
+                "name": "End Date-Time",
+                "id":"endDate",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":"Date Difference (Days)"
+    },
+    {
+        "name": "Time difference in hours",
+        "key":"TimeDiffHours",
+        "dataType": "Number",
+        "tags": [
+            "MTTR",
+            "Time",
+            "Hours"
+        ],
+        "prompts": [
+            {
+                "name": "Start Date-Time",
+                "dataType": "Date-Time",
+                "id":"startDate",
+                "value": null
+            },
+            {
+                "name": "End Date-Time",
+                "id":"endDate",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":"Date Difference (Hours)"
+    },
+    {
+        "name": "Get day (Monday,Tuesday etc.) from date",
+        "key":"DayFromDate",
+        "dataType": "Text",
+        "tags": [
+            "Day",
+            "Dayname"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"startDate",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":"Day-Name for Open Date"
+    },
+    {
+        "name": "Get Month name (January,February etc.) from date",
+        "key":"MonthFromDate",
+        "dataType": "Text",
+        "tags": [
+            "Month",
+            "Month Name"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"startDate",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":"Month-Name for open date"
+    },
+    {
+        "name": "Get Date (YYYY-MM-DD) from timestamp",
+        "key":"dateFromTimestamp",
+        "dataType": "Date-Time",
+        "tags": [
+            "Date"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"startDate",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":"Date for created open date"
+    },
+    {
+        "name": "Get Hour from timestamp",
+        "key":"hourFromTimestamp",
+        "dataType": "Number",
+        "tags": [
+            "Hour"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"startDate",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":"Hour for open date"
+    },
+    {
+        "name": "Get month year from timestamp",
+        "key":"YearMonthFromTimestamp",
+        "dataType": "Number",
+        "tags": [
+            "Month-Year",
+            "MMM-YYYY"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"startDate",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":"Month-year for open date"
+    },
+    {
+        "name": "Get Year from timestamp",
+        "key":"YearFromTimestamp",
+        "dataType": "Number",
+        "tags": [
+            "Year",
+            "YYYY"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"startDate",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":"Year for open date"
+    },
+    {
+        "name": "Get Day of the Month(1-30/31) from timestamp",
+        "key":"DayoftheMonthFromTimestamp",
+        "dataType": "Number",
+        "tags": [
+            "Day of the Month",
+            "DD"
+        ],
+        "prompts": [
+            {
+                "name": "Date Field",
+                "id":"startDate",
+                "dataType": "Date-Time",
+                "value": null
+            }
+        ],
+        "colName":"Day(30/31) for open date"
+    }
+]

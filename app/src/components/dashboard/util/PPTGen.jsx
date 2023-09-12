@@ -86,12 +86,17 @@ const PPTGen = {
 
 const chartGenerator = {
     Bar: (slide, card) => {
-        let data = dataFormatter(card)
+        let data = dataFormatter(card);
+        let catAxisOrientation;
+        if( card?.options?.config?.sorter.length){
+            catAxisOrientation = card.options.config.sortAscending ? "minMax": "maxMin"
+        }
         slide.addChart(pptx.ChartType.bar, data, {
             ...chartCommonProperties,
             barDir: "bar",
             barGrouping: card.options.config.isStack ? 'stacked' : 'clustered',
-            chartColors: chartColors.splice(0, data.length)
+            chartColors: chartColors.splice(0, data.length),
+            catAxisOrientation: catAxisOrientation || "minMax",
         });
     },
     Pie: (slide, card) => {
@@ -119,7 +124,9 @@ const chartGenerator = {
         let data = dataFormatter(card)
         slide.addChart(pptx.ChartType.bar, data, {
             ...chartCommonProperties,
-            chartColors: chartColors
+            barDir: "col",
+            barGrouping: card.options.config.isStack ? 'stacked' : 'clustered',
+            chartColors: card.options.config.series.length ? chartColors :  chartColors[0]
         });
     },
     WordCloud: (slide, card) => {
@@ -128,6 +135,11 @@ const chartGenerator = {
 
     },
     Box: (slide, card) => {
+        let canvasImage = document.getElementById(card.id + '--chart').children[1].children[0].children[0].children[0].children[0].toDataURL()
+        slide.addImage({ ...chartCommonProperties, data: canvasImage })
+
+    },
+    Bigram: (slide, card) => {
         let canvasImage = document.getElementById(card.id + '--chart').children[1].children[0].children[0].children[0].children[0].toDataURL()
         slide.addImage({ ...chartCommonProperties, data: canvasImage })
 
@@ -142,7 +154,7 @@ const dataFormatter = (card) => {
         card.options.config.measure.forEach(mes => {
             seriesValues.forEach(seriesVal => {
                 let chartSeries = {};
-                chartSeries.name = seriesVal
+                chartSeries.name = String(seriesVal)
                 chartSeries.labels = card.options.config.data.filter(dataPoint => {
                     return dataPoint[card.options.config.series[0]] == seriesVal
                 }).map(dataPoint => {
