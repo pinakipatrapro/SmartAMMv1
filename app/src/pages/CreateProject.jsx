@@ -13,6 +13,8 @@ import axios from "axios"
 import customColTypes from "../constants/CalculatedColumns.json"
 import CalulatedColOptions from "../components/createProject/CalculatedColOptions";
 import randomItem from 'random-item';
+import moment from "moment";
+
 
 const { Option } = Select;
 
@@ -113,6 +115,36 @@ const CreateProject = (props) => {
         createDatPreview(sheetData)
     }
 
+    const determineDateFormat = (datesArray) => {
+        if(!datesArray.length){
+            return null;
+        }
+        const formats = [
+          'DD.MM.YYYY HH:mm:ss',
+          'MM.DD.YYYY HH:mm:ss',
+          'DD/MM/YYYY HH:mm:ss',
+          'MM/DD/YYYY HH:mm:ss',
+          'DD-MM-YYYY HH:mm:ss',
+          'MM-DD-YYYY HH:mm:ss',
+        ];
+      
+        for (const format of formats) {
+          let formatMatches = true;
+          for (let i = 0; i < datesArray.length; i++) {
+            const dateStr = datesArray[i];
+            if (!moment(dateStr, format, true).isValid()&&dateStr) {
+              formatMatches = false;
+              break;
+            }
+          }
+          if (formatMatches) {
+            return format;
+          }
+        }
+      
+        return 'Unknown';
+      }
+
     const onFinish = (values) => {
         console.log('Success:', values);
 
@@ -135,31 +167,49 @@ const CreateProject = (props) => {
                     }
                 })
             } else if (e.dataType == 'Date-Time') {
+                const result = formattedData.map(fd => {
+                    const value = fd[e.colName];
+                    if (value !== null) {
+                        const trimmedValue = value.replace(/\s+/g, ' ').trim();
+                        return trimmedValue;
+                      } else {
+                        return null;
+                      }
+                  }).splice(0, 100).filter(e=>e);
+                let format = determineDateFormat(result);
                 formattedData.forEach((f, j) => {
-                    try {
-                        if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
-                            if(new Date(f[e.colName])>new Date('9999-12-31')){
-                                f[e.colName] =null
-                            }else{
-                                f[e.colName] = new Date(f[e.colName]).toISOString()
-                            }
-                        } else if (!!f[e.colName]) {
-                            let dateParts = f[e.colName].split(/\s*[-./]\s*/);
-                            if(new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
-                                f[e.colName] =null
-                            }else{
-                                f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2]].join('-'))
-                            }
-                        }
-                    } catch (err) {
-                        messages.push({
-                            row: j,
-                            value: formattedData[j],
-                            errorType: "Date-Time",
-                            column: e.colName,
-                            message: `Error parsing ${f[e.colName]} as a date-time`
-                        })
-                    }
+                        try {
+                            if (!!f[e.colName]) {
+                                let dateParts = f[e.colName].split(/\s*[-./]\s*/);
+                                let formatParts = format.split(/\s*[-./]\s*/);
+                                let timestamp = Date.parse(f[e.colName].split(' ')[1]).split(':')
+                                if(new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
+                                    f[e.colName] =null
+                                }else if (formatParts[0] === 'DD' && formatParts[1] === 'MM') {
+                                    f[e.colName] =  new Date(Date.UTC(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]),
+                                                                      timestamp[0],timestamp[1],timestamp[2]
+                                                    ));
+                                }else if (formatParts[0] === 'MM' && formatParts[1] === 'DD') {
+                                    f[e.colName] =  new Date(Date.UTC(parseInt(dateParts[2]), parseInt(dateParts[0]) - 1, parseInt(dateParts[1]),
+                                                                      timestamp[0],timestamp[1],timestamp[2]
+                                                    ));
+                                }
+                           } else if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
+                               if(new Date(f[e.colName])>new Date('9999-12-31')){
+                                   f[e.colName] =null
+                               }
+                           } else{
+                            f[e.colName] =null
+                           }
+                       } catch (err) {
+                           messages.push({
+                               row: j,
+                               value: formattedData[j],
+                               errorType: "Date-Time",
+                               column: e.colName,
+                               message: `Error parsing ${f[e.colName]} as a date-time`
+                           })
+                       }
                 })
             }
         })
