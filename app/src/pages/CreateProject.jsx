@@ -63,6 +63,19 @@ const CreateProject = (props) => {
         setPreviewData(previewDataCopy)
     }
 
+    const determineDateTime = (value) => {
+        value = value ? value.replace(/\s+/g, ' ').trim() : null;
+        const dateFormats = [
+            /^\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}$/,
+            /^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/,
+            /^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}$/
+          ];
+        
+          // Check if the value matches any of the date formats
+          return dateFormats.some(format => format.test(value));
+    }
+
+
     const createDatPreview = (sheetData) => {
         if (!sheetData.length) {
             return
@@ -77,10 +90,12 @@ const CreateProject = (props) => {
             let valueTypes = sampleValues.map(e => {
                 if (parseFloat(e) == e) {
                     return 'number'
-                } else if (new Date(e) == 'Invalid Date') {
+                } else if (new Date(e) == 'Invalid Date' && !determineDateTime(e)) {
                     return typeof (e)
-                } else {
+                } else if(determineDateTime(e) || !e) {
                     return 'datetime'
+                }else{
+                    return 'string'
                 }
             })
             console.log(e, valueTypes)
@@ -172,27 +187,24 @@ const CreateProject = (props) => {
                     if (value !== null) {
                         const trimmedValue = value.replace(/\s+/g, ' ').trim();
                         return trimmedValue;
-                      } else {
-                        return null;
-                      }
+                    } else {
+                    return null;
+                    }
                   }).splice(0, 100).filter(e=>e);
                 let format = determineDateFormat(result);
                 formattedData.forEach((f, j) => {
                         try {
                             if (!!f[e.colName]) {
+                                f[e.colName] = f[e.colName].replace(/\s+/g, ' ').trim()
                                 let dateParts = f[e.colName].split(/\s*[-./]\s*/);
                                 let formatParts = format.split(/\s*[-./]\s*/);
                                 let timestamp = Date.parse(f[e.colName].split(' ')[1]).split(':')
                                 if(new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
                                     f[e.colName] =null
                                 }else if (formatParts[0] === 'DD' && formatParts[1] === 'MM') {
-                                    f[e.colName] =  new Date(Date.UTC(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]),
-                                                                      timestamp[0],timestamp[1],timestamp[2]
-                                                    ));
+                                    f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2]].join('-'))
                                 }else if (formatParts[0] === 'MM' && formatParts[1] === 'DD') {
-                                    f[e.colName] =  new Date(Date.UTC(parseInt(dateParts[2]), parseInt(dateParts[0]) - 1, parseInt(dateParts[1]),
-                                                                      timestamp[0],timestamp[1],timestamp[2]
-                                                    ));
+                                    f[e.colName] = new Date([dateParts[0], dateParts[1], dateParts[2]].join('-'))
                                 }
                            } else if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
                                if(new Date(f[e.colName])>new Date('9999-12-31')){
