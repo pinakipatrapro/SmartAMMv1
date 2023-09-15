@@ -66,12 +66,11 @@ const CreateProject = (props) => {
     const determineDateTime = (value) => {
         value = value ? value.replace(/\s+/g, ' ').trim() : null;
         const dateFormats = [
-            /^\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}$/,
-            /^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/,
-            /^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}$/
+            /^\d{1,2}\.\d{1,2}\.\d{2,4}( \d{2}:\d{2}(:\d{2})?)?$/,
+            /^\d{1,2}\/\d{1,2}\/\d{2,4}( \d{2}:\d{2}(:\d{2})?)?$/,
+            /^\d{1,2}-\d{1,2}-\d{2,4}( \d{2}:\d{2}(:\d{2})?)?$/
           ];
         
-          // Check if the value matches any of the date formats
           return dateFormats.some(format => format.test(value));
     }
 
@@ -135,18 +134,36 @@ const CreateProject = (props) => {
             return null;
         }
         const formats = [
-          'DD.MM.YYYY HH:mm:ss',
-          'MM.DD.YYYY HH:mm:ss',
-          'DD/MM/YYYY HH:mm:ss',
-          'MM/DD/YYYY HH:mm:ss',
-          'DD-MM-YYYY HH:mm:ss',
-          'MM-DD-YYYY HH:mm:ss',
-        ];
+            'DD.MM.YYYY',
+            'MM.DD.YYYY',
+            'DD/MM/YYYY',
+            'MM/DD/YYYY',
+            'DD-MM-YYYY',
+            'MM-DD-YYYY',
+            'DD.MM.YYYY',
+            'MM.DD.YYYY',
+            'DD/MM/YYYY',
+            'MM/DD/YYYY',
+            'DD/MM/YYYY',
+            'MM/DD/YYYY',
+            'D.MM.YYYY',
+            'M.DD.YYYY',
+            'D/MM/YYYY',
+            'M/DD/YYYY',
+            'D/MM/YYYY',
+            'M/DD/YYYY',
+            'D.MM.YY',
+            'M.DD.YY',
+            'D/MM/YY',
+            'M/DD/YY',
+            'D/MM/YY',
+            'M/DD/YY'
+          ];
       
         for (const format of formats) {
           let formatMatches = true;
           for (let i = 0; i < datesArray.length; i++) {
-            const dateStr = datesArray[i];
+            let dateStr = datesArray[i].split(' ')[0];
             if (!moment(dateStr, format, true).isValid()&&dateStr) {
               formatMatches = false;
               break;
@@ -198,12 +215,12 @@ const CreateProject = (props) => {
                                 f[e.colName] = f[e.colName].replace(/\s+/g, ' ').trim()
                                 let dateParts = f[e.colName].split(/\s*[-./]\s*/);
                                 let formatParts = format.split(/\s*[-./]\s*/);
-                                if(new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
+                                if(new Date([dateParts[0], dateParts[1], dateParts[2]].join('-')) == 'Invalid Date' && new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
                                     f[e.colName] =null
-                                }else if (formatParts[0] === 'DD' && formatParts[1] === 'MM') {
-                                    f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2]].join('-'))
-                                }else if (formatParts[0] === 'MM' && formatParts[1] === 'DD') {
-                                    f[e.colName] = new Date([dateParts[0], dateParts[1], dateParts[2]].join('-'))
+                                }else if (formatParts[0] === 'DD' || formatParts[0] === 'D') {
+                                    f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2],[0]].join('-'))
+                                }else if (formatParts[0] === 'MM' || formatParts[0] === 'M') {
+                                    f[e.colName] = new Date([dateParts[0], dateParts[1], dateParts[2],[0]].join('-'))
                                 }
                            } else if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
                                if(new Date(f[e.colName])>new Date('9999-12-31')){
