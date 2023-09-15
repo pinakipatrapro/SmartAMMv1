@@ -198,7 +198,6 @@ const CreateProject = (props) => {
                                 f[e.colName] = f[e.colName].replace(/\s+/g, ' ').trim()
                                 let dateParts = f[e.colName].split(/\s*[-./]\s*/);
                                 let formatParts = format.split(/\s*[-./]\s*/);
-                                let timestamp = Date.parse(f[e.colName].split(' ')[1]).split(':')
                                 if(new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
                                     f[e.colName] =null
                                 }else if (formatParts[0] === 'DD' && formatParts[1] === 'MM') {
