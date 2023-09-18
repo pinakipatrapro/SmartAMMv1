@@ -13,6 +13,8 @@ import axios from "axios"
 import customColTypes from "../constants/CalculatedColumns.json"
 import CalulatedColOptions from "../components/createProject/CalculatedColOptions";
 import randomItem from 'random-item';
+import moment from "moment";
+
 
 const { Option } = Select;
 
@@ -61,6 +63,18 @@ const CreateProject = (props) => {
         setPreviewData(previewDataCopy)
     }
 
+    const determineDateTime = (value) => {
+        value = value ? value.replace(/\s+/g, ' ').trim() : null;
+        const dateFormats = [
+            /^\d{1,2}\.\d{1,2}\.\d{2,4}( \d{2}:\d{2}(:\d{2})?)?$/,
+            /^\d{1,2}\/\d{1,2}\/\d{2,4}( \d{2}:\d{2}(:\d{2})?)?$/,
+            /^\d{1,2}-\d{1,2}-\d{2,4}( \d{2}:\d{2}(:\d{2})?)?$/
+          ];
+        
+          return dateFormats.some(format => format.test(value));
+    }
+
+
     const createDatPreview = (sheetData) => {
         if (!sheetData.length) {
             return
@@ -75,10 +89,12 @@ const CreateProject = (props) => {
             let valueTypes = sampleValues.map(e => {
                 if (parseFloat(e) == e) {
                     return 'number'
-                } else if (new Date(e) == 'Invalid Date') {
+                } else if (new Date(e) == 'Invalid Date' && !determineDateTime(e)) {
                     return typeof (e)
-                } else {
+                } else if(determineDateTime(e) || !e) {
                     return 'datetime'
+                }else{
+                    return 'string'
                 }
             })
             console.log(e, valueTypes)
@@ -113,6 +129,54 @@ const CreateProject = (props) => {
         createDatPreview(sheetData)
     }
 
+    const determineDateFormat = (datesArray) => {
+        if(!datesArray.length){
+            return null;
+        }
+        const formats = [
+            'DD.MM.YYYY',
+            'MM.DD.YYYY',
+            'DD/MM/YYYY',
+            'MM/DD/YYYY',
+            'DD-MM-YYYY',
+            'MM-DD-YYYY',
+            'DD.MM.YYYY',
+            'MM.DD.YYYY',
+            'DD/MM/YYYY',
+            'MM/DD/YYYY',
+            'DD/MM/YYYY',
+            'MM/DD/YYYY',
+            'D.MM.YYYY',
+            'M.DD.YYYY',
+            'D/MM/YYYY',
+            'M/DD/YYYY',
+            'D/MM/YYYY',
+            'M/DD/YYYY',
+            'D.MM.YY',
+            'M.DD.YY',
+            'D/MM/YY',
+            'M/DD/YY',
+            'D/MM/YY',
+            'M/DD/YY'
+          ];
+      
+        for (const format of formats) {
+          let formatMatches = true;
+          for (let i = 0; i < datesArray.length; i++) {
+            let dateStr = datesArray[i].split(' ')[0];
+            if (!moment(dateStr, format, true).isValid()&&dateStr) {
+              formatMatches = false;
+              break;
+            }
+          }
+          if (formatMatches) {
+            return format;
+          }
+        }
+      
+        return 'Unknown';
+      }
+
     const onFinish = (values) => {
         console.log('Success:', values);
 
@@ -135,31 +199,45 @@ const CreateProject = (props) => {
                     }
                 })
             } else if (e.dataType == 'Date-Time') {
-                formattedData.forEach((f, j) => {
-                    try {
-                        if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
-                            if(new Date(f[e.colName])>new Date('9999-12-31')){
-                                f[e.colName] =null
-                            }else{
-                                f[e.colName] = new Date(f[e.colName]).toISOString()
-                            }
-                        } else if (!!f[e.colName]) {
-                            let dateParts = f[e.colName].split(/\s*[-./]\s*/);
-                            if(new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
-                                f[e.colName] =null
-                            }else{
-                                f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2]].join('-'))
-                            }
-                        }
-                    } catch (err) {
-                        messages.push({
-                            row: j,
-                            value: formattedData[j],
-                            errorType: "Date-Time",
-                            column: e.colName,
-                            message: `Error parsing ${f[e.colName]} as a date-time`
-                        })
+                const result = formattedData.map(fd => {
+                    const value = fd[e.colName];
+                    if (value !== null) {
+                        const trimmedValue = value.replace(/\s+/g, ' ').trim();
+                        return trimmedValue;
+                    } else {
+                    return null;
                     }
+                  }).splice(0, 100).filter(e=>e);
+                let format = determineDateFormat(result);
+                formattedData.forEach((f, j) => {
+                        try {
+                            if (!!f[e.colName]) {
+                                f[e.colName] = f[e.colName].replace(/\s+/g, ' ').trim()
+                                let dateParts = f[e.colName].split(/\s*[-./]\s*/);
+                                let formatParts = format.split(/\s*[-./]\s*/);
+                                if(new Date([dateParts[0], dateParts[1], dateParts[2]].join('-')) == 'Invalid Date' && new Date([dateParts[1], dateParts[0], dateParts[2]].join('-')) == 'Invalid Date'){
+                                    f[e.colName] =null
+                                }else if (formatParts[0] === 'DD' || formatParts[0] === 'D') {
+                                    f[e.colName] = new Date([dateParts[1], dateParts[0], dateParts[2],[0]].join('-'))
+                                }else if (formatParts[0] === 'MM' || formatParts[0] === 'M') {
+                                    f[e.colName] = new Date([dateParts[0], dateParts[1], dateParts[2],[0]].join('-'))
+                                }
+                           } else if (!!f[e.colName] && !isNaN(Date.parse(f[e.colName]))) {
+                               if(new Date(f[e.colName])>new Date('9999-12-31')){
+                                   f[e.colName] =null
+                               }
+                           } else{
+                            f[e.colName] =null
+                           }
+                       } catch (err) {
+                           messages.push({
+                               row: j,
+                               value: formattedData[j],
+                               errorType: "Date-Time",
+                               column: e.colName,
+                               message: `Error parsing ${f[e.colName]} as a date-time`
+                           })
+                       }
                 })
             }
         })
