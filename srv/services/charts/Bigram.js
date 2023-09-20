@@ -18,53 +18,57 @@ class Bigram extends Common {
     }
 
     async getData(payload) {
-        try{
+        try {
+
             const { referenceView } = await this.getViewName(payload.projectID);
-            let sqlString = this.getBigramWordCloudSql(payload.dimension, referenceView);
-            let data = await prisma.$queryRawUnsafe(`${sqlString}`);
-            if (!data.length) {
+            const sqlString = this.getBigramWordCloudSql(payload.dimension, referenceView);
+            const rawData = await prisma.$queryRawUnsafe(`${sqlString}`);
+            if (!rawData || typeof rawData.length === 'undefined') {
+                console.error('Raw data is undefined or does not have a length property.');
                 return [];
             }
+            
+            const langArr = this.getStopWordsArr(payload.stopWords);
+            const stopWordsSet = new Set(langArr);
+            const bigramCounts = {};
+            for (let i = 0; i < rawData.length; i++) {
+                const row = rawData[i];
+                const textFields = Object.values(row);
+                for (let k = 0; k < textFields.length; k++) {
+                    const text = textFields[k];
+                    if (!text) {
 
-            let langArr = this.getStopWordsArr(payload.stopWords);
-            let stopWordsSet = new Set(langArr);
-
-            let bigramCounts = {};
-
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].bigram) {
-                    const adjacentWords = data[i].bigram.split(' ');
-                    if (adjacentWords.length >= 2) {
-                        for (let j = 0; j < adjacentWords.length - 1; j++) {
-                            const word1 = adjacentWords[j];
-                            const word2 = adjacentWords[j + 1];
-                            const bigram = `${word1} ${word2}`;
-
-                            if (word1 && word2 && !stopWordsSet.has(word1.toLowerCase()) && !stopWordsSet.has(word2.toLowerCase())) {
-                                if (bigramCounts[bigram]) {
-                                    bigramCounts[bigram] += data[i].count;
-                                } else {
-                                    bigramCounts[bigram] = data[i].count;
-                                }
+                        continue;
+                    }
+                    const words = text.toLowerCase().split(' ');
+                    for (let j = 0; j < words.length - 1; j++) {
+                        const word1 = words[j];
+                        const word2 = words[j + 1];
+                        if (!stopWordsSet.has(word1.toLowerCase()) && !stopWordsSet.has(word2.toLowerCase())) {
+                            const bigram = `${word1}_${word2}`;
+                            if (bigramCounts[bigram]) {
+                                bigramCounts[bigram]++;
+                            } else {
+                                bigramCounts[bigram] = 1;
                             }
                         }
                     }
                 }
             }
-
-            let result = Object.keys(bigramCounts).map(bigram => ({ word: bigram.toUpperCase(), count: bigramCounts[bigram] }));
-            result = this.toObject(result);
-            result = result.sort((a, b) => {
-                return b.count - a.count;
+            Object.keys(bigramCounts).forEach(key => {
+                if (key.includes(' ') || key.trim() === '') {
+                    delete bigramCounts[key];
+                }
             });
-            result = result.splice(0, 100);            
-            return result;
-
-        }catch(err){
-            console.log(err)
+            const result = Object.keys(bigramCounts).map(key => ({ word: key, count: bigramCounts[key] }));
+            result.sort((a, b) => b.count - a.count);
+            return result.slice(0, 100);
+        } catch (error) {
+            console.error(error);
+            return [];
         }
-
     }
+
 }
 
 module.exports = Bigram;
