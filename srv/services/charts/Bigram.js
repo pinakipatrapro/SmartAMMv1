@@ -40,12 +40,12 @@ class Bigram extends Common {
 
                         continue;
                     }
-                    const words = text.toLowerCase().split(' ');
+                    const words = text.toLowerCase().split(/[ _#-\/\\]+/);
                     for (let j = 0; j < words.length - 1; j++) {
-                        const word1 = words[j];
-                        const word2 = words[j + 1];
+                        const word1 = words[j].toUpperCase();
+                        const word2 = words[j + 1].toUpperCase();
                         if (!stopWordsSet.has(word1.toLowerCase()) && !stopWordsSet.has(word2.toLowerCase())) {
-                            const bigram = `${word1}_${word2}`;
+                            const bigram = `_${word1}_${word2}`;
                             if (bigramCounts[bigram]) {
                                 bigramCounts[bigram]++;
                             } else {
