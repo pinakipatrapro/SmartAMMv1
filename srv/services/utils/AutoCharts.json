@@ -229,7 +229,7 @@
                             "autoRotate": true
                         },
                         "title": {
-                            "text": "Month"
+                            "text": "Month-Name for open date"
                         }
                     },
                     "yAxis": {
@@ -270,7 +270,7 @@
                             "autoRotate": true
                         },
                         "title": {
-                            "text": "Day"
+                            "text": "Day-Name for Open Date"
                         }
                     },
                     "yAxis": {
@@ -311,7 +311,7 @@
                             "autoRotate": true
                         },
                         "title": {
-                            "text": "Hour"
+                            "text": "Hour for open date"
                         }
                     },
                     "yAxis": {
@@ -352,7 +352,7 @@
                             "autoRotate": true
                         },
                         "title": {
-                            "text": "Date"
+                            "text": "Day(30/31) for open date"
                         }
                     },
                     "yAxis": {

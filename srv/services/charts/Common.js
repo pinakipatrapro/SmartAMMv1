@@ -2,21 +2,21 @@ const { PrismaClient, Prisma } = require('@prisma/client');
 const prisma = new PrismaClient();
 require('dotenv').config()
 
-class Common{
-    getSqlString(viewName){
+class Common {
+    getSqlString(viewName) {
         return ` SELECT * FROM "${process.env.DATA_SCHEMA}"."${viewName}" `
     }
 
-    getStopWordsLanguages(){
-        return ['eng','nld','est','fin','fra','deu','ell','hin','ita','jpn','kor','lat','pol','por','porBr','rus','spa','swe','tur','ukr']
+    getStopWordsLanguages() {
+        return ['eng', 'nld', 'est', 'fin', 'fra', 'deu', 'ell', 'hin', 'ita', 'jpn', 'kor', 'lat', 'pol', 'por', 'porBr', 'rus', 'spa', 'swe', 'tur', 'ukr']
     }
 
-    getWordCloudSelectString(dimensions){
-        let dimensionString = dimensions.map(e=> ` coalesce("${e}",'') `).join(`|| ' ' ||`)
+    getWordCloudSelectString(dimensions) {
+        let dimensionString = dimensions.map(e => ` coalesce("${e}",'') `).join(`|| ' ' ||`)
         return dimensionString
     }
 
-    getWordCloudSql(dimensions,viewName){
+    getWordCloudSql(dimensions, viewName) {
         let dimensionString = this.getWordCloudSelectString(dimensions);
         return `
             WITH words AS (
@@ -27,25 +27,25 @@ class Common{
             GROUP BY word
         `
     }
-    
-    async getViewName(projectID){
-        const referenceObj = await  prisma.Project.findFirst({
-            where : {
-                id:projectID
+
+    async getViewName(projectID) {
+        const referenceObj = await prisma.Project.findFirst({
+            where: {
+                id: projectID
             },
-            select :{
-                referenceView:true,
-                referenceTable:true
+            select: {
+                referenceView: true,
+                referenceTable: true
             }
         });
         return referenceObj;
     }
-    
-    getFilterString(){
+
+    getFilterString() {
         return ``;
     }
 
-    getColumnNamesSql(tableName){
+    getColumnNamesSql(tableName) {
         return `select column_name
                 from information_schema.columns
                 where table_name = '${tableName}'
@@ -54,38 +54,38 @@ class Common{
               `;
     }
 
-    async getTimestampColumns(tableName,columns){
-        let columnString = columns.map(e=> ` '${e}' `).join(',')
+    async getTimestampColumns(tableName, columns) {
+        let columnString = columns.map(e => ` '${e}' `).join(',')
         let sqlString = ` SELECT column_name,data_type FROM information_schema.columns WHERE 
                             table_name = '${tableName}' AND column_name in (${columnString})
                             AND data_type like '%timestamp%' `
         let colNames = await prisma.$queryRawUnsafe(` ${sqlString} `);
-        colNames = colNames.map(e=> ` "${e.column_name}" `);
+        colNames = colNames.map(e => ` "${e.column_name}" `);
         return colNames
     }
 
-    async getCalculatedColumns(tableName){
-        let calculatedColumnsJSON = await  prisma.Project.findFirst({
-            where : {
-                referenceTable:tableName
+    async getCalculatedColumns(tableName) {
+        let calculatedColumnsJSON = await prisma.Project.findFirst({
+            where: {
+                referenceTable: tableName
             },
-            select :{
-                calculatedColumns:true
+            select: {
+                calculatedColumns: true
             }
         });
-        if(!calculatedColumnsJSON){
+        if (!calculatedColumnsJSON) {
             return [];
         }
         return calculatedColumnsJSON['calculatedColumns'];
     }
 
-    getOrderByStringForCC(columnArray){
+    getOrderByStringForCC(columnArray) {
         let orderByArr = [];
-        this.calculatedColumns.forEach(function(e){
-            if(columnArray.indexOf(e.colName)>-1){
-                switch(e.key){
-                    case 'DayFromDate' :
-                        orderByArr.push( ` CASE
+        this.calculatedColumns.forEach(function (e) {
+            if (columnArray.indexOf(e.colName) > -1) {
+                switch (e.key) {
+                    case 'DayFromDate':
+                        orderByArr.push(` CASE
                                             WHEN trim("${e.colName}") = 'Monday' THEN 1
                                             WHEN trim("${e.colName}") = 'Tuesday' THEN 2
                                             WHEN trim("${e.colName}") = 'Wednesday' THEN 3
@@ -97,20 +97,20 @@ class Common{
                                         `);
                         break;
                     case 'MonthFromDate':
-                        orderByArr.push( ` to_date("${e.colName}",'Month') `);
+                        orderByArr.push(` to_date("${e.colName}",'Month') `);
                         break;
                     case 'dateFromTimestamp':
-                        orderByArr.push( `  to_date("${e.colName}",'YYYY-MM-DD') `)  
+                        orderByArr.push(`  to_date("${e.colName}",'YYYY-MM-DD') `)
                         break;
                     case 'YearMonthFromTimestamp':
-                        orderByArr.push( ` to_date("${e.colName}",'Month-YYYY') `);
+                        orderByArr.push(` to_date("${e.colName}",'Month-YYYY') `);
                         break;
                     case 'YearFromTimestamp':
-                        orderByArr.push( ` "${e.colName}" `);
+                        orderByArr.push(` "${e.colName}" `);
                         break;
                     case 'DayoftheMonthFromTimestamp':
-                        orderByArr.push( ` "${e.colName}" `);
-                        break;                    
+                        orderByArr.push(` "${e.colName}" `);
+                        break;
                     default: orderByArr.push(` "${e.colName}" `);
                 }
             }
@@ -118,22 +118,22 @@ class Common{
         return orderByArr;
     }
 
-    async getOrderByStringForColumns(tableName,columnArray){
-        let timestampColumns =  await this.getTimestampColumns(tableName,columnArray)
+    async getOrderByStringForColumns(tableName, columnArray) {
+        let timestampColumns = await this.getTimestampColumns(tableName, columnArray)
         this.calculatedColumns = await this.getCalculatedColumns(tableName)
         let orderByColumns = this.getOrderByStringForCC(columnArray)
-        return [...orderByColumns,...timestampColumns]
+        return [...orderByColumns, ...timestampColumns]
     }
-    
-    async getOrderByClauseString(tableName,orderByColumns){
-        let orderByStringArr  = await this.getOrderByStringForColumns(tableName,orderByColumns)
-        if(orderByStringArr.length){
+
+    async getOrderByClauseString(tableName, orderByColumns) {
+        let orderByStringArr = await this.getOrderByStringForColumns(tableName, orderByColumns)
+        if (orderByStringArr.length) {
             orderByStringArr = orderByStringArr.join(',')
             return ` ORDER BY ${orderByStringArr} `;
         }
         return ``;
     }
-    
+
     toObject(data) {
         return JSON.parse(JSON.stringify(data, (key, value) =>
             typeof value === 'bigint'
@@ -141,33 +141,33 @@ class Common{
                 : value // return everything else unchanged
         ));
     }
-    getDimensionString(dimensions){
-        if(!dimensions.length){
+    getDimensionString(dimensions) {
+        if (!dimensions.length) {
             return ''
         }
-        return dimensions.map(e=> ` "${e}" `).join(',')
-    }
-    
-    getMeasureString(measures,agg){
-        if(!measures.length){
-            return ''
-        }
-        return measures.map(e=> ` ROUND(${!(agg && agg[e]) ? 'COUNT' : agg[e]}("${e}")::Decimal,2)::FLOAT as "${e}" `).join(",")
+        return dimensions.map(e => ` "${e}" `).join(',')
     }
 
-    getPartitionByString(seriesString){
-        if(seriesString=='')return '';
+    getMeasureString(measures, agg) {
+        if (!measures.length) {
+            return ''
+        }
+        return measures.map(e => ` ROUND(${!(agg && agg[e]) ? 'COUNT' : agg[e]}("${e}")::Decimal,2)::FLOAT as "${e}" `).join(",")
+    }
+
+    getPartitionByString(seriesString) {
+        if (seriesString == '') return '';
         return ` PARTITION BY ${seriesString} `;
     }
 
-    prepareSQLForBoxPlot(viewName,dimensions,series,measure){
+    prepareSQLForBoxPlot(viewName, dimensions, series, measure) {
         measure = measure[0]
-        if(!(series && series.length)){
+        if (!(series && series.length)) {
             series = [];
         }
-        let dimensionString = this.getDimensionString([...dimensions,...series]);
+        let dimensionString = this.getDimensionString([...dimensions, ...series]);
         let partitionBySeriesString = this.getPartitionByString(dimensionString);
-        let selectString = ` ${dimensions&&dimensions.length ? dimensionString + ' , ': ''} `;
+        let selectString = ` ${dimensions && dimensions.length ? dimensionString + ' , ' : ''} `;
         let groupByString = ` ${dimensionString} `;
         return `WITH raw_data AS (
                    SELECT 
@@ -217,28 +217,16 @@ class Common{
     }
 
     getBigramWordCloudSql(dimensions, viewName) {
-        let dimensionString = this.getBigramWordCloudSelectString(dimensions);
-
+        const dimensionColumns = dimensions.map(dimension => `"${dimension}"`).join(', ');
+    
         return `
-            WITH sentences AS (
-                SELECT string_agg(${dimensionString}, ' ') AS text
-                FROM "${process.env.DATA_SCHEMA}"."${viewName}"
-            ),
-            words AS (
-                SELECT word
-                FROM sentences,
-                     regexp_split_to_table(text, '\\s+') AS word
-            ),
-            bigrams AS (
-                SELECT word AS word1, LEAD(word) OVER () AS word2
-                FROM words
-            )
-            SELECT word1 || ' ' || word2 AS bigram, count(*) 
-            FROM bigrams
-            WHERE word2 IS NOT NULL
-            GROUP BY word1, word2
+            SELECT ${dimensionColumns}
+            FROM "${process.env.DATA_SCHEMA}"."${viewName}"
         `;
     }
+    
+    
+   
 
     dynamicSort(data, sortBy, sortOrder) {
         return data.sort((a, b) => {
@@ -256,12 +244,12 @@ class Common{
 
 
 
-    sortData(data,sorter,sortAscending){
+    sortData(data, sorter, sortAscending) {
         const keys = Object.keys(data[0]);
         const sortColumns = sorter.filter(item => keys.includes(item));
-        if(sortColumns.length){
+        if (sortColumns.length) {
             const sortOrder = sortAscending ? 'asc' : 'desc';
-            console.log("sort order",sortOrder)
+            console.log("sort order", sortOrder)
             return this.dynamicSort(data, sortColumns, sortOrder);
         }
         return data;
