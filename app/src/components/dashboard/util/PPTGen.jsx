@@ -28,7 +28,10 @@ const chartColors = [
 
 const chartCommonProperties = {
     x: "5%", y: "7%", w: "80%", h: "75%",
-    chartColorsOpacity: 80, showLegend: true
+    chartColorsOpacity: 80, showLegend: true,
+    showValue: true,
+    dataLabelFontSize: 8,
+    dataLabelPosition: "bestFit"
 }
 
 let pptx = new pptxgen();
