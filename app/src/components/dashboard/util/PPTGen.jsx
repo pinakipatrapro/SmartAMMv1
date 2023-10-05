@@ -51,8 +51,18 @@ const PPTGen = {
         slide.addText("SmarTAMM Report - " + dashboardDetails.project.name, { x: "5%", y: "40%", w: "35%", color: "#ffffff", fontSize: 32, fontFace: "TeleGrotesk Next Ultra (Headings)" });
         slide.addText(`Report Generated on ${new Date().toString().substring(0, 25)}`, { x: "5%", y: "60%", w: "35%", color: "#ffffff", fontSize: 14, fontFace: "TeleGrotesk Next" });
 
+        //Filter for Chart Ordering in PPT Download
+        dashboardDetails.configData.layout.forEach(e=>{
+            dashboardDetails.configData.cards.find(f=>{
+                return f.id == e.id;
+            }).layoutPosition = e.x+(e.y*10)
+        })
 
-        dashboardDetails.configData.cards.forEach(card => {
+        let sortedCards =  dashboardDetails.configData.cards.sort((a, b) => {
+            return a.layoutPosition - b.layoutPosition;
+        });
+
+        sortedCards.forEach(card => {
             //Slide #1
             let slide = pptx.addSlide();
             slide.addImage(footerLogo)
@@ -90,7 +100,7 @@ const chartGenerator = {
             ...chartCommonProperties,
             barDir: "bar",
             barGrouping: card.options.config.isStack ? 'stacked' : 'clustered',
-            chartColors: chartColors.splice(0, data.length),
+            chartColors: chartColors.slice(0, data.length),
             catAxisOrientation: catAxisOrientation || "minMax",
         });
     },
