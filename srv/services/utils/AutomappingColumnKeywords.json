@@ -3,7 +3,7 @@
       {
         "name": "Priority",
         "type": "Standard",
-        "keywords": ["Priority", "Criticality", "Importance", "Urgency"],
+        "keywords": ["Priority", "Criticality", "Importance"],
         "dataType": "Text"
       },
       {
