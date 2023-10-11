@@ -75,10 +75,10 @@ Content-Type: application/json
     "config": {
       "measure": [],
       "dimension": [
-        "Contact Media"
+        "Dummy Data","Language"
       ],
       "series": [],
-      "projectID": "23c5f190-a8fc-475a-849f-d66b040e719d",
+      "projectID": "e784447d-a850-4b71-9c57-3f9ac76b38d3",
       "xAxis": {
         "label": {
           "autoRotate": true

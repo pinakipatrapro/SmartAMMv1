@@ -498,8 +498,8 @@
                     "wordField": "word",
                     "wordStyle": {
                         "fontSize": [
-                            8,
-                            32
+                            16,
+                            144
                         ],
                         "rotation": 0,
                         "fontFamily": "Verdana"
