@@ -4,31 +4,26 @@ import pptxgen from "pptxgenjs";
 
 
 const chartColors = [
-    '#025DF4',
-    '#DB6BCF',
-    '#2498D1',
-    '#BBBDE6',
-    '#4045B2',
-    '#21A97A',
-    '#FF745A',
-    '#007E99',
-    '#FFA8A8',
-    '#2391FF',
-    '#FFC328',
-    '#A0DC2C',
-    '#946DFF',
-    '#626681',
-    '#EB4185',
-    '#CD8150',
-    '#36BCCB',
-    '#327039',
-    '#803488',
-    '#83BC99',
+    '#5B8FF9',
+    '#5AD8A6',
+    '#5D7092',
+    '#F6BD16',
+    '#6F5EF9',
+    '#6DC8EC',
+    '#945FB9',
+    '#FF9845',
+    '#1E9493',
+    '#FF99C3'
 ]
 
 const chartCommonProperties = {
     x: "5%", y: "7%", w: "80%", h: "75%",
-    chartColorsOpacity: 80, showLegend: true
+    chartColorsOpacity: 80, showLegend: true,
+    showValue: true,
+    dataLabelFontSize: 8,
+    dataLabelPosition: "bestFit",
+    catGridLine: { color: "D8D8D8", style: "dash", size: 1, cap: "round" },
+    valGridLine: { color: "D8D8D8", style: "dash", size: 1, cap: "square" }
 }
 
 let pptx = new pptxgen();
@@ -56,8 +51,18 @@ const PPTGen = {
         slide.addText("SmarTAMM Report - " + dashboardDetails.project.name, { x: "5%", y: "40%", w: "35%", color: "#ffffff", fontSize: 32, fontFace: "TeleGrotesk Next Ultra (Headings)" });
         slide.addText(`Report Generated on ${new Date().toString().substring(0, 25)}`, { x: "5%", y: "60%", w: "35%", color: "#ffffff", fontSize: 14, fontFace: "TeleGrotesk Next" });
 
+        //Filter for Chart Ordering in PPT Download
+        dashboardDetails.configData.layout.forEach(e=>{
+            dashboardDetails.configData.cards.find(f=>{
+                return f.id == e.id;
+            }).layoutPosition = e.x+(e.y*10)
+        })
 
-        dashboardDetails.configData.cards.forEach(card => {
+        let sortedCards =  dashboardDetails.configData.cards.sort((a, b) => {
+            return a.layoutPosition - b.layoutPosition;
+        });
+
+        sortedCards.forEach(card => {
             //Slide #1
             let slide = pptx.addSlide();
             slide.addImage(footerLogo)
@@ -87,16 +92,16 @@ const PPTGen = {
 const chartGenerator = {
     Bar: (slide, card) => {
         let data = dataFormatter(card);
-        let catAxisOrientation;
-        if( card?.options?.config?.sorter.length){
-            catAxisOrientation = card.options.config.sortAscending ? "minMax": "maxMin"
-        }
+        // let catAxisOrientation;
+        // if( card?.options?.config?.sorter.length){
+        //     catAxisOrientation = card.options.config.sortAscending ? "maxMin": "minMax"
+        // }
         slide.addChart(pptx.ChartType.bar, data, {
             ...chartCommonProperties,
             barDir: "bar",
             barGrouping: card.options.config.isStack ? 'stacked' : 'clustered',
-            chartColors: chartColors.splice(0, data.length),
-            catAxisOrientation: catAxisOrientation || "minMax",
+            chartColors: chartColors.slice(0, data.length),
+            catAxisOrientation: "maxMin"//catAxisOrientation || "minMax",
         });
     },
     Pie: (slide, card) => {
@@ -126,7 +131,7 @@ const chartGenerator = {
             ...chartCommonProperties,
             barDir: "col",
             barGrouping: card.options.config.isStack ? 'stacked' : 'clustered',
-            chartColors: card.options.config.series.length ? chartColors :  chartColors[0]
+            chartColors: card.options.config.series.length ? chartColors :  [chartColors[0]]
         });
     },
     WordCloud: (slide, card) => {

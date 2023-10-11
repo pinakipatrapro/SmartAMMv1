@@ -14,7 +14,7 @@ const ChartDataCreator = {
             isPercent: settings.isPercent,
             measure: settings.measure,
             dimension: settings.dimension,
-            stopWords:settings.stopWords,
+            stopWords: settings.stopWords,
             series: settings.series,
             agg: settings.agg,
             projectID: prevSettings.options.config.projectID,
@@ -34,8 +34,8 @@ const ChartDataCreator = {
                     text: settings.measure[0]
                 }
             },
-            sorter:settings.sorter,
-            sortAscending:settings.sortAscending,
+            sorter: settings.sorter,
+            sortAscending: settings.sortAscending,
             // slider: {
             //     start: 0.1,
             //     end: 0.9,
@@ -168,9 +168,13 @@ const chart = {
                     seriesField: !!settings.series ? settings.series[0] : null,
                     wordStyle: {
                         fontFamily: 'Verdana',
-                        fontSize: [8, 32],
-                        rotation: 0,
-                    }
+                        fontSize: [16, 144]
+                    },
+                    interactions: [
+                        {
+                            type: 'element-active',
+                        }
+                    ]
                 }
             }
 
@@ -214,9 +218,13 @@ const chart = {
                     seriesField: !!settings.series ? settings.series[0] : null,
                     wordStyle: {
                         fontFamily: 'Verdana',
-                        fontSize: [8, 32],
-                        rotation: 0,
+                        fontSize: [16, 144]
                     },
+                    interactions: [
+                        {
+                            type: 'element-active',
+                        }
+                    ]
                 }
             }
 
