@@ -12,9 +12,27 @@ class AutoCharting extends Common {
     }
   }
 
+  removeDuplicateDimensionMeasure(modifiedAutoChartsJson) {
+    const indicesToRemove = [];
+
+    modifiedAutoChartsJson.cards.forEach((card, index) => {
+
+      if (card.options.chartType === 'Column') {
+        if (JSON.stringify(card.options.config.dimension) === JSON.stringify(card.options.config.measure)) {
+          indicesToRemove.push(index);
+        }
+      }
+    });
+
+    modifiedAutoChartsJson.cards = modifiedAutoChartsJson.cards.filter((_, index) => !indicesToRemove.includes(index));
+    modifiedAutoChartsJson.layout = modifiedAutoChartsJson.layout.filter((_, index) => !indicesToRemove.includes(index));
+
+    return modifiedAutoChartsJson;
+  }
+
   modifyAutoChartsJson(projectID, mappingJson, autoChartsJson) {
 
-    const modifiedAutoChartsJson = JSON.parse(JSON.stringify(autoChartsJson));
+    let modifiedAutoChartsJson = JSON.parse(JSON.stringify(autoChartsJson));
 
     modifiedAutoChartsJson.cards.forEach((card) => {
 
@@ -63,7 +81,6 @@ class AutoCharting extends Common {
       }
     });
 
-
     modifiedAutoChartsJson.layout.forEach((layout, index) => {
 
       if (!layout.id) {
@@ -76,6 +93,8 @@ class AutoCharting extends Common {
         card.options.config.projectID = projectID;
       }
     });
+
+    modifiedAutoChartsJson = this.removeDuplicateDimensionMeasure(modifiedAutoChartsJson)
 
     return modifiedAutoChartsJson;
   }
