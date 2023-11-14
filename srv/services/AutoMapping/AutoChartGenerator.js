@@ -17,11 +17,10 @@ class AutoCharting extends Common {
 
     modifiedAutoChartsJson.cards.forEach((card, index) => {
 
-      if (card.options.chartType === 'Column') {
-        if (JSON.stringify(card.options.config.dimension) === JSON.stringify(card.options.config.measure)) {
-          indicesToRemove.push(index);
-        }
+      if (JSON.stringify(card.options.config.dimension) === JSON.stringify(card.options.config.measure)) {
+        indicesToRemove.push(index);
       }
+
     });
 
     modifiedAutoChartsJson.cards = modifiedAutoChartsJson.cards.filter((_, index) => !indicesToRemove.includes(index));
